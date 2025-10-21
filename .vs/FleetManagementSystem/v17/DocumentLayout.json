@@ -1,0 +1,279 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{5DC2B273-7EF2-4212-9A86-13FF62FD4279}|src\\VehicleService\\VehicleService.Infrastructure\\VehicleService.Infrastructure.csproj|e:\\acadamy\\wso2\\final project\\git files\\fleetmanagementsystem\\src\\vehicleservice\\vehicleservice.infrastructure\\data\\vehicledbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5DC2B273-7EF2-4212-9A86-13FF62FD4279}|src\\VehicleService\\VehicleService.Infrastructure\\VehicleService.Infrastructure.csproj|solutionrelative:src\\vehicleservice\\vehicleservice.infrastructure\\data\\vehicledbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C25FA22-8EE8-42C6-B868-D7908BDB869B}|src\\VehicleService\\VehicleService.Api\\VehicleService.Api.csproj|e:\\acadamy\\wso2\\final project\\git files\\fleetmanagementsystem\\src\\vehicleservice\\vehicleservice.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8C25FA22-8EE8-42C6-B868-D7908BDB869B}|src\\VehicleService\\VehicleService.Api\\VehicleService.Api.csproj|solutionrelative:src\\vehicleservice\\vehicleservice.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5DC2B273-7EF2-4212-9A86-13FF62FD4279}|src\\VehicleService\\VehicleService.Infrastructure\\VehicleService.Infrastructure.csproj|e:\\acadamy\\wso2\\final project\\git files\\fleetmanagementsystem\\src\\vehicleservice\\vehicleservice.infrastructure\\repositories\\vehiclerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5DC2B273-7EF2-4212-9A86-13FF62FD4279}|src\\VehicleService\\VehicleService.Infrastructure\\VehicleService.Infrastructure.csproj|solutionrelative:src\\vehicleservice\\vehicleservice.infrastructure\\repositories\\vehiclerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C25FA22-8EE8-42C6-B868-D7908BDB869B}|src\\VehicleService\\VehicleService.Api\\VehicleService.Api.csproj|e:\\acadamy\\wso2\\final project\\git files\\fleetmanagementsystem\\src\\vehicleservice\\vehicleservice.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{8C25FA22-8EE8-42C6-B868-D7908BDB869B}|src\\VehicleService\\VehicleService.Api\\VehicleService.Api.csproj|solutionrelative:src\\vehicleservice\\vehicleservice.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5DC2B273-7EF2-4212-9A86-13FF62FD4279}|src\\VehicleService\\VehicleService.Infrastructure\\VehicleService.Infrastructure.csproj|e:\\acadamy\\wso2\\final project\\git files\\fleetmanagementsystem\\src\\vehicleservice\\vehicleservice.infrastructure\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5DC2B273-7EF2-4212-9A86-13FF62FD4279}|src\\VehicleService\\VehicleService.Infrastructure\\VehicleService.Infrastructure.csproj|solutionrelative:src\\vehicleservice\\vehicleservice.infrastructure\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5DC2B273-7EF2-4212-9A86-13FF62FD4279}|src\\VehicleService\\VehicleService.Infrastructure\\VehicleService.Infrastructure.csproj|e:\\acadamy\\wso2\\final project\\git files\\fleetmanagementsystem\\src\\vehicleservice\\vehicleservice.infrastructure\\vehicleservice.infrastructure.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{5DC2B273-7EF2-4212-9A86-13FF62FD4279}|src\\VehicleService\\VehicleService.Infrastructure\\VehicleService.Infrastructure.csproj|solutionrelative:src\\vehicleservice\\vehicleservice.infrastructure\\vehicleservice.infrastructure.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ED7E5F7C-84C8-4753-A0B8-E0FC92C00A27}|src\\VehicleService\\VehicleService.Application\\VehicleService.Application.csproj|e:\\acadamy\\wso2\\final project\\git files\\fleetmanagementsystem\\src\\vehicleservice\\vehicleservice.application\\dtos\\vehicledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ED7E5F7C-84C8-4753-A0B8-E0FC92C00A27}|src\\VehicleService\\VehicleService.Application\\VehicleService.Application.csproj|solutionrelative:src\\vehicleservice\\vehicleservice.application\\dtos\\vehicledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ED7E5F7C-84C8-4753-A0B8-E0FC92C00A27}|src\\VehicleService\\VehicleService.Application\\VehicleService.Application.csproj|e:\\acadamy\\wso2\\final project\\git files\\fleetmanagementsystem\\src\\vehicleservice\\vehicleservice.application\\interfaces\\ivehiclerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ED7E5F7C-84C8-4753-A0B8-E0FC92C00A27}|src\\VehicleService\\VehicleService.Application\\VehicleService.Application.csproj|solutionrelative:src\\vehicleservice\\vehicleservice.application\\interfaces\\ivehiclerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{180B704C-2474-4F92-9A2B-CA1D0B05BC2F}|src\\VehicleService\\VehicleService.Domain\\VehicleService.Domain.csproj|e:\\acadamy\\wso2\\final project\\git files\\fleetmanagementsystem\\src\\vehicleservice\\vehicleservice.domain\\entities\\vehiclestatushistory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{180B704C-2474-4F92-9A2B-CA1D0B05BC2F}|src\\VehicleService\\VehicleService.Domain\\VehicleService.Domain.csproj|solutionrelative:src\\vehicleservice\\vehicleservice.domain\\entities\\vehiclestatushistory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{180B704C-2474-4F92-9A2B-CA1D0B05BC2F}|src\\VehicleService\\VehicleService.Domain\\VehicleService.Domain.csproj|e:\\acadamy\\wso2\\final project\\git files\\fleetmanagementsystem\\src\\vehicleservice\\vehicleservice.domain\\entities\\vehiclestatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{180B704C-2474-4F92-9A2B-CA1D0B05BC2F}|src\\VehicleService\\VehicleService.Domain\\VehicleService.Domain.csproj|solutionrelative:src\\vehicleservice\\vehicleservice.domain\\entities\\vehiclestatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{180B704C-2474-4F92-9A2B-CA1D0B05BC2F}|src\\VehicleService\\VehicleService.Domain\\VehicleService.Domain.csproj|e:\\acadamy\\wso2\\final project\\git files\\fleetmanagementsystem\\src\\vehicleservice\\vehicleservice.domain\\entities\\maintenancerecord.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{180B704C-2474-4F92-9A2B-CA1D0B05BC2F}|src\\VehicleService\\VehicleService.Domain\\VehicleService.Domain.csproj|solutionrelative:src\\vehicleservice\\vehicleservice.domain\\entities\\maintenancerecord.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{180B704C-2474-4F92-9A2B-CA1D0B05BC2F}|src\\VehicleService\\VehicleService.Domain\\VehicleService.Domain.csproj|e:\\acadamy\\wso2\\final project\\git files\\fleetmanagementsystem\\src\\vehicleservice\\vehicleservice.domain\\entities\\vehicle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{180B704C-2474-4F92-9A2B-CA1D0B05BC2F}|src\\VehicleService\\VehicleService.Domain\\VehicleService.Domain.csproj|solutionrelative:src\\vehicleservice\\vehicleservice.domain\\entities\\vehicle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C25FA22-8EE8-42C6-B868-D7908BDB869B}|src\\VehicleService\\VehicleService.Api\\VehicleService.Api.csproj|e:\\acadamy\\wso2\\final project\\git files\\fleetmanagementsystem\\src\\vehicleservice\\vehicleservice.api\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{8C25FA22-8EE8-42C6-B868-D7908BDB869B}|src\\VehicleService\\VehicleService.Api\\VehicleService.Api.csproj|solutionrelative:src\\vehicleservice\\vehicleservice.api\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}|Solution Items{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}|E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\docker-compose.yml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}|Solution Items{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}|solutionrelative:docker-compose.yml||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8C25FA22-8EE8-42C6-B868-D7908BDB869B}|src\\VehicleService\\VehicleService.Api\\VehicleService.Api.csproj|e:\\acadamy\\wso2\\final project\\git files\\fleetmanagementsystem\\src\\vehicleservice\\vehicleservice.api\\vehicleservice.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{8C25FA22-8EE8-42C6-B868-D7908BDB869B}|src\\VehicleService\\VehicleService.Api\\VehicleService.Api.csproj|solutionrelative:src\\vehicleservice\\vehicleservice.api\\vehicleservice.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Api\\appsettings.json",
+              "RelativeDocumentMoniker": "src\\VehicleService\\VehicleService.Api\\appsettings.json",
+              "ToolTip": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Api\\appsettings.json",
+              "RelativeToolTip": "src\\VehicleService\\VehicleService.Api\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-10-21T06:06:42.789Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "VehicleRepository.cs",
+              "DocumentMoniker": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Infrastructure\\Repositories\\VehicleRepository.cs",
+              "RelativeDocumentMoniker": "src\\VehicleService\\VehicleService.Infrastructure\\Repositories\\VehicleRepository.cs",
+              "ToolTip": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Infrastructure\\Repositories\\VehicleRepository.cs",
+              "RelativeToolTip": "src\\VehicleService\\VehicleService.Infrastructure\\Repositories\\VehicleRepository.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAswBIAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-21T06:05:00.416Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DependencyInjection.cs",
+              "DocumentMoniker": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Infrastructure\\DependencyInjection.cs",
+              "RelativeDocumentMoniker": "src\\VehicleService\\VehicleService.Infrastructure\\DependencyInjection.cs",
+              "ToolTip": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Infrastructure\\DependencyInjection.cs",
+              "RelativeToolTip": "src\\VehicleService\\VehicleService.Infrastructure\\DependencyInjection.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-21T06:05:18.092Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "VehicleDbContext.cs",
+              "DocumentMoniker": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Infrastructure\\Data\\VehicleDbContext.cs",
+              "RelativeDocumentMoniker": "src\\VehicleService\\VehicleService.Infrastructure\\Data\\VehicleDbContext.cs",
+              "ToolTip": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Infrastructure\\Data\\VehicleDbContext.cs",
+              "RelativeToolTip": "src\\VehicleService\\VehicleService.Infrastructure\\Data\\VehicleDbContext.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-21T06:04:40.676Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Api\\Program.cs",
+              "RelativeDocumentMoniker": "src\\VehicleService\\VehicleService.Api\\Program.cs",
+              "ToolTip": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Api\\Program.cs",
+              "RelativeToolTip": "src\\VehicleService\\VehicleService.Api\\Program.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA0AAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-21T05:54:23.632Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "VehicleService.Infrastructure",
+              "DocumentMoniker": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Infrastructure\\VehicleService.Infrastructure.csproj",
+              "RelativeDocumentMoniker": "src\\VehicleService\\VehicleService.Infrastructure\\VehicleService.Infrastructure.csproj",
+              "ToolTip": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Infrastructure\\VehicleService.Infrastructure.csproj",
+              "RelativeToolTip": "src\\VehicleService\\VehicleService.Infrastructure\\VehicleService.Infrastructure.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-10-21T06:04:46.836Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "VehicleDto.cs",
+              "DocumentMoniker": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Application\\DTOs\\VehicleDto.cs",
+              "RelativeDocumentMoniker": "src\\VehicleService\\VehicleService.Application\\DTOs\\VehicleDto.cs",
+              "ToolTip": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Application\\DTOs\\VehicleDto.cs",
+              "RelativeToolTip": "src\\VehicleService\\VehicleService.Application\\DTOs\\VehicleDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-21T06:04:08.881Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "IVehicleRepository.cs",
+              "DocumentMoniker": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Application\\Interfaces\\IVehicleRepository.cs",
+              "RelativeDocumentMoniker": "src\\VehicleService\\VehicleService.Application\\Interfaces\\IVehicleRepository.cs",
+              "ToolTip": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Application\\Interfaces\\IVehicleRepository.cs",
+              "RelativeToolTip": "src\\VehicleService\\VehicleService.Application\\Interfaces\\IVehicleRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-21T06:03:45.345Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "VehicleStatus.cs",
+              "DocumentMoniker": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Domain\\Entities\\VehicleStatus.cs",
+              "RelativeDocumentMoniker": "src\\VehicleService\\VehicleService.Domain\\Entities\\VehicleStatus.cs",
+              "ToolTip": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Domain\\Entities\\VehicleStatus.cs",
+              "RelativeToolTip": "src\\VehicleService\\VehicleService.Domain\\Entities\\VehicleStatus.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-21T05:59:19.703Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "VehicleStatusHistory.cs",
+              "DocumentMoniker": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Domain\\Entities\\VehicleStatusHistory.cs",
+              "RelativeDocumentMoniker": "src\\VehicleService\\VehicleService.Domain\\Entities\\VehicleStatusHistory.cs",
+              "ToolTip": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Domain\\Entities\\VehicleStatusHistory.cs",
+              "RelativeToolTip": "src\\VehicleService\\VehicleService.Domain\\Entities\\VehicleStatusHistory.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAABCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-21T05:59:10.807Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "MaintenanceRecord.cs",
+              "DocumentMoniker": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Domain\\Entities\\MaintenanceRecord.cs",
+              "RelativeDocumentMoniker": "src\\VehicleService\\VehicleService.Domain\\Entities\\MaintenanceRecord.cs",
+              "ToolTip": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Domain\\Entities\\MaintenanceRecord.cs",
+              "RelativeToolTip": "src\\VehicleService\\VehicleService.Domain\\Entities\\MaintenanceRecord.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-21T05:58:52.068Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Vehicle.cs",
+              "DocumentMoniker": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Domain\\Entities\\Vehicle.cs",
+              "RelativeDocumentMoniker": "src\\VehicleService\\VehicleService.Domain\\Entities\\Vehicle.cs",
+              "ToolTip": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Domain\\Entities\\Vehicle.cs",
+              "RelativeToolTip": "src\\VehicleService\\VehicleService.Domain\\Entities\\Vehicle.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAA4wBcAAABCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-21T05:59:02.34Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Api\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "src\\VehicleService\\VehicleService.Api\\Properties\\launchSettings.json",
+              "ToolTip": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Api\\Properties\\launchSettings.json",
+              "RelativeToolTip": "src\\VehicleService\\VehicleService.Api\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-10-21T05:53:12.981Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "docker-compose.yml",
+              "DocumentMoniker": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\docker-compose.yml",
+              "RelativeDocumentMoniker": "docker-compose.yml",
+              "ToolTip": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\docker-compose.yml",
+              "RelativeToolTip": "docker-compose.yml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003775|",
+              "WhenOpened": "2025-10-21T05:50:31.554Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "VehicleService.Api",
+              "DocumentMoniker": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Api\\VehicleService.Api.csproj",
+              "RelativeDocumentMoniker": "src\\VehicleService\\VehicleService.Api\\VehicleService.Api.csproj",
+              "ToolTip": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Api\\VehicleService.Api.csproj",
+              "RelativeToolTip": "src\\VehicleService\\VehicleService.Api\\VehicleService.Api.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-10-21T05:49:26.132Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
