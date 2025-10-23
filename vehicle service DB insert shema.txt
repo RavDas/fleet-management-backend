@@ -1,0 +1,38 @@
+cd src/VehicleService/VehicleService.Api
+
+
+dotnet ef migrations add InitialCreate -p ../VehicleService.Infrastructure -s .
+
+
+dotnet ef database update -p ../VehicleService.Infrastructure -s .
+
+
+
+docker exec -it postgres-vehicle psql -U postgres -d vehicle_db
+
+INSERT INTO "Vehicles" 
+("Id", "VehicleCode", "LicensePlate", "Model", "Manufacturer", "Year", "Color", "FuelType", "Status", "CurrentLocation", "CurrentDriver", "FuelLevel", "Mileage", "LastMaintenanceDate", "NextMaintenanceDate", "CreatedAt", "UpdatedAt")
+VALUES
+(gen_random_uuid(), 'VH-001', 'ABC-1234', 'Transit Van', 'Ford', 2021, 'White', 'Diesel', 0, 'Depot A', 'John Smith', 85.5, 45200, '2024-12-01', '2025-05-01', NOW(), NOW()),
+(gen_random_uuid(), 'VH-002', 'XYZ-5678', 'Model S', 'Tesla', 2023, 'Black', 'Electric', 0, 'Depot B', 'Sarah Lee', 98.2, 13200, '2025-01-15', '2025-07-15', NOW(), NOW()),
+(gen_random_uuid(), 'VH-003', 'JKL-9101', 'Hilux', 'Toyota', 2020, 'Silver', 'Diesel', 1, 'Warehouse 2', 'Michael Brown', 62.7, 88800, '2024-11-10', '2025-04-10', NOW(), NOW());
+
+
+
+
+INSERT INTO "VehicleStatusHistories" 
+("Id", "VehicleId", "Status", "ChangedBy", "Description", "ChangedAt")
+VALUES
+(gen_random_uuid(), (SELECT "Id" FROM "Vehicles" WHERE "VehicleCode" = 'VH-001'), 0, 'System', 'Vehicle registered and active', NOW()),
+(gen_random_uuid(), (SELECT "Id" FROM "Vehicles" WHERE "VehicleCode" = 'VH-002'), 0, 'System', 'Vehicle registered and active', NOW()),
+(gen_random_uuid(), (SELECT "Id" FROM "Vehicles" WHERE "VehicleCode" = 'VH-003'), 1, 'Admin', 'Vehicle under maintenance', NOW());
+
+
+
+INSERT INTO "MaintenanceRecords" 
+("Id", "VehicleId", "ServiceType", "Description", "ServiceDate", "Cost", "ServiceCenter", "PerformedBy", "CreatedAt")
+VALUES
+(gen_random_uuid(), (SELECT "Id" FROM "Vehicles" WHERE "VehicleCode" = 'VH-001'), 'Oil Change', 'Routine oil and filter change', '2024-12-01', 250.00, 'AutoFix Center', 'Mark Taylor', NOW()),
+(gen_random_uuid(), (SELECT "Id" FROM "Vehicles" WHERE "VehicleCode" = 'VH-003'), 'Brake Pad Replacement', 'Front brake pads replaced', '2024-11-10', 480.00, 'SpeedServ Ltd', 'Luke Johnson', NOW());
+
+
