@@ -912,6 +912,19 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
+      "VehicleService.Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "VehicleService.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/VehicleService.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/VehicleService.Application.dll": {}
+        }
+      },
       "VehicleService.Domain/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
@@ -2784,6 +2797,11 @@
         "useSharedDesignerContext.txt"
       ]
     },
+    "VehicleService.Application/1.0.0": {
+      "type": "project",
+      "path": "../VehicleService.Application/VehicleService.Application.csproj",
+      "msbuildProject": "../VehicleService.Application/VehicleService.Application.csproj"
+    },
     "VehicleService.Domain/1.0.0": {
       "type": "project",
       "path": "../VehicleService.Domain/VehicleService.Domain.csproj",
@@ -2795,6 +2813,7 @@
       "Microsoft.EntityFrameworkCore >= 9.0.10",
       "Microsoft.EntityFrameworkCore.Design >= 9.0.10",
       "Npgsql.EntityFrameworkCore.PostgreSQL >= 9.0.4",
+      "VehicleService.Application >= 1.0.0",
       "VehicleService.Domain >= 1.0.0"
     ]
   },
@@ -2830,6 +2849,9 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
+            "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Application\\VehicleService.Application.csproj": {
+              "projectPath": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Application\\VehicleService.Application.csproj"
+            },
             "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Domain\\VehicleService.Domain.csproj": {
               "projectPath": "E:\\Acadamy\\WSO2\\Final Project\\Git Files\\FleetManagementSystem\\src\\VehicleService\\VehicleService.Domain\\VehicleService.Domain.csproj"
             }

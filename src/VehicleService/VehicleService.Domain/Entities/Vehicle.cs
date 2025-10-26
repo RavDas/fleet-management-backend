@@ -7,32 +7,33 @@ namespace VehicleService.Domain.Entities
     {
         public Guid Id { get; set; }
 
-        // Basic Info
-        public string VehicleCode { get; set; } = string.Empty;   
-        public string LicensePlate { get; set; } = string.Empty;   
-        public string Model { get; set; } = string.Empty;        
-        public string Manufacturer { get; set; } = string.Empty;   
+        // Basic info
+        public string Make { get; set; } = string.Empty;        // 🔹 Add this
+        public string Model { get; set; } = string.Empty;
         public int Year { get; set; }
+        public string LicensePlate { get; set; } = string.Empty;
         public string Color { get; set; } = string.Empty;
-        public string FuelType { get; set; } = string.Empty;       // Diesel / Petrol / Electric
+        public string FuelType { get; set; } = string.Empty;
 
-        // Status and Condition
-        public VehicleStatus Status { get; set; } = VehicleStatus.Active;
-        public string CurrentLocation { get; set; } = string.Empty; 
-        public string CurrentDriver { get; set; } = string.Empty;   
-        public double FuelLevel { get; set; }                      
-        public double Mileage { get; set; }                       
+        // Vehicle metrics
+        public double CurrentMileage { get; set; }              // 🔹 Add this
+        public double FuelLevel { get; set; }
 
-        // Maintenance
+        // Status info
+        public string? CurrentLocation { get; set; }
+        public string? CurrentDriver { get; set; }
+        public int Status { get; set; }
+
+        // Maintenance dates
         public DateTime? LastMaintenanceDate { get; set; }
         public DateTime? NextMaintenanceDate { get; set; }
 
-        // Timestamps
+        // System tracking
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-        // Relationships
-        public ICollection<MaintenanceRecord> MaintenanceRecords { get; set; } = new List<MaintenanceRecord>();
-        public ICollection<VehicleStatusHistory> StatusHistory { get; set; } = new List<VehicleStatusHistory>();
+        // Navigation properties
+        public ICollection<MaintenanceRecord>? MaintenanceRecords { get; set; }
+        public ICollection<VehicleStatusHistory>? StatusHistory { get; set; }
     }
 }

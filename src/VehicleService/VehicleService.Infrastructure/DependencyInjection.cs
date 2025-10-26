@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using VehicleService.Application.Interfaces;
 using VehicleService.Infrastructure.Data;
+using VehicleService.Infrastructure.Repositories;
 
 namespace VehicleService.Infrastructure
 {
@@ -13,6 +15,9 @@ namespace VehicleService.Infrastructure
 
             services.AddDbContext<VehicleDbContext>(options =>
                 options.UseNpgsql(connectionString));
+
+
+            services.AddScoped<IVehicleRepository, VehicleRepository>();
 
             return services;
         }
