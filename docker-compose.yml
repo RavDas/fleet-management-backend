@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  vehicle-service:
+    build:
+      context: ./src
+      dockerfile: ./VehicleService/VehicleService.Api/Dockerfile
+    container_name: vehicle-service
+    ports:
+      - "7001:8080"
+    depends_on:
+      postgres-vehicle:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: "Host=postgres-vehicle;Port=5432;Database=vehicle_db;Username=postgres;Password=postgres"
+    restart: always
+
+  postgres-vehicle:
+    image: postgres:16
+    container_name: postgres-vehicle
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: vehicle_db
+    ports:
+      - "5433:5432"          # host:container (use 5433 on Windows to avoid local 5432 clashes)
+    volumes:
+      - vehicle_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d vehicle_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # Optional admin UI
+  # pgadmin:
+  #   image: dpage/pgadmin4:8
+  #   container_name: pgadmin-vehicle
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: admin@local.test
+  #     PGADMIN_DEFAULT_PASSWORD: admin123
+  #   ports:
+  #     - "5050:80"
+  #   depends_on:
+  #     - postgres-vehicle
+
+volumes:
+  vehicle_pg_data:
