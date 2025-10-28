@@ -40,7 +40,7 @@ This is a Flask backend application for managing maintenance services.
 
 To run the application, execute the following command:
 ```
-python src/app.py
+python app/run.py
 ```
 
 ### Testing
