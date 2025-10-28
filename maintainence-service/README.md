@@ -53,27 +53,3 @@ pytest
 ### License
 
 This project is licensed under the MIT License.
-
-
-
-### maintenance-service/
-### ├── app/
-### │   ├── __init__.py
-### │   ├── models/
-### │   │   ├── __init__.py
-### │   │   └── maintenance.py
-### │   ├── routes/
-### │   │   ├── __init__.py
-### │   │   └── maintenance_routes.py
-### │   ├── services/
-### │   │   ├── __init__.py
-### │   │   └── maintenance_service.py
-### │   ├── schemas/
-### │   │   ├── __init__.py
-### │   │   └── maintenance_schema.py
-### │   └── utils/
-### │       ├── __init__.py
-### │       └── validators.py
-### ├── config.py
-### ├── requirements.txt
-### └── run.py
