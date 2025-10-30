@@ -14,7 +14,7 @@ def create_app(config_name='default'):
     # Initialize extensions
     db.init_app(app)
     migrate.init_app(app, db)
-    CORS(app, origins=app.config['CORS_ORIGINS'])
+    CORS(app, resources={r"/api/*": {"origins": app.config['CORS_ORIGINS']}})
     
     # Register blueprints (file is named `maintainance_route.py` in this project)
     from app.routes.maintainance_route import maintenance_bp
@@ -24,5 +24,18 @@ def create_app(config_name='default'):
     @app.route('/health')
     def health_check():
         return {'status': 'healthy', 'service': 'maintenance-service'}, 200
+    
+    @app.route('/')
+    def index():
+        return {
+            'service': 'Maintenance Management Service',
+            'version': '1.0.0',
+            'endpoints': {
+                'health': '/health',
+                'maintenance': '/api/maintenance/',
+                'summary': '/api/maintenance/summary',
+                'vehicle_history': '/api/maintenance/vehicle/<vehicle_id>/history'
+            }
+        }, 200
     
     return app
