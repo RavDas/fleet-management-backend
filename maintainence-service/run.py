@@ -1,18 +1,12 @@
 from app import create_app, db
-<<<<<<< HEAD
-from app.models.maintenance import MaintenanceItem
+from app.models.maintainance import MaintenanceItem
 import os
 
 # Create Flask app
-=======
-import os
-
->>>>>>> 7e4ac7f5366c0f025679c5f89003259b9a3f3d4f
 app = create_app(os.environ.get('FLASK_ENV', 'development'))
 
 @app.shell_context_processor
 def make_shell_context():
-<<<<<<< HEAD
     """Make shell context for flask shell command"""
     return {
         'db': db,
@@ -105,26 +99,13 @@ def seed_db():
     db.session.commit()
     print(f"Seeded {len(sample_data)} maintenance items successfully!")
 
-=======
-    return {
-        'db': db,
-        'MaintenanceItem': __import__('app.models.maintenance').models.maintenance.MaintenanceItem
-    }
-
->>>>>>> 7e4ac7f5366c0f025679c5f89003259b9a3f3d4f
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     
-<<<<<<< HEAD
     port = int(os.environ.get('PORT', 5000))
     app.run(
         host='0.0.0.0',
         port=port,
-=======
-    app.run(
-        host='0.0.0.0',
-        port=int(os.environ.get('PORT', 5000)),
->>>>>>> 7e4ac7f5366c0f025679c5f89003259b9a3f3d4f
         debug=True
     )
