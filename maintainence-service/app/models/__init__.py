@@ -1,4 +1,4 @@
-from app.models.maintenance import MaintenanceItem
+from app.models.maintainance import MaintenanceItem
 
 
 # from datetime import datetime

@@ -1,5 +1,5 @@
 from app import db
-from app.models.maintenance import MaintenanceItem, MaintenanceStatus, MaintenancePriority
+from app.models.maintainance import MaintenanceItem, MaintenanceStatus, MaintenancePriority
 from datetime import datetime, date, timedelta
 from sqlalchemy import or_, and_
 

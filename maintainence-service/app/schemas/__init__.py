@@ -1,4 +1,4 @@
-from app.schemas.maintenance_schema import (
+from app.schemas.maintainance_schema import (
     MaintenanceItemSchema,
     MaintenanceItemCreateSchema,
     MaintenanceItemUpdateSchema

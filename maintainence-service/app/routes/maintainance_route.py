@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
-from app.services.maintenance_service import MaintenanceService
-from app.schemas.maintenance_schema import (
+from app.services.maintainance_service import MaintenanceService
+from app.schemas.maintainance_schema import (
     MaintenanceItemSchema,
     MaintenanceItemCreateSchema,
     MaintenanceItemUpdateSchema

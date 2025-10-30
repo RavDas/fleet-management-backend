@@ -16,8 +16,8 @@ def create_app(config_name='default'):
     migrate.init_app(app, db)
     CORS(app, origins=app.config['CORS_ORIGINS'])
     
-    # Register blueprints
-    from app.routes.maintenance_routes import maintenance_bp
+    # Register blueprints (file is named `maintainance_route.py` in this project)
+    from app.routes.maintainance_route import maintenance_bp
     app.register_blueprint(maintenance_bp, url_prefix='/api/maintenance')
     
     # Health check endpoint

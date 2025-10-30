@@ -7,7 +7,7 @@ app = create_app(os.environ.get('FLASK_ENV', 'development'))
 def make_shell_context():
     return {
         'db': db,
-        'MaintenanceItem': __import__('app.models.maintenance').models.maintenance.MaintenanceItem
+        'MaintenanceItem': __import__('app.models.maintainance').models.maintainance.MaintenanceItem
     }
 
 if __name__ == '__main__':
