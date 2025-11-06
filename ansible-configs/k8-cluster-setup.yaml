@@ -1,0 +1,126 @@
+---
+- name: Setup Kubernetes Cluster (Control + Workers)
+  hosts: all
+  become: yes
+
+  vars:
+    kube_version: "1.31.0"
+    pod_network_cidr: "10.244.0.0/16"
+    control_plane_ip: "172.31.25.10"  # <-- Change this to your control node’s private IP
+
+  tasks:
+    - name: Update system packages
+      apt:
+        update_cache: yes
+        upgrade: yes
+
+    - name: Disable swap
+      shell: |
+        swapoff -a
+        sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+
+    - name: Load kernel modules
+      copy:
+        dest: /etc/modules-load.d/kubernetes.conf
+        content: |
+          overlay
+          br_netfilter
+    - shell: |
+        modprobe overlay
+        modprobe br_netfilter
+
+    - name: Configure sysctl
+      copy:
+        dest: /etc/sysctl.d/kubernetes.conf
+        content: |
+          net.bridge.bridge-nf-call-ip6tables = 1
+          net.bridge.bridge-nf-call-iptables = 1
+          net.ipv4.ip_forward = 1
+    - command: sysctl --system
+
+    - name: Install dependencies
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        state: present
+
+    - name: Add Kubernetes repo
+      shell: |
+        curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+        echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list
+      args:
+        warn: false
+
+    - name: Install kubelet, kubeadm, kubectl
+      apt:
+        name:
+          - kubelet
+          - kubeadm
+          - kubectl
+        state: present
+        update_cache: yes
+
+    - name: Enable kubelet
+      systemd:
+        name: kubelet
+        enabled: yes
+
+    - name: Install and configure containerd
+      apt:
+        name: containerd
+        state: present
+
+    - name: Configure containerd
+      shell: |
+        mkdir -p /etc/containerd
+        containerd config default | tee /etc/containerd/config.toml
+        sed -i 's/^disabled_plugins.*/#disabled_plugins = ["cri"]/' /etc/containerd/config.toml
+        sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+        systemctl restart containerd
+
+- name: Initialize control plane
+  hosts: control
+  become: yes
+  tasks:
+    - name: Initialize Kubernetes master
+      shell: |
+        kubeadm init --apiserver-advertise-address={{ control_plane_ip }} --pod-network-cidr={{ pod_network_cidr }} >> /root/kubeinit.log 2>&1
+      args:
+        creates: /etc/kubernetes/admin.conf
+
+    - name: Set up kubeconfig for ubuntu user
+      shell: |
+        mkdir -p $HOME/.kube
+        cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+        chown $(id -u):$(id -g) $HOME/.kube/config
+
+    - name: Get join command
+      shell: kubeadm token create --print-join-command
+      register: join_cmd
+
+    - name: Save join command
+      local_action:
+        copy content="{{ join_cmd.stdout }}" dest="./join-command.sh"
+
+    - name: Apply Flannel CNI
+      shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+      environment:
+        KUBECONFIG: /etc/kubernetes/admin.conf
+
+- name: Join worker nodes
+  hosts: workers
+  become: yes
+  tasks:
+    - name: Copy join command
+      copy:
+        src: join-command.sh
+        dest: /tmp/join-command.sh
+        mode: 0700
+
+    - name: Join worker to cluster
+      shell: bash /tmp/join-command.sh
+      args:
+        creates: /etc/kubernetes/kubelet.conf
