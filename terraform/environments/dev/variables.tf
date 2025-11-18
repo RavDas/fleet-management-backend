@@ -94,6 +94,54 @@ variable "https_cidr_blocks" {
   }
 }
 
+variable "enable_k8s_api" {
+  type        = bool
+  default     = true
+  description = "Whether to open TCP/6443 for Kubernetes API Server."
+}
+
+variable "enable_k8s_nodeport" {
+  type        = bool
+  default     = true
+  description = "Whether to open TCP/6000-10250 for Kubernetes NodePort services."
+}
+
+variable "enable_vxlan" {
+  type        = bool
+  default     = true
+  description = "Whether to open UDP/8472 for VXLAN overlay network (CNI)."
+}
+
+variable "k8s_api_cidr_blocks" {
+  type        = list(string)
+  default     = []
+  description = "CIDRs allowed for Kubernetes API Server access."
+  validation {
+    condition     = length(var.k8s_api_cidr_blocks) == 0 || alltrue([for c in var.k8s_api_cidr_blocks : can(cidrnetmask(c))])
+    error_message = "k8s_api_cidr_blocks must be valid CIDRs."
+  }
+}
+
+variable "k8s_nodeport_cidr_blocks" {
+  type        = list(string)
+  default     = []
+  description = "CIDRs allowed for Kubernetes NodePort services."
+  validation {
+    condition     = length(var.k8s_nodeport_cidr_blocks) == 0 || alltrue([for c in var.k8s_nodeport_cidr_blocks : can(cidrnetmask(c))])
+    error_message = "k8s_nodeport_cidr_blocks must be valid CIDRs."
+  }
+}
+
+variable "vxlan_cidr_blocks" {
+  type        = list(string)
+  default     = []
+  description = "CIDRs allowed for VXLAN overlay network."
+  validation {
+    condition     = length(var.vxlan_cidr_blocks) == 0 || alltrue([for c in var.vxlan_cidr_blocks : can(cidrnetmask(c))])
+    error_message = "vxlan_cidr_blocks must be valid CIDRs."
+  }
+}
+
 ############################
 # Compute inputs           #
 ############################

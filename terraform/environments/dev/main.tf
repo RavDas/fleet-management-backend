@@ -67,6 +67,14 @@ module "security" {
   https_cidr_blocks = var.https_cidr_blocks
   http_cidr_blocks  = var.http_cidr_blocks
 
+  # Kubernetes-specific rules
+  enable_k8s_api           = var.enable_k8s_api
+  enable_k8s_nodeport      = var.enable_k8s_nodeport
+  enable_vxlan             = var.enable_vxlan
+  k8s_api_cidr_blocks      = var.k8s_api_cidr_blocks
+  k8s_nodeport_cidr_blocks = var.k8s_nodeport_cidr_blocks
+  vxlan_cidr_blocks        = var.vxlan_cidr_blocks
+
   tags = local.extra_tags
 }
 
