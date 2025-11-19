@@ -1,0 +1,89 @@
+---
+- name: Observability stack via Helm
+  hosts: control
+  gather_facts: false
+  become: yes
+
+  tasks:
+    # ---------- Prometheus ----------
+    - name: Add Prometheus Helm repo
+      shell: helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+      become: no
+      tags: [prometheus]
+
+    - name: Update Helm repos
+      shell: helm repo update
+      become: no
+      tags: [prometheus, opensearch, fluentbit]
+
+    - name: Create monitoring namespace
+      shell: kubectl create namespace monitoring || true
+      become: no
+      tags: [prometheus]
+
+    - name: Check if Prometheus is already installed
+      shell: helm list -n monitoring | grep prometheus
+      become: no
+      register: prometheus_check
+      ignore_errors: yes
+      tags: [prometheus]
+
+    - name: Install Prometheus
+      shell: >
+        helm install prometheus prometheus-community/prometheus -n monitoring
+        --set alertmanager.enabled=false
+        --set server.persistentVolume.enabled=false
+      become: no
+      when: prometheus_check.rc != 0
+      tags: [prometheus]
+
+    # ---------- OpenSearch ----------
+    - name: Add OpenSearch Helm repo
+      shell: helm repo add opensearch https://opensearch-project.github.io/helm-charts/
+      become: no
+      tags: [opensearch]
+
+    - name: Create logging namespace
+      shell: kubectl create namespace logging || true
+      become: no
+      tags: [opensearch, fluentbit]
+
+    - name: Check if OpenSearch is already installed
+      shell: helm list -n logging | grep opensearch
+      become: no
+      register: opensearch_check
+      ignore_errors: yes
+      tags: [opensearch]
+
+    - name: Install OpenSearch (single node)
+      shell: >
+        helm install opensearch opensearch/opensearch -n logging
+        --set singleNode=true
+        --set extraEnvs[0].name=OPENSEARCH_INITIAL_ADMIN_PASSWORD
+        --set-string extraEnvs[0].value='MyPass123!'
+      become: no
+      when: opensearch_check.rc != 0
+      tags: [opensearch]
+
+    # ---------- Fluent Bit ----------
+    - name: Add Fluent Helm repo
+      shell: helm repo add fluent https://fluent.github.io/helm-charts
+      become: no
+      tags: [fluentbit]
+
+    - name: Check if Fluent Bit is already installed
+      shell: helm list -n logging | grep fluent-bit
+      become: no
+      register: fluentbit_check
+      ignore_errors: yes
+      tags: [fluentbit]
+
+    - name: Install Fluent Bit
+      shell: >
+        helm install fluent-bit fluent/fluent-bit -n logging
+        --set backend.type=es
+        --set backend.es.host=opensearch-cluster-master.logging.svc.cluster.local
+        --set backend.es.port=9200
+      become: no
+      when: fluentbit_check.rc != 0
+      tags: [fluentbit]
