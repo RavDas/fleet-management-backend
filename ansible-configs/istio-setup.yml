@@ -23,34 +23,3 @@
        shell: /usr/local/bin/istioctl install --set profile=default -y
        become: no
 
-     - name: Deploy Prometheus addon
-       shell: kubectl create -f /home/ubuntu/istio-1.28.0/samples/addons/prometheus.yaml
-       become: no
-       ignore_errors: yes
-
-     - name: Deploy Grafana addon
-       shell: kubectl create -f /home/ubuntu/istio-1.28.0/samples/addons/grafana.yaml
-       become: no
-       ignore_errors: yes
-
-     - name: Deploy Kiali addon
-       shell: kubectl create -f /home/ubuntu/istio-1.28.0/samples/addons/kiali.yaml
-       become: no
-       ignore_errors: yes
-
-     - name: Deploy Jaeger addon
-       shell: kubectl create -f /home/ubuntu/istio-1.28.0/samples/addons/jaeger.yaml
-       become: no
-       ignore_errors: yes
-   
-     - name: Replace Grafana Service ClusterIP To NodePort
-       shell: "kubectl get svc grafana -n istio-system -o yaml | sed 's/type: ClusterIP/type: NodePort/g' | kubectl replace -f -"
-
-     - name: Replace Promethus Service ClusterIP To NodePort
-       shell: "kubectl get svc prometheus -n istio-system -o yaml | sed 's/type: ClusterIP/type: NodePort/g' | kubectl replace -f -"
-
-     - name: Replace Kiali Service ClusterIP To NodePort
-       shell: "kubectl get svc kiali -n istio-system -o yaml | sed 's/type: ClusterIP/type: NodePort/g' | kubectl replace -f -"
-
-     - name: Replace Jaeger Service ClusterIP To NodePort
-       shell: "kubectl get svc tracing -n istio-system -o yaml | sed 's/type: ClusterIP/type: NodePort/g' | kubectl replace -f -"
