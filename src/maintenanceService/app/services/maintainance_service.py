@@ -10,8 +10,15 @@ class MaintenanceService:
         """Generate unique maintenance ID"""
         last_item = MaintenanceItem.query.order_by(MaintenanceItem.id.desc()).first()
         if last_item:
-            last_num = int(last_item.id.split('-')[1])
-            new_num = last_num + 1
+            # Try to extract number from ID (M001, M002, etc.)
+            try:
+                if last_item.id.startswith('M'):
+                    last_num = int(last_item.id[1:])
+                    new_num = last_num + 1
+                else:
+                    new_num = 1
+            except (ValueError, IndexError):
+                new_num = 1
         else:
             new_num = 1
         return f'M{new_num:03d}'
@@ -19,22 +26,33 @@ class MaintenanceService:
     @staticmethod
     def create_maintenance_item(data):
         """Create a new maintenance item"""
-        maintenance_id = MaintenanceService.generate_maintenance_id()
+        # Use provided ID or generate one
+        maintenance_id = data.get('id') or MaintenanceService.generate_maintenance_id()
+        
+        # Determine status if not provided
+        status = data.get('status')
+        if not status:
+            status = MaintenanceService._determine_status(
+                data['due_date'], 
+                data['current_mileage'], 
+                data['due_mileage']
+            ).value
         
         maintenance_item = MaintenanceItem(
             id=maintenance_id,
-            vehicle_id=data['vehicle'],
+            vehicle_id=data['vehicle_id'],
             type=data['type'],
             description=data.get('description'),
             priority=MaintenancePriority(data['priority']),
-            due_date=data['dueDate'],
-            current_mileage=data['currentMileage'],
-            due_mileage=data['dueMileage'],
-            estimated_cost=data.get('cost', 0.0),
-            assigned_to=data.get('assignedTo'),
+            status=MaintenanceStatus(status),
+            due_date=data['due_date'],
+            current_mileage=data['current_mileage'],
+            due_mileage=data['due_mileage'],
+            estimated_cost=data.get('estimated_cost', 0.0),
+            assigned_to=data.get('assigned_to'),
+            assigned_technician=data.get('assigned_technician'),
             notes=data.get('notes'),
-            parts_needed=data.get('partsNeeded'),
-            status=MaintenanceService._determine_status(data['dueDate'], data['currentMileage'], data['dueMileage'])
+            parts_needed=data.get('parts_needed')
         )
         
         db.session.add(maintenance_item)
@@ -97,7 +115,7 @@ class MaintenanceService:
             'items': [item.to_dict() for item in pagination.items],
             'total': pagination.total,
             'pages': pagination.pages,
-            'current_page': page,
+            'page': page,
             'per_page': per_page
         }
     
@@ -113,28 +131,56 @@ class MaintenanceService:
         if not item:
             return None
         
-        # Update fields
-        for key, value in data.items():
-            if key == 'status' and value:
-                item.status = MaintenanceStatus(value)
-                if value == 'completed':
-                    item.completed_date = datetime.utcnow()
-            elif key == 'priority' and value:
-                item.priority = MaintenancePriority(value)
-            elif key == 'dueDate' and value:
-                item.due_date = value
-            elif key == 'scheduledDate' and value:
-                item.scheduled_date = value
-            elif key == 'currentMileage' and value is not None:
-                item.current_mileage = value
-            elif key == 'dueMileage' and value is not None:
-                item.due_mileage = value
-            elif key == 'cost' and value is not None:
-                item.estimated_cost = value
-            elif key == 'actualCost' and value is not None:
-                item.actual_cost = value
-            elif hasattr(item, key) and key not in ['id', 'vehicle', 'createdAt', 'updatedAt']:
-                setattr(item, key if key != 'assignedTo' else 'assigned_to', value)
+        # Update fields with snake_case
+        if 'status' in data and data['status']:
+            item.status = MaintenanceStatus(data['status'])
+            if data['status'] == 'completed' and not item.completed_date:
+                item.completed_date = datetime.utcnow()
+        
+        if 'priority' in data and data['priority']:
+            item.priority = MaintenancePriority(data['priority'])
+        
+        if 'type' in data:
+            item.type = data['type']
+        
+        if 'description' in data:
+            item.description = data['description']
+        
+        if 'due_date' in data:
+            item.due_date = data['due_date']
+        
+        if 'scheduled_date' in data:
+            item.scheduled_date = data['scheduled_date']
+        
+        if 'completed_date' in data:
+            item.completed_date = data['completed_date']
+        
+        if 'current_mileage' in data and data['current_mileage'] is not None:
+            item.current_mileage = data['current_mileage']
+        
+        if 'due_mileage' in data and data['due_mileage'] is not None:
+            item.due_mileage = data['due_mileage']
+        
+        if 'estimated_cost' in data and data['estimated_cost'] is not None:
+            item.estimated_cost = data['estimated_cost']
+        
+        if 'actual_cost' in data and data['actual_cost'] is not None:
+            item.actual_cost = data['actual_cost']
+        
+        if 'assigned_to' in data:
+            item.assigned_to = data['assigned_to']
+        
+        if 'assigned_technician' in data:
+            item.assigned_technician = data['assigned_technician']
+        
+        if 'notes' in data:
+            item.notes = data['notes']
+        
+        if 'parts_needed' in data:
+            item.parts_needed = data['parts_needed']
+        
+        if 'attachments' in data:
+            item.attachments = data['attachments']
         
         item.updated_at = datetime.utcnow()
         db.session.commit()
@@ -156,39 +202,53 @@ class MaintenanceService:
         """Get summary statistics for maintenance items"""
         total = MaintenanceItem.query.count()
         
-        overdue = MaintenanceItem.query.filter(
+        # Count by status
+        by_status = {}
+        for status in MaintenanceStatus:
+            count = MaintenanceItem.query.filter(MaintenanceItem.status == status).count()
+            by_status[status.value] = count
+        
+        # Count by priority
+        by_priority = {}
+        for priority in MaintenancePriority:
+            count = MaintenanceItem.query.filter(MaintenanceItem.priority == priority).count()
+            by_priority[priority.value] = count
+        
+        overdue_count = MaintenanceItem.query.filter(
             MaintenanceItem.status == MaintenanceStatus.OVERDUE
         ).count()
         
-        due_soon = MaintenanceItem.query.filter(
+        due_soon_count = MaintenanceItem.query.filter(
             MaintenanceItem.status == MaintenanceStatus.DUE_SOON
         ).count()
         
-        in_progress = MaintenanceItem.query.filter(
-            MaintenanceItem.status == MaintenanceStatus.IN_PROGRESS
-        ).count()
-        
-        completed_this_month = MaintenanceItem.query.filter(
-            and_(
-                MaintenanceItem.status == MaintenanceStatus.COMPLETED,
-                MaintenanceItem.completed_date >= datetime.utcnow().replace(day=1)
-            )
-        ).count()
-        
-        scheduled_cost = db.session.query(
+        # Calculate total estimated cost for active maintenance
+        total_estimated_cost = db.session.query(
             db.func.sum(MaintenanceItem.estimated_cost)
         ).filter(
-            MaintenanceItem.status.in_([MaintenanceStatus.SCHEDULED, MaintenanceStatus.IN_PROGRESS])
-        ).scalar() or 0
+            MaintenanceItem.status.in_([
+                MaintenanceStatus.SCHEDULED, 
+                MaintenanceStatus.IN_PROGRESS,
+                MaintenanceStatus.DUE_SOON,
+                MaintenanceStatus.OVERDUE
+            ])
+        ).scalar() or 0.0
+        
+        # Calculate total actual cost for completed maintenance
+        total_actual_cost = db.session.query(
+            db.func.sum(MaintenanceItem.actual_cost)
+        ).filter(
+            MaintenanceItem.status == MaintenanceStatus.COMPLETED
+        ).scalar() or 0.0
         
         return {
-            'total': total,
-            'overdue': overdue,
-            'dueSoon': due_soon,
-            'upcoming': overdue + due_soon,
-            'inProgress': in_progress,
-            'completedThisMonth': completed_this_month,
-            'scheduledCost': float(scheduled_cost)
+            'total_items': total,
+            'by_status': by_status,
+            'by_priority': by_priority,
+            'total_estimated_cost': float(total_estimated_cost),
+            'total_actual_cost': float(total_actual_cost),
+            'overdue_count': overdue_count,
+            'due_soon_count': due_soon_count
         }
     
     @staticmethod
@@ -220,4 +280,5 @@ class MaintenanceService:
                 updated_count += 1
         
         db.session.commit()
+        return updated_count
         return updated_count

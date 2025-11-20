@@ -30,25 +30,23 @@ class MaintenanceItemSchema(Schema):
     updatedAt = fields.DateTime(dump_only=True)
 
 class MaintenanceItemCreateSchema(Schema):
-    vehicle = fields.Str(required=True, validate=validate.Length(min=1, max=50))
+    id = fields.Str(required=True, validate=validate.Length(min=1, max=50))
+    vehicle_id = fields.Str(required=True, validate=validate.Length(min=1, max=50))
     type = fields.Str(required=True, validate=validate.Length(min=1, max=100))
     description = fields.Str()
+    status = fields.Str(validate=validate.OneOf(['overdue', 'due_soon', 'scheduled', 'in_progress', 'completed', 'cancelled']))
     priority = fields.Str(
         required=True,
         validate=validate.OneOf(['low', 'medium', 'high', 'critical'])
     )
-    dueDate = fields.Date(required=True)
-    currentMileage = fields.Int(required=True, validate=validate.Range(min=0))
-    dueMileage = fields.Int(required=True, validate=validate.Range(min=0))
-    cost = fields.Float(validate=validate.Range(min=0))
-    assignedTo = fields.Str()
+    due_date = fields.Date(required=True)
+    current_mileage = fields.Int(required=True, validate=validate.Range(min=0))
+    due_mileage = fields.Int(required=True, validate=validate.Range(min=0))
+    estimated_cost = fields.Float(validate=validate.Range(min=0))
+    assigned_to = fields.Str()
+    assigned_technician = fields.Str()
     notes = fields.Str()
-    partsNeeded = fields.List(fields.Dict())
-    
-    @validates('dueMileage')
-    def validate_due_mileage(self, value):
-        if 'currentMileage' in self.context and value < self.context['currentMileage']:
-            raise ValidationError('Due mileage must be greater than current mileage')
+    parts_needed = fields.List(fields.Dict())
 
 class MaintenanceItemUpdateSchema(Schema):
     type = fields.Str(validate=validate.Length(min=1, max=100))
@@ -59,14 +57,15 @@ class MaintenanceItemUpdateSchema(Schema):
     priority = fields.Str(
         validate=validate.OneOf(['low', 'medium', 'high', 'critical'])
     )
-    dueDate = fields.Date()
-    scheduledDate = fields.DateTime()
-    currentMileage = fields.Int(validate=validate.Range(min=0))
-    dueMileage = fields.Int(validate=validate.Range(min=0))
-    cost = fields.Float(validate=validate.Range(min=0))
-    actualCost = fields.Float(validate=validate.Range(min=0))
-    assignedTo = fields.Str()
-    assignedTechnician = fields.Str()
+    due_date = fields.Date()
+    scheduled_date = fields.DateTime()
+    completed_date = fields.DateTime()
+    current_mileage = fields.Int(validate=validate.Range(min=0))
+    due_mileage = fields.Int(validate=validate.Range(min=0))
+    estimated_cost = fields.Float(validate=validate.Range(min=0))
+    actual_cost = fields.Float(validate=validate.Range(min=0))
+    assigned_to = fields.Str()
+    assigned_technician = fields.Str()
     notes = fields.Str()
-    partsNeeded = fields.List(fields.Dict())
+    parts_needed = fields.List(fields.Dict())
     attachments = fields.List(fields.Dict())

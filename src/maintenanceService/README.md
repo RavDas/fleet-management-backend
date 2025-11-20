@@ -4,6 +4,31 @@ Fleet Management Maintenance Service - Manages vehicle maintenance records, sche
 
 ## Quick Start
 
+### 🚀 **Easiest Way** (One Command Does Everything!)
+
+**Windows (PowerShell):**
+```powershell
+.\setup-and-run.ps1
+```
+
+**Linux/Mac:**
+```bash
+chmod +x setup-and-run.sh
+./setup-and-run.sh
+```
+
+This automatically:
+- Sets up virtual environment
+- Installs dependencies
+- Starts PostgreSQL (if not running)
+- Runs the Flask application
+
+**Perfect for:** Fresh clone, first-time setup, or daily development!
+
+---
+
+### Alternative: Docker Compose
+
 ```bash
 # Start the service with Docker
 docker-compose up -d
