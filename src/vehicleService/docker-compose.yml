@@ -1,10 +1,23 @@
 version: "3.9"
 
+# ===============================
+# Vehicle Service Docker Compose
+# ===============================
+# 
+# Database Initialization:
+# - Schema: Created automatically via Entity Framework migrations
+# - Sample Data: Seeded automatically by DatabaseSeeder.cs on first run
+# - The seeder is idempotent - safe to run multiple times
+#
+# Ports:
+# - Vehicle Service: localhost:7001
+# - PostgreSQL: localhost:5433 (to avoid conflicts with other PostgreSQL instances)
+
 services:
   vehicle-service:
     build:
-      context: ./src
-      dockerfile: ./VehicleService/VehicleService.Api/Dockerfile
+      context: ./VehicleService
+      dockerfile: ./VehicleService.Api/Dockerfile
     container_name: vehicle-service
     ports:
       - "7001:8080"
@@ -14,7 +27,13 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__DefaultConnection: "Host=postgres-vehicle;Port=5432;Database=vehicle_db;Username=postgres;Password=postgres"
+      ASPNETCORE_URLS: "http://+:8080"
+      CORS_ORIGINS: "*"
+    volumes:
+      - ./VehicleService:/src/VehicleService
     restart: always
+    networks:
+      - vehicle-network
 
   postgres-vehicle:
     image: postgres:16
@@ -32,18 +51,28 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+    networks:
+      - vehicle-network
 
-  # Optional admin UI
-  # pgadmin:
-  #   image: dpage/pgadmin4:8
-  #   container_name: pgadmin-vehicle
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: admin@local.test
-  #     PGADMIN_DEFAULT_PASSWORD: admin123
-  #   ports:
-  #     - "5050:80"
-  #   depends_on:
-  #     - postgres-vehicle
+  # Optional: pgAdmin for database management
+  pgadmin-vehicle:
+    image: dpage/pgadmin4:8
+    container_name: pgadmin-vehicle
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@vehicle.local
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres-vehicle
+    networks:
+      - vehicle-network
+    profiles:
+      - admin
 
 volumes:
   vehicle_pg_data:
+
+networks:
+  vehicle-network:
+    driver: bridge

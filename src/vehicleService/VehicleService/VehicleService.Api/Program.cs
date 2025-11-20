@@ -2,6 +2,7 @@
 using Microsoft.OpenApi.Models;
 using VehicleService.Infrastructure;
 using VehicleService.Infrastructure.Data;
+using static VehicleService.Infrastructure.Data.DatabaseSeeder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,28 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add controllers
 builder.Services.AddControllers();
+
+// Add CORS
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        var corsOrigins = builder.Configuration["CORS_ORIGINS"] ?? "*";
+        if (corsOrigins == "*")
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        }
+        else
+        {
+            policy.WithOrigins(corsOrigins.Split(','))
+                  .AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .AllowCredentials();
+        }
+    });
+});
 
 // Swagger (OpenAPI)
 builder.Services.AddEndpointsApiExplorer();
@@ -47,14 +70,21 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Enable CORS
+app.UseCors();
+
 app.UseAuthorization();
 
 // Map controllers
 app.MapControllers();
 
 // --------------------------------------------------
-// 🔹 Health Check Endpoint
+// 🔹 Health Check Endpoints
 // --------------------------------------------------
+// Basic health check for Docker
+app.MapGet("/health", () => Results.Ok(new { status = "healthy", service = "vehicle-service" }));
+
+// Database health check
 app.MapGet("/health/db", async (VehicleDbContext db) =>
 {
     try
@@ -72,11 +102,32 @@ app.MapGet("/health/db", async (VehicleDbContext db) =>
 app.MapGet("/", () => "✅ Vehicle Service Running and Healthy!");
 
 // --------------------------------------------------
-// 🔹 Run the Application
+// 🔹 Database Initialization (Migrations + Seeding)
 // --------------------------------------------------
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<VehicleDbContext>();
-    db.Database.Migrate();
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+    
+    try
+    {
+        // Apply any pending migrations
+        logger.LogInformation("🔄 Applying database migrations...");
+        await db.Database.MigrateAsync();
+        logger.LogInformation("✅ Database migrations applied successfully");
+        
+        // Seed sample data
+        logger.LogInformation("🌱 Checking if database needs seeding...");
+        await DatabaseSeeder.SeedAsync(db);
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "❌ An error occurred while initializing the database");
+        throw;
+    }
 }
+
+// --------------------------------------------------
+// 🔹 Run the Application
+// --------------------------------------------------
 app.Run();

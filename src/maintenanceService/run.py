@@ -1,6 +1,15 @@
 from app import create_app, db
 from app.models.maintainance import MaintenanceItem
+from app.utils.database_seeder import initialize_database
 import os
+import logging
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 # Create Flask app
 app = create_app(os.environ.get('FLASK_ENV', 'development'))
@@ -100,12 +109,25 @@ def seed_db():
     print(f"Seeded {len(sample_data)} maintenance items successfully!")
 
 if __name__ == '__main__':
+    # Initialize database with tables and sample data
     with app.app_context():
-        db.create_all()
+        try:
+            logger.info("=" * 60)
+            logger.info("🚀 Starting Maintenance Service")
+            logger.info("=" * 60)
+            initialize_database()
+            logger.info("=" * 60)
+        except Exception as e:
+            logger.error(f"Failed to initialize database: {e}")
+            raise
     
-    port = int(os.environ.get('PORT', 5000))
+    # Start the Flask application
+    port = int(os.environ.get('PORT', 5001))
+    host = os.environ.get('HOST', '0.0.0.0')
+    
+    logger.info(f"🌐 Starting server on {host}:{port}")
     app.run(
-        host='0.0.0.0',
+        host=host,
         port=port,
         debug=True
     )

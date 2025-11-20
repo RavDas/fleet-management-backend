@@ -1,0 +1,84 @@
+version: "3.9"
+
+# ===============================
+# Maintenance Service Docker Compose
+# ===============================
+# 
+# Database Initialization:
+# - Schema: Created automatically via SQLAlchemy (db.create_all())
+# - Sample Data: Seeded automatically by database_seeder.py on every startup
+# - Backup: PostgreSQL init-db.sql also runs on first container creation
+# - The seeder is idempotent - safe to run multiple times
+#
+# Ports:
+# - Maintenance Service: localhost:5001
+# - PostgreSQL: localhost:5434 (to avoid conflicts with other PostgreSQL instances)
+
+services:
+  maintenance-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: maintenance-service
+    ports:
+      - "5001:5001"
+    depends_on:
+      postgres-maintenance:
+        condition: service_healthy
+    environment:
+      FLASK_ENV: development
+      FLASK_APP: run.py
+      DATABASE_URL: "postgresql://postgres:postgres@postgres-maintenance:5432/maintenance_db"
+      PORT: 5001
+      HOST: "0.0.0.0"
+      CORS_ORIGINS: "*"
+    volumes:
+      - ./:/app
+    restart: always
+    networks:
+      - maintenance-network
+
+  postgres-maintenance:
+    image: postgres:16
+    container_name: postgres-maintenance
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: maintenance_db
+    ports:
+      - "5434:5432"          # host:container (use 5434 on host to avoid conflicts)
+    volumes:
+      - maintenance_pg_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d maintenance_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - maintenance-network
+
+  # Optional: pgAdmin for database management
+  pgadmin-maintenance:
+    image: dpage/pgadmin4:8
+    container_name: pgadmin-maintenance
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@maintenance.local
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "5051:80"
+    depends_on:
+      - postgres-maintenance
+    networks:
+      - maintenance-network
+    profiles:
+      - admin
+
+volumes:
+  maintenance_pg_data:
+
+networks:
+  maintenance-network:
+    driver: bridge
+
+
