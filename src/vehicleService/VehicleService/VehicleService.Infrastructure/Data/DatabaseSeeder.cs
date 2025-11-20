@@ -38,8 +38,8 @@ namespace VehicleService.Infrastructure.Data
                 CurrentDriver = "John Smith",
                 FuelLevel = 85.5,
                 CurrentMileage = 45200,
-                LastMaintenanceDate = new DateTime(2024, 12, 1),
-                NextMaintenanceDate = new DateTime(2025, 5, 1),
+                LastMaintenanceDate = new DateTime(2024, 12, 1, 0, 0, 0, DateTimeKind.Utc),
+                NextMaintenanceDate = new DateTime(2025, 5, 1, 0, 0, 0, DateTimeKind.Utc),
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
@@ -58,8 +58,8 @@ namespace VehicleService.Infrastructure.Data
                 CurrentDriver = "Sarah Lee",
                 FuelLevel = 98.2,
                 CurrentMileage = 13200,
-                LastMaintenanceDate = new DateTime(2025, 1, 15),
-                NextMaintenanceDate = new DateTime(2025, 7, 15),
+                LastMaintenanceDate = new DateTime(2025, 1, 15, 0, 0, 0, DateTimeKind.Utc),
+                NextMaintenanceDate = new DateTime(2025, 7, 15, 0, 0, 0, DateTimeKind.Utc),
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
@@ -78,8 +78,8 @@ namespace VehicleService.Infrastructure.Data
                 CurrentDriver = "Michael Brown",
                 FuelLevel = 62.7,
                 CurrentMileage = 88800,
-                LastMaintenanceDate = new DateTime(2024, 11, 10),
-                NextMaintenanceDate = new DateTime(2025, 4, 10),
+                LastMaintenanceDate = new DateTime(2024, 11, 10, 0, 0, 0, DateTimeKind.Utc),
+                NextMaintenanceDate = new DateTime(2025, 4, 10, 0, 0, 0, DateTimeKind.Utc),
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
@@ -134,7 +134,7 @@ namespace VehicleService.Infrastructure.Data
                 VehicleId = vehicle1.Id,
                 ServiceType = "Oil Change",
                 Description = "Routine oil and filter change",
-                ServiceDate = new DateTime(2024, 12, 1),
+                ServiceDate = new DateTime(2024, 12, 1, 0, 0, 0, DateTimeKind.Utc),
                 Cost = 250.00,
                 ServiceCenter = "AutoFix Center",
                 PerformedBy = "Mark Taylor",
@@ -147,7 +147,7 @@ namespace VehicleService.Infrastructure.Data
                 VehicleId = vehicle3.Id,
                 ServiceType = "Brake Pad Replacement",
                 Description = "Front brake pads replaced",
-                ServiceDate = new DateTime(2024, 11, 10),
+                ServiceDate = new DateTime(2024, 11, 10, 0, 0, 0, DateTimeKind.Utc),
                 Cost = 480.00,
                 ServiceCenter = "SpeedServ Ltd",
                 PerformedBy = "Luke Johnson",

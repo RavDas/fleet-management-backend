@@ -5,19 +5,19 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
 # Copy only project files first (for caching restore)
-COPY VehicleService/VehicleService.Domain/VehicleService.Domain.csproj VehicleService/VehicleService.Domain/
-COPY VehicleService/VehicleService.Infrastructure/VehicleService.Infrastructure.csproj VehicleService/VehicleService.Infrastructure/
-COPY VehicleService/VehicleService.Application/VehicleService.Application.csproj VehicleService/VehicleService.Application/
-COPY VehicleService/VehicleService.Api/VehicleService.Api.csproj VehicleService/VehicleService.Api/
+COPY VehicleService.Domain/VehicleService.Domain.csproj VehicleService.Domain/
+COPY VehicleService.Infrastructure/VehicleService.Infrastructure.csproj VehicleService.Infrastructure/
+COPY VehicleService.Application/VehicleService.Application.csproj VehicleService.Application/
+COPY VehicleService.Api/VehicleService.Api.csproj VehicleService.Api/
 
 # Restore dependencies
-RUN dotnet restore VehicleService/VehicleService.Api/VehicleService.Api.csproj
+RUN dotnet restore VehicleService.Api/VehicleService.Api.csproj
 
 # Copy the rest of the source
 COPY . .
 
 # Build and publish
-WORKDIR /src/VehicleService/VehicleService.Api
+WORKDIR /src/VehicleService.Api
 RUN dotnet publish -c Release -o /app/publish
 
 # ===============================
