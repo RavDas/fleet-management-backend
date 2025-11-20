@@ -13,6 +13,7 @@ curl http://localhost:5001/health
 ```
 
 **Service URL:** http://localhost:5001  
+**Swagger UI (API Docs):** http://localhost:5001/docs  
 **Database:** PostgreSQL on port 5434
 
 ---
@@ -20,11 +21,13 @@ curl http://localhost:5001/health
 ## Features
 
 - ✅ RESTful API for maintenance management
+- ✅ **Interactive Swagger/OpenAPI documentation**
 - ✅ Automatic database initialization & seeding
 - ✅ PostgreSQL database with sample data
 - ✅ Docker containerization
 - ✅ Health check endpoints
 - ✅ CORS support
+- ✅ Request validation with Marshmallow schemas
 
 ---
 
@@ -69,17 +72,36 @@ python run.py
 
 ## API Endpoints
 
+### Interactive API Documentation
+🚀 **Swagger UI:** http://localhost:5001/docs
+
+Explore and test all API endpoints interactively with the built-in Swagger UI!
+
+### Available Endpoints
+
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/health` | Health check |
-| GET | `/` | Service info |
-| GET | `/api/maintenance/` | List all maintenance items |
+| GET | `/` | Service info & documentation links |
+| GET | `/docs` | **Swagger UI (Interactive API docs)** |
+| GET | `/swagger.json` | OpenAPI JSON specification |
+| GET | `/api/maintenance/` | List all maintenance items (with pagination & filters) |
 | GET | `/api/maintenance/:id` | Get specific item |
 | POST | `/api/maintenance/` | Create new item |
-| PUT | `/api/maintenance/:id` | Update item |
+| PUT | `/api/maintenance/:id` | Update item (full) |
+| PATCH | `/api/maintenance/:id` | Update item (partial) |
 | DELETE | `/api/maintenance/:id` | Delete item |
 | GET | `/api/maintenance/summary` | Get summary stats |
 | GET | `/api/maintenance/vehicle/:vehicle_id/history` | Vehicle maintenance history |
+| POST | `/api/maintenance/status/update-bulk` | Bulk status update job |
+
+### Query Parameters (GET /api/maintenance/)
+- `page` - Page number (default: 1)
+- `per_page` - Items per page (default: 10)
+- `vehicle` - Filter by vehicle ID
+- `status` - Filter by status (multiple allowed)
+- `priority` - Filter by priority (multiple allowed)
+- `assignedTo` - Filter by assignment
 
 ---
 
@@ -236,9 +258,22 @@ Both services can run simultaneously without conflicts.
 
 ## Documentation
 
+- **API Documentation (Swagger):** Available at **http://localhost:5001/docs** when running
+- **OpenAPI Spec:** http://localhost:5001/swagger.json
 - **pgAdmin Setup & Connection Guide:** [PGADMIN_GUIDE.md](./PGADMIN_GUIDE.md)
 - **Database Setup:** See `../../DATABASE_SETUP.md`
 - **Seeder Implementation:** See `SEEDER_IMPLEMENTATION.md`
+
+### Using Swagger UI
+
+1. Start the service: `docker-compose up -d`
+2. Open browser: http://localhost:5001/docs
+3. You can:
+   - View all endpoints and their parameters
+   - Test endpoints directly from the browser
+   - See request/response schemas
+   - View example payloads
+   - No authentication required (development mode)
 
 ---
 

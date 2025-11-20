@@ -23,8 +23,8 @@ class MaintenanceItem(db.Model):
     vehicle_id = db.Column(db.String(50), nullable=False, index=True)
     type = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
-    status = db.Column(db.Enum(MaintenanceStatus), default=MaintenanceStatus.SCHEDULED, nullable=False)
-    priority = db.Column(db.Enum(MaintenancePriority), default=MaintenancePriority.MEDIUM, nullable=False)
+    status = db.Column(db.Enum(MaintenanceStatus, name='maintenancestatus', values_callable=lambda x: [e.value for e in x]), default=MaintenanceStatus.SCHEDULED, nullable=False)
+    priority = db.Column(db.Enum(MaintenancePriority, name='maintenancepriority', values_callable=lambda x: [e.value for e in x]), default=MaintenancePriority.MEDIUM, nullable=False)
     
     # Dates
     due_date = db.Column(db.Date, nullable=False)
@@ -53,25 +53,25 @@ class MaintenanceItem(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'vehicle': self.vehicle_id,
+            'vehicle_id': self.vehicle_id,
             'type': self.type,
             'description': self.description,
             'status': self.status.value if isinstance(self.status, Enum) else self.status,
             'priority': self.priority.value if isinstance(self.priority, Enum) else self.priority,
-            'dueDate': self.due_date.isoformat() if self.due_date else None,
-            'scheduledDate': self.scheduled_date.isoformat() if self.scheduled_date else None,
-            'completedDate': self.completed_date.isoformat() if self.completed_date else None,
-            'currentMileage': self.current_mileage,
-            'dueMileage': self.due_mileage,
-            'cost': self.estimated_cost,
-            'actualCost': self.actual_cost,
-            'assignedTo': self.assigned_to,
-            'assignedTechnician': self.assigned_technician,
+            'due_date': self.due_date.isoformat() if self.due_date else None,
+            'scheduled_date': self.scheduled_date.isoformat() if self.scheduled_date else None,
+            'completed_date': self.completed_date.isoformat() if self.completed_date else None,
+            'current_mileage': self.current_mileage,
+            'due_mileage': self.due_mileage,
+            'estimated_cost': self.estimated_cost,
+            'actual_cost': self.actual_cost,
+            'assigned_to': self.assigned_to,
+            'assigned_technician': self.assigned_technician,
             'notes': self.notes,
-            'partsNeeded': self.parts_needed,
+            'parts_needed': self.parts_needed,
             'attachments': self.attachments,
-            'createdAt': self.created_at.isoformat() if self.created_at else None,
-            'updatedAt': self.updated_at.isoformat() if self.updated_at else None
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None
         }
     
     def __repr__(self):
