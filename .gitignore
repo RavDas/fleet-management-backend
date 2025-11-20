@@ -1,2 +1,194 @@
+# ===================================
+# Python
+# ===================================
 venv/
-*.pyc
+env/
+ENV/
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.coverage
+htmlcov/
+*.db
+*.sqlite
+*.sqlite3
+
+# ===================================
+# .NET / C# / Visual Studio
+# ===================================
+## Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## Visual Studio files
+.vs/
+.vscode/
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.pidb
+*.svclog
+*.scc
+
+## Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+.history/
+
+## JetBrains Rider / IntelliJ IDEA
+.idea/
+*.sln.iml
+*.DotSettings.user
+
+## NuGet
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## Build files
+*_i.c
+*_p.c
+*_h.h
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*_wpftmp.csproj
+*.log
+*.tlog
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+*.bak
+*.backup
+*.Backup.*
+
+# ===================================
+# Environment & Configuration
+# ===================================
+# .env files (temporarily committing for project purposes)
+# .env
+# .env.*
+!.env.example
+!.env.template
+*.local
+
+# ===================================
+# IDEs and Editors
+# ===================================
+*~
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ===================================
+# Terraform
+# ===================================
+# Terraform state files should be ignored in most cases
+# Note: infrastructure/terraform has its own .gitignore
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!example.tfvars
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# ===================================
+# Ansible
+# ===================================
+*.retry
+ansible.log
+
+# ===================================
+# OS
+# ===================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# ===================================
+# Database
+# ===================================
+# Note: Using PostgreSQL now. SQLite files below are legacy from migration.
+# Keeping instance/ and SQLite files for reference (migrate-sqlite-to-postgres.py)
+# instance/
+# *.db
+# *.sqlite
+# *.sqlite3
+*.db-journal
+*.db-shm
+*.db-wal
+
+# ===================================
+# Docker
+# ===================================
+docker-compose.override.yml
+
+# ===================================
+# Logs
+# ===================================
+*.log
+logs/
+*.out
