@@ -4,6 +4,40 @@ Fleet Management Vehicle Service - Manages vehicle inventory, tracking, and serv
 
 ## Quick Start
 
+### 🚀 **Easiest Way** (One Command Does Everything!)
+
+**Windows (PowerShell):**
+```powershell
+cd ..
+.\setup-and-run.ps1
+```
+
+**Linux/Mac:**
+```bash
+cd ..
+chmod +x setup-and-run.sh
+./setup-and-run.sh
+```
+
+This automatically:
+- Checks .NET SDK
+- Restores NuGet packages
+- Starts PostgreSQL (if not running)
+- Runs database migrations
+- Starts the .NET application
+
+**Perfect for:** Fresh clone, first-time setup, or daily development!
+
+**📚 For troubleshooting:** See `../LOCAL_DEVELOPMENT_GUIDE.md`
+
+---
+
+
+
+
+
+### Alternative: Docker Compose
+
 ```bash
 # Start the service with Docker
 docker-compose up -d
