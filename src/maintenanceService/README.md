@@ -92,9 +92,20 @@ python run.py
 - **Password:** postgres
 
 ### Access Database
+
+#### Command Line (psql)
 ```bash
 docker exec -it postgres-maintenance psql -U postgres -d maintenance_db
 ```
+
+#### Web Interface (pgAdmin)
+For a graphical database management interface, see **[PGADMIN_GUIDE.md](./PGADMIN_GUIDE.md)** for detailed setup instructions.
+
+Quick start:
+```bash
+docker-compose --profile admin up -d
+```
+Then open: **http://localhost:5051** (login: `admin@admin.com` / `admin123`)
 
 ### Sample Data
 The database is automatically seeded with 5 maintenance items on first startup:
@@ -132,8 +143,10 @@ CORS_ORIGINS=*
 docker-compose --profile admin up -d
 ```
 Access at: http://localhost:5051
-- Email: admin@maintenance.local
-- Password: admin123
+- Email: `admin@admin.com`
+- Password: `admin123`
+
+📚 **See [PGADMIN_GUIDE.md](./PGADMIN_GUIDE.md) for complete setup instructions**
 
 ---
 
@@ -223,6 +236,7 @@ Both services can run simultaneously without conflicts.
 
 ## Documentation
 
+- **pgAdmin Setup & Connection Guide:** [PGADMIN_GUIDE.md](./PGADMIN_GUIDE.md)
 - **Database Setup:** See `../../DATABASE_SETUP.md`
 - **Seeder Implementation:** See `SEEDER_IMPLEMENTATION.md`
 

@@ -12,6 +12,11 @@ version: "3.9"
 # Ports:
 # - Vehicle Service: localhost:7001
 # - PostgreSQL: localhost:5433 (to avoid conflicts with other PostgreSQL instances)
+# - pgAdmin (optional): localhost:5050 (start with --profile admin)
+#
+# 📚 Documentation:
+# - pgAdmin Setup: See PGADMIN_GUIDE.md for web interface access and configuration
+# - API Documentation: See README.md for service endpoints and usage
 
 services:
   vehicle-service:
@@ -55,20 +60,23 @@ services:
       - vehicle-network
 
   # Optional: pgAdmin for database management
+  # To start: docker-compose --profile admin up -d
+  # 📚 See PGADMIN_GUIDE.md for detailed setup and connection instructions
   pgadmin-vehicle:
     image: dpage/pgadmin4:8
     container_name: pgadmin-vehicle
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@vehicle.local
+      # Login credentials for pgAdmin web interface (http://localhost:5050)
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin123
     ports:
-      - "5050:80"
+      - "5050:80"          # Access at http://localhost:5050
     depends_on:
       - postgres-vehicle
     networks:
       - vehicle-network
     profiles:
-      - admin
+      - admin              # Only starts with --profile admin flag
 
 volumes:
   vehicle_pg_data:

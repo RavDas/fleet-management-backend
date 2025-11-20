@@ -13,6 +13,11 @@ version: "3.9"
 # Ports:
 # - Maintenance Service: localhost:5001
 # - PostgreSQL: localhost:5434 (to avoid conflicts with other PostgreSQL instances)
+# - pgAdmin (optional): localhost:5051 (start with --profile admin)
+#
+# 📚 Documentation:
+# - pgAdmin Setup: See PGADMIN_GUIDE.md for web interface access and configuration
+# - API Documentation: See README.md for service endpoints and usage
 
 services:
   maintenance-service:
@@ -59,20 +64,23 @@ services:
       - maintenance-network
 
   # Optional: pgAdmin for database management
+  # To start: docker-compose --profile admin up -d
+  # 📚 See PGADMIN_GUIDE.md for detailed setup and connection instructions
   pgadmin-maintenance:
     image: dpage/pgadmin4:8
     container_name: pgadmin-maintenance
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@maintenance.local
+      # Login credentials for pgAdmin web interface (http://localhost:5051)
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin123
     ports:
-      - "5051:80"
+      - "5051:80"          # Access at http://localhost:5051
     depends_on:
       - postgres-maintenance
     networks:
       - maintenance-network
     profiles:
-      - admin
+      - admin              # Only starts with --profile admin flag
 
 volumes:
   maintenance_pg_data:
