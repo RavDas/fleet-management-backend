@@ -206,7 +206,7 @@ docker-compose down -v
 ## Related Documentation
 
 - [Vehicle Service API Documentation](./README.md)
-- [Docker Compose Configuration](./docker-compose.yml)
+- [Docker Compose Configuration](../docker-compose.yml)
 - [Entity Framework Migrations](./VehicleService/VehicleService.Infrastructure/Migrations/)
 - [Database Seeder](./VehicleService/VehicleService.Infrastructure/Data/DatabaseSeeder.cs)
 

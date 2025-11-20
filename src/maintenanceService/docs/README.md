@@ -8,13 +8,13 @@ Fleet Management Maintenance Service - Manages vehicle maintenance records, sche
 
 **Windows (PowerShell):**
 ```powershell
-.\setup-and-run.ps1
+..\setup-and-run.ps1
 ```
 
 **Linux/Mac:**
 ```bash
-chmod +x setup-and-run.sh
-./setup-and-run.sh
+chmod +x ../setup-and-run.sh
+../setup-and-run.sh
 ```
 
 This automatically:
@@ -212,7 +212,17 @@ maintenanceService/
 ├── run.py                   # Application entry point
 ├── requirements.txt         # Python dependencies
 ├── Dockerfile               # Docker image
-├── docker-compose.yml       # Docker services
+├── docs/
+│   ├── README.md                # This file
+│   ├── LOCAL_DEVELOPMENT_GUIDE.md
+│   ├── PGADMIN_GUIDE.md
+│   └── SEEDER_IMPLEMENTATION.md
+├── setup-and-run.ps1            # Setup script (Windows)
+├── setup-and-run.sh             # Setup script (Linux/Mac)
+├── migrate-sqlite-to-postgres.py
+├── test-db-connection.py
+├── docker-compose.yml           # Docker services
+├── Dockerfile                   # Docker image
 ├── init-db.sql             # Database initialization (backup)
 └── .env                     # Environment variables
 ```
@@ -249,7 +259,7 @@ flask db upgrade
 ## Troubleshooting
 
 ### Port Already in Use
-Edit `docker-compose.yml` to use different ports.
+Edit `../docker-compose.yml` to use different ports.
 
 ### Database Connection Failed
 ```bash

@@ -241,7 +241,7 @@ With the service running, you can access:
 ## Related Documentation
 
 - [Maintenance Service API Documentation](./README.md)
-- [Docker Compose Configuration](./docker-compose.yml)
+- [Docker Compose Configuration](../docker-compose.yml)
 - [Database Schema](./init-db.sql)
 - [Database Seeder](./app/utils/database_seeder.py)
 - [Migration Script](./migrate-sqlite-to-postgres.py)

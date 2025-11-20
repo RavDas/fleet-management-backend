@@ -138,7 +138,7 @@ The database is automatically seeded with sample vehicles and service records:
 
 ### Environment Variables
 
-Set in `docker-compose.yml` or `.env`:
+Set in `../docker-compose.yml` or `.env`:
 
 ```env
 ASPNETCORE_ENVIRONMENT=Development
@@ -207,7 +207,12 @@ vehicleService/
 │       ├── Data/                    # DbContext & seeder
 │       ├── Repositories/            # Repository implementations
 │       └── Migrations/              # EF Core migrations
-└── docker-compose.yml               # Docker services
+├── docs/                            # Documentation
+│   ├── README.md
+│   ├── PGADMIN_GUIDE.md
+│   ├── SEEDER_IMPLEMENTATION.md
+│   └── vehicle-service-db-schema.txt
+├── docker-compose.yml               # Docker services
 ```
 
 ---
@@ -244,7 +249,7 @@ dotnet test --collect:"XPlat Code Coverage"
 ## Troubleshooting
 
 ### Port Already in Use
-Edit `docker-compose.yml` to use different ports.
+Edit `../docker-compose.yml` to use different ports.
 
 ### Database Connection Failed
 ```bash
@@ -315,7 +320,7 @@ CORS_ORIGINS=https://yourdomain.com
 ```
 
 ### HTTPS Configuration
-Update `Dockerfile` and add SSL certificate:
+Update `VehicleService/VehicleService.Api/Dockerfile` and add SSL certificate:
 ```dockerfile
 EXPOSE 443
 ```

@@ -10,13 +10,13 @@ Quick reference for local development tasks, troubleshooting, and advanced confi
 
 ### Windows (PowerShell):
 ```powershell
-.\setup-and-run.ps1
+..\setup-and-run.ps1
 ```
 
 ### Linux/Mac:
 ```bash
-chmod +x setup-and-run.sh
-./setup-and-run.sh
+chmod +x ../setup-and-run.sh
+../setup-and-run.sh
 ```
 
 The script automatically handles:
@@ -62,7 +62,7 @@ $env:PORT = "5002"  # Windows
 export PORT=5002    # Linux/Mac
 
 # Then run the script
-.\setup-and-run.ps1
+..\setup-and-run.ps1
 ```
 
 ---
@@ -71,7 +71,7 @@ export PORT=5002    # Linux/Mac
 
 **Cause:** Python not in PATH or wrong Python command.
 
-**Solution:** Edit `setup-and-run.ps1` (line 79 and 164) to use the correct Python command:
+**Solution:** Edit `../setup-and-run.ps1` (line 79 and 164) to use the correct Python command:
 - Try: `python3` instead of `python`
 - Or: `py` instead of `python`
 
@@ -124,7 +124,7 @@ pip list
 
 **Solution:**
 1. Press `Ctrl+C` to stop Flask
-2. Run `.\setup-and-run.ps1` again
+2. Run `..\setup-and-run.ps1` again
 3. Check terminal for syntax errors in your code
 
 ---
@@ -142,7 +142,7 @@ docker-compose down
 docker-compose down -v
 
 # Start fresh
-.\setup-and-run.ps1
+..\setup-and-run.ps1
 ```
 
 ---
@@ -305,7 +305,7 @@ docker logs -f postgres-maintenance
 docker-compose down -v
 
 # Restart (recreates database with sample data)
-.\setup-and-run.ps1
+..\setup-and-run.ps1
 ```
 
 ### 5. Test API Endpoints
@@ -414,30 +414,38 @@ db.engine.execute('SELECT 1').scalar()  # Should return 1
 
 ```
 maintenanceService/
-├── setup-and-run.ps1       # Main script (Windows)
-├── setup-and-run.sh        # Main script (Linux/Mac)
-├── run.py                  # Flask entry point
-├── config.py               # Configuration
-├── requirements.txt        # Python dependencies
-├── docker-compose.yml      # Docker services
-├── .env                    # Environment variables (auto-created)
+├── docs/                      # Documentation
+│   ├── README.md
+│   ├── LOCAL_DEVELOPMENT_GUIDE.md
+│   ├── PGADMIN_GUIDE.md
+│   └── SEEDER_IMPLEMENTATION.md
+├── setup-and-run.ps1          # Main script (Windows)
+├── setup-and-run.sh           # Main script (Linux/Mac)
+├── test-db-connection.py      # Utility script
+├── migrate-sqlite-to-postgres.py
+├── docker-compose.yml         # Docker services
+├── Dockerfile                 # Docker image
+├── run.py                     # Flask entry point
+├── config.py                  # Configuration
+├── requirements.txt           # Python dependencies
+├── .env                       # Environment variables (auto-created)
 │
 ├── app/
-│   ├── __init__.py        # Flask app factory
-│   ├── models/            # Database models
+│   ├── __init__.py           # Flask app factory
+│   ├── models/               # Database models
 │   │   └── maintainance.py
-│   ├── routes/            # API endpoints
+│   ├── routes/               # API endpoints
 │   │   ├── maintainance_route.py
 │   │   └── maintenance_api.py
-│   ├── services/          # Business logic
+│   ├── services/             # Business logic
 │   │   └── maintainance_service.py
-│   ├── schemas/           # Request/response validation
+│   ├── schemas/              # Request/response validation
 │   │   └── maintainance_schema.py
-│   └── utils/             # Helper utilities
+│   └── utils/                # Helper utilities
 │       └── database_seeder.py
 │
-└── instance/              # Instance-specific files
-    └── maintenance.db     # SQLite (if used locally)
+└── instance/                 # Instance-specific files
+    └── maintenance.db        # SQLite (if used locally)
 ```
 
 ---
@@ -446,7 +454,7 @@ maintenanceService/
 
 | Task | Command |
 |------|---------|
-| **Start everything** | `.\setup-and-run.ps1` |
+| **Start everything** | `..\setup-and-run.ps1` |
 | **Stop Flask** | `Ctrl+C` |
 | **Stop database** | `docker-compose down` |
 | **View logs** | Check terminal output |
@@ -467,7 +475,7 @@ maintenanceService/
    ```powershell
    docker-compose down -v
    rm -rf venv
-   .\setup-and-run.ps1
+   ..\setup-and-run.ps1
    ```
 
 ---
@@ -476,7 +484,7 @@ maintenanceService/
 
 - **Main Documentation:** `README.md`
 - **Database GUI Setup:** `PGADMIN_GUIDE.md`
-- **Docker Compose Config:** `docker-compose.yml`
+- **Docker Compose Config:** `../docker-compose.yml`
 - **Flask Config:** `config.py`
 
 ---

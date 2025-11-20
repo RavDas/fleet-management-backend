@@ -293,7 +293,7 @@ docker logs vehicle-service | grep "Seeding"
 netstat -ano | findstr :7001
 netstat -ano | findstr :5433
 
-# Change ports in docker-compose.yml if needed
+# Change ports in ../docker-compose.yml if needed
 ```
 
 ### Reset Everything
@@ -392,8 +392,8 @@ if (app.Environment.IsDevelopment())
 
 ### Modified
 - ✅ `VehicleService.Api/Program.cs` (added initialization section)
-- ✅ `docker-compose.yml` (enhanced configuration)
-- ✅ `Dockerfile` (added health check)
+- ✅ `../docker-compose.yml` (enhanced configuration)
+- ✅ `VehicleService/VehicleService.Api/Dockerfile` (added health check)
 
 ### Unchanged
 - ✅ Entity classes (Vehicle, MaintenanceRecord, VehicleStatusHistory)

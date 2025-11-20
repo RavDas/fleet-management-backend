@@ -434,7 +434,7 @@ if os.environ.get('FLASK_ENV') != 'production':
 
 ### Modified
 - ✅ `run.py` (added initialization call and logging)
-- ✅ `docker-compose.yml` (enhanced configuration)
+- ✅ `../docker-compose.yml` (enhanced configuration)
 - ✅ `Dockerfile` (added health check)
 
 ### Unchanged
