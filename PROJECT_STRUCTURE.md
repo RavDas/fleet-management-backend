@@ -57,7 +57,7 @@ src/maintenanceService/
 │   ├── services/                  # Business logic
 │   └── utils/                     # Utility functions
 │
-├── setup-and-run.ps1              # Windows setup script
+├── setup-and-run.sh               # Setup script
 ├── setup-and-run.sh               # Linux/Mac setup script
 ├── migrate-sqlite-to-postgres.py  # Migration utility
 ├── test-db-connection.py          # Database test utility
@@ -157,7 +157,7 @@ fleet-management-group8-final-assignment/
 
 ### Maintenance Service
 - **Documentation**: `src/maintenanceService/docs/README.md`
-- **Setup Script**: `src/maintenanceService/setup-and-run.ps1` (Windows) or `.sh` (Linux/Mac)
+- **Setup Script**: `src/maintenanceService/setup-and-run.sh`
 - **Docker**: `src/maintenanceService/docker-compose.yml`
 
 ### Vehicle Service

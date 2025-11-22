@@ -12,7 +12,7 @@ version: "3.9"
 #
 # Ports:
 # - Maintenance Service: localhost:5001
-# - PostgreSQL: localhost:5434 (to avoid conflicts with other PostgreSQL instances)
+# - PostgreSQL: localhost:5440 (to avoid conflicts with other PostgreSQL instances)
 # - pgAdmin (optional): localhost:5051 (start with --profile admin)
 #
 # 📚 Documentation:
@@ -51,7 +51,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: maintenance_db
     ports:
-      - "5434:5432"          # host:container (use 5434 on host to avoid conflicts)
+      - "5440:5432"          # host:container (use 5440 on host to avoid conflicts)
     volumes:
       - maintenance_pg_data:/var/lib/postgresql/data
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql

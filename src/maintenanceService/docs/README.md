@@ -6,15 +6,10 @@ Fleet Management Maintenance Service - Manages vehicle maintenance records, sche
 
 ### 🚀 **Easiest Way** (One Command Does Everything!)
 
-**Windows (PowerShell):**
-```powershell
-..\setup-and-run.ps1
-```
-
-**Linux/Mac:**
+**All Platforms (Windows Git Bash / Linux / Mac):**
 ```bash
-chmod +x ../setup-and-run.sh
-../setup-and-run.sh
+chmod +x ./setup-and-run.sh
+./setup-and-run.sh
 ```
 
 This automatically:
@@ -39,7 +34,7 @@ curl http://localhost:5001/health
 
 **Service URL:** http://localhost:5001  
 **Swagger UI (API Docs):** http://localhost:5001/docs  
-**Database:** PostgreSQL on port 5434
+**Database:** PostgreSQL on port 5440
 
 ---
 
@@ -133,7 +128,7 @@ Explore and test all API endpoints interactively with the built-in Swagger UI!
 ## Database
 
 ### Connection Info
-- **Host:** localhost:5434
+- **Host:** localhost:5440
 - **Database:** maintenance_db
 - **User:** postgres
 - **Password:** postgres
@@ -168,7 +163,7 @@ The database is automatically seeded with 5 maintenance items on first startup:
 
 ### Environment Variables (`.env`)
 ```env
-DATABASE_URL=postgresql://postgres:postgres@localhost:5434/maintenance_db
+DATABASE_URL=postgresql://postgres:postgres@localhost:5440/maintenance_db
 FLASK_ENV=development
 PORT=5001
 HOST=0.0.0.0
@@ -182,7 +177,7 @@ CORS_ORIGINS=*
 | Service | Container | Port | Description |
 |---------|-----------|------|-------------|
 | maintenance-service | maintenance-service | 5001 | Flask API |
-| postgres-maintenance | postgres-maintenance | 5434 | PostgreSQL 16 |
+| postgres-maintenance | postgres-maintenance | 5440 | PostgreSQL 16 |
 | pgadmin-maintenance | pgadmin-maintenance | 5051 | DB Admin (optional) |
 
 ### Start with pgAdmin
@@ -217,8 +212,7 @@ maintenanceService/
 │   ├── LOCAL_DEVELOPMENT_GUIDE.md
 │   ├── PGADMIN_GUIDE.md
 │   └── SEEDER_IMPLEMENTATION.md
-├── setup-and-run.ps1            # Setup script (Windows)
-├── setup-and-run.sh             # Setup script (Linux/Mac)
+├── setup-and-run.sh             # Setup script
 ├── migrate-sqlite-to-postgres.py
 ├── test-db-connection.py
 ├── docker-compose.yml           # Docker services
@@ -285,7 +279,7 @@ docker-compose up -d
 
 This service works alongside the Vehicle Service:
 - **Vehicle Service:** Port 7001, PostgreSQL 5433
-- **Maintenance Service:** Port 5001, PostgreSQL 5434
+- **Maintenance Service:** Port 5001, PostgreSQL 5440
 
 Both services can run simultaneously without conflicts.
 

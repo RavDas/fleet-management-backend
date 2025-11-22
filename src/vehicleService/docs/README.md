@@ -310,7 +310,7 @@ curl http://localhost:8479/
 
 This service works alongside the Maintenance Service:
 - **Vehicle Service:** Port 7001, PostgreSQL 5433
-- **Maintenance Service:** Port 5001, PostgreSQL 5434
+- **Maintenance Service:** Port 5001, PostgreSQL 5440
 
 Both services can run simultaneously without conflicts.
 

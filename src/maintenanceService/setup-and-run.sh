@@ -56,7 +56,7 @@ FLASK_APP=run.py
 SECRET_KEY=dev-secret-key-change-in-production-f89a7d6c8b4e3a2d
 
 # Database Configuration (PostgreSQL)
-DATABASE_URL=postgresql://postgres:postgres@localhost:5434/maintenance_db
+DATABASE_URL=postgresql://postgres:postgres@localhost:5440/maintenance_db
 
 # Server Configuration
 PORT=5001
@@ -82,16 +82,54 @@ echo ""
 # Step 3: Setup Python Virtual Environment
 # ===============================
 echo -e "${BLUE}🐍 Step 3: Setting up Python environment...${NC}"
-if [ ! -d "venv" ]; then
-    echo -e "${YELLOW}   Creating virtual environment...${NC}"
-    python3 -m venv venv
-    echo -e "${GREEN}✅ Virtual environment created${NC}"
+
+# Determine Python command
+if command -v python3 &>/dev/null; then
+    PYTHON_CMD=python3
+elif command -v python &>/dev/null; then
+    PYTHON_CMD=python
 else
-    echo -e "${GREEN}✅ Virtual environment already exists${NC}"
+    echo -e "${RED}❌ Python not found. Please install Python first!${NC}"
+    exit 1
+fi
+
+# Function to check if venv is valid
+check_venv() {
+    if [ -f "venv/bin/activate" ] || [ -f "venv/Scripts/activate" ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# Create venv if it doesn't exist or is invalid
+if [ -d "venv" ]; then
+    if check_venv; then
+        echo -e "${GREEN}✅ Virtual environment already exists${NC}"
+    else
+        echo -e "${YELLOW}⚠️  Virtual environment exists but seems corrupt. Recreating...${NC}"
+        rm -rf venv
+        $PYTHON_CMD -m venv venv
+        echo -e "${GREEN}✅ Virtual environment recreated${NC}"
+    fi
+else
+    echo -e "${YELLOW}   Creating virtual environment...${NC}"
+    $PYTHON_CMD -m venv venv
+    echo -e "${GREEN}✅ Virtual environment created${NC}"
 fi
 
 echo -e "${YELLOW}   Activating virtual environment...${NC}"
-source venv/bin/activate
+# Detect OS style activation
+if [ -f "venv/Scripts/activate" ]; then
+    # Windows (Git Bash)
+    source venv/Scripts/activate
+elif [ -f "venv/bin/activate" ]; then
+    # Linux/Mac
+    source venv/bin/activate
+else
+    echo -e "${RED}❌ Could not find activation script in venv!${NC}"
+    exit 1
+fi
 
 echo -e "${YELLOW}   Installing/updating dependencies...${NC}"
 pip install --quiet -r requirements.txt
@@ -103,22 +141,22 @@ echo ""
 # ===============================
 echo -e "${BLUE}🗄️  Step 4: Checking PostgreSQL database...${NC}"
 
-# Check if postgres-maintenance container exists and is running
-containerStatus=$(docker ps -a --filter "name=postgres-maintenance" --format "{{.Status}}" || echo "")
+# Check if postgres-maintenance container exists and is running on the correct port
+containerStatus=$(docker ps --filter "name=postgres-maintenance" --format "{{.Status}}")
+portMapping=$(docker port postgres-maintenance 5432/tcp 2>/dev/null || echo "")
 
-if [[ $containerStatus == Up* ]]; then
-    echo -e "${GREEN}✅ PostgreSQL is already running${NC}"
-elif [ -n "$containerStatus" ]; then
-    echo -e "${YELLOW}⚠️  PostgreSQL container exists but is not running. Starting...${NC}"
+if [[ $containerStatus == Up* ]] && [[ $portMapping == *"5440"* ]]; then
+    echo -e "${GREEN}✅ PostgreSQL is already running on port 5440${NC}"
+else
+    if [ -n "$containerStatus" ]; then
+        echo -e "${YELLOW}⚠️  PostgreSQL container state needs update (wrong port or stopped). Recreating...${NC}"
+    else
+        echo -e "${YELLOW}⚠️  PostgreSQL not found. Starting for the first time...${NC}"
+    fi
+    
     docker-compose up -d postgres-maintenance
     echo -e "${YELLOW}   Waiting for PostgreSQL to be ready...${NC}"
     sleep 15
-    echo -e "${GREEN}✅ PostgreSQL started successfully${NC}"
-else
-    echo -e "${YELLOW}⚠️  PostgreSQL not found. Starting for the first time...${NC}"
-    docker-compose up -d postgres-maintenance
-    echo -e "${YELLOW}   Waiting for PostgreSQL to initialize (first-time setup)...${NC}"
-    sleep 20
     echo -e "${GREEN}✅ PostgreSQL started successfully${NC}"
 fi
 echo ""

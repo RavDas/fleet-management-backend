@@ -8,15 +8,15 @@ Quick reference for local development tasks, troubleshooting, and advanced confi
 
 **Just run this ONE command:**
 
-### Windows (PowerShell):
-```powershell
-..\setup-and-run.ps1
+### All Platforms (Windows/Linux/Mac):
+```bash
+./setup-and-run.sh
 ```
 
-### Linux/Mac:
+For Git Bash on Windows or Linux/Mac, you might need to make it executable first:
 ```bash
-chmod +x ../setup-and-run.sh
-../setup-and-run.sh
+chmod +x ./setup-and-run.sh
+./setup-and-run.sh
 ```
 
 The script automatically handles:
@@ -62,7 +62,7 @@ $env:PORT = "5002"  # Windows
 export PORT=5002    # Linux/Mac
 
 # Then run the script
-..\setup-and-run.ps1
+./setup-and-run.sh
 ```
 
 ---
@@ -71,16 +71,7 @@ export PORT=5002    # Linux/Mac
 
 **Cause:** Python not in PATH or wrong Python command.
 
-**Solution:** Edit `../setup-and-run.ps1` (line 79 and 164) to use the correct Python command:
-- Try: `python3` instead of `python`
-- Or: `py` instead of `python`
-
-```powershell
-# Test which Python command works:
-python --version
-python3 --version
-py --version
-```
+**Solution:** Edit `../setup-and-run.sh` to check the Python command detection logic.
 
 ---
 
@@ -88,12 +79,10 @@ py --version
 
 **Cause:** PowerShell script execution is disabled (Windows security).
 
-**Solution:**
+**Solution:** Use `setup-and-run.sh` in Git Bash instead, or run:
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
-
-Then run the script again.
 
 ---
 
@@ -112,7 +101,8 @@ docker logs postgres-maintenance
 docker exec -it postgres-maintenance psql -U postgres -d maintenance_db
 
 # 4. Activate venv and check Python packages
-.\venv\Scripts\Activate.ps1
+source venv/bin/activate  # Linux/Mac/Git Bash
+# or .\venv\Scripts\activate # Windows Cmd
 pip list
 ```
 
@@ -124,7 +114,7 @@ pip list
 
 **Solution:**
 1. Press `Ctrl+C` to stop Flask
-2. Run `..\setup-and-run.ps1` again
+2. Run `./setup-and-run.sh` again
 3. Check terminal for syntax errors in your code
 
 ---
@@ -142,7 +132,7 @@ docker-compose down
 docker-compose down -v
 
 # Start fresh
-..\setup-and-run.ps1
+./setup-and-run.sh
 ```
 
 ---
@@ -226,7 +216,7 @@ FLASK_APP=run.py
 SECRET_KEY=your-secret-key-here
 
 # Database Configuration
-DATABASE_URL=postgresql://postgres:postgres@localhost:5434/maintenance_db
+DATABASE_URL=postgresql://postgres:postgres@localhost:5440/maintenance_db
 
 # Server Configuration
 PORT=5001
@@ -259,10 +249,10 @@ docker-compose up postgres-maintenance
 ```
 
 ### Terminal 2: Flask App
-```powershell
-cd \path\to\maintenanceService
-.\venv\Scripts\Activate.ps1  # Windows
-source venv/bin/activate     # Linux/Mac
+```bash
+cd /path/to/maintenanceService
+source venv/bin/activate     # Linux/Mac/Git Bash
+# or .\venv\Scripts\activate # Windows Cmd
 
 python run.py
 # Keep running
@@ -305,7 +295,7 @@ docker logs -f postgres-maintenance
 docker-compose down -v
 
 # Restart (recreates database with sample data)
-..\setup-and-run.ps1
+./setup-and-run.sh
 ```
 
 ### 5. Test API Endpoints
@@ -345,10 +335,10 @@ docker-compose restart postgres-maintenance
 ```
 
 ### Python Commands
-```powershell
+```bash
 # Activate virtual environment
-.\venv\Scripts\Activate.ps1  # Windows
-source venv/bin/activate     # Linux/Mac
+source venv/bin/activate     # Linux/Mac/Git Bash
+# or .\venv\Scripts\activate # Windows Cmd
 
 # Install new package
 pip install package-name
@@ -419,8 +409,7 @@ maintenanceService/
 │   ├── LOCAL_DEVELOPMENT_GUIDE.md
 │   ├── PGADMIN_GUIDE.md
 │   └── SEEDER_IMPLEMENTATION.md
-├── setup-and-run.ps1          # Main script (Windows)
-├── setup-and-run.sh           # Main script (Linux/Mac)
+├── setup-and-run.sh           # Main script (Windows/Linux/Mac)
 ├── test-db-connection.py      # Utility script
 ├── migrate-sqlite-to-postgres.py
 ├── docker-compose.yml         # Docker services
@@ -454,7 +443,7 @@ maintenanceService/
 
 | Task | Command |
 |------|---------|
-| **Start everything** | `..\setup-and-run.ps1` |
+| **Start everything** | `./setup-and-run.sh` |
 | **Stop Flask** | `Ctrl+C` |
 | **Stop database** | `docker-compose down` |
 | **View logs** | Check terminal output |
@@ -468,14 +457,14 @@ maintenanceService/
 ## 🆘 Still Having Issues?
 
 1. **Check if Docker Desktop is running**
-2. **Make sure no other service is using port 5001 or 5434**
+2. **Make sure no other service is using port 5001 or 5440**
 3. **Try running commands manually** (see Manual Development section)
 4. **Check error messages carefully** - they usually indicate the problem
 5. **Reset everything:**
    ```powershell
    docker-compose down -v
    rm -rf venv
-   ..\setup-and-run.ps1
+   ./setup-and-run.sh
    ```
 
 ---
