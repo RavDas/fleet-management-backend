@@ -1,0 +1,72 @@
+[
+  {
+    "fullName": "John Smith",
+    "email": "john.smith@example.com",
+    "phone": "+1-555-0101",
+    "licenseNumber": "DL-2024-001",
+    "expiryDate": "2026-12-31"
+  },
+  {
+    "fullName": "Sarah Johnson",
+    "email": "sarah.johnson@example.com",
+    "phone": "+1-555-0102",
+    "licenseNumber": "DL-2024-002",
+    "expiryDate": "2027-03-15"
+  },
+  {
+    "fullName": "Michael Brown",
+    "email": "michael.brown@example.com",
+    "phone": "+1-555-0103",
+    "licenseNumber": "DL-2024-003",
+    "expiryDate": "2026-08-20"
+  },
+  {
+    "fullName": "Emily Davis",
+    "email": "emily.davis@example.com",
+    "phone": "+1-555-0104",
+    "licenseNumber": "DL-2024-004",
+    "expiryDate": "2027-11-30"
+  },
+  {
+    "fullName": "David Wilson",
+    "email": "david.wilson@example.com",
+    "phone": "+1-555-0105",
+    "licenseNumber": "DL-2024-005",
+    "expiryDate": "2026-05-10"
+  },
+  {
+    "fullName": "Jessica Martinez",
+    "email": "jessica.martinez@example.com",
+    "phone": "+1-555-0106",
+    "licenseNumber": "DL-2024-006",
+    "expiryDate": "2027-09-25"
+  },
+  {
+    "fullName": "Robert Taylor",
+    "email": "robert.taylor@example.com",
+    "phone": "+1-555-0107",
+    "licenseNumber": "DL-2024-007",
+    "expiryDate": "2026-07-18"
+  },
+  {
+    "fullName": "Amanda Anderson",
+    "email": "amanda.anderson@example.com",
+    "phone": "+1-555-0108",
+    "licenseNumber": "DL-2024-008",
+    "expiryDate": "2027-04-12"
+  },
+  {
+    "fullName": "Christopher Thomas",
+    "email": "christopher.thomas@example.com",
+    "phone": "+1-555-0109",
+    "licenseNumber": "DL-2024-009",
+    "expiryDate": "2026-10-05"
+  },
+  {
+    "fullName": "Lisa Jackson",
+    "email": "lisa.jackson@example.com",
+    "phone": "+1-555-0110",
+    "licenseNumber": "DL-2024-010",
+    "expiryDate": "2027-06-22"
+  }
+]
