@@ -6,13 +6,7 @@ Fleet Management Vehicle Service - Manages vehicle inventory, tracking, and serv
 
 ### 🚀 **Easiest Way** (One Command Does Everything!)
 
-**Windows (PowerShell):**
-```powershell
-cd ..
-.\setup-and-run.ps1
-```
-
-**Linux/Mac:**
+**Bash (Linux/Mac/WSL):**
 ```bash
 cd ..
 chmod +x setup-and-run.sh
@@ -31,10 +25,6 @@ This automatically:
 **📚 For troubleshooting:** See `../LOCAL_DEVELOPMENT_GUIDE.md`
 
 ---
-
-
-
-
 
 ### Alternative: Docker Compose
 
@@ -364,4 +354,3 @@ EXPOSE 443
 ## License
 
 MIT License
-

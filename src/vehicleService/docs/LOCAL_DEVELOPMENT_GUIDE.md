@@ -6,14 +6,8 @@ Quick reference for local development tasks, troubleshooting, and advanced confi
 
 ## 🚀 Quick Start
 
-**Just run this ONE command:**
+**Just run this ONE command in your Bash terminal:**
 
-### Windows (PowerShell):
-```powershell
-.\setup-and-run.ps1
-```
-
-### Linux/Mac:
 ```bash
 chmod +x setup-and-run.sh
 ./setup-and-run.sh
@@ -33,7 +27,7 @@ The script automatically handles:
 Press `Ctrl+C` in the terminal running the script.
 
 **Optionally stop the database:**
-```powershell
+```bash
 docker-compose down
 ```
 
@@ -45,14 +39,12 @@ docker-compose down
 
 **Cause:** Another process is using port 7001.
 
-**Solution 1 - Find and kill the process:**
-```powershell
-# Windows
-netstat -ano | findstr :7001
-taskkill /PID <PID_NUMBER> /F
-
-# Linux/Mac
+**Solution - Find and kill the process:**
+```bash
+# Find process using port 7001
 lsof -i :7001
+
+# Kill the process
 kill -9 <PID_NUMBER>
 ```
 ---
@@ -65,24 +57,11 @@ kill -9 <PID_NUMBER>
 
 1. Download and install .NET 9 SDK from: https://dotnet.microsoft.com/download
 2. Verify installation:
-   ```powershell
+   ```bash
    dotnet --version
    ```
 3. Restart your terminal
 4. Run the script again
-
----
-
-### ❌ "Cannot load PSModule" or "Execution Policy" error
-
-**Cause:** PowerShell script execution is disabled (Windows security).
-
-**Solution:**
-```powershell
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-```
-
-Then run the script again.
 
 ---
 
@@ -91,7 +70,7 @@ Then run the script again.
 **Cause:** Network issues, NuGet cache corruption, or missing packages.
 
 **Solution:**
-```powershell
+```bash
 # Clear NuGet cache
 dotnet nuget locals all --clear
 
@@ -113,16 +92,16 @@ dotnet nuget list source
 The app automatically runs migrations on startup (see `Program.cs` line 116).
 
 **Solution 2 - Reset database:**
-```powershell
+```bash
 # Stop and remove database (WARNING: deletes all data!)
 docker-compose down -v
 
 # Start fresh
-.\setup-and-run.ps1
+./setup-and-run.sh
 ```
 
 **Solution 3 - Run migrations manually:**
-```powershell
+```bash
 cd VehicleService/VehicleService.Api
 dotnet ef database update --project ../VehicleService.Infrastructure
 ```
@@ -136,10 +115,10 @@ dotnet ef database update --project ../VehicleService.Infrastructure
 **Solution:**
 
 1. Press `Ctrl+C` to stop
-2. Run `.\setup-and-run.ps1` again
+2. Run `./setup-and-run.sh` again
 
 Or rebuild explicitly:
-```powershell
+```bash
 cd VehicleService/VehicleService.Api
 dotnet build
 dotnet run
@@ -154,14 +133,14 @@ dotnet run
 **Solutions:**
 
 1. **Make sure app is running:**
-   ```powershell
+   ```bash
    curl http://localhost:7001/health
    ```
 
 2. **Check if running in Development mode:**
    Swagger only runs in Development environment.
-   ```powershell
-   $env:ASPNETCORE_ENVIRONMENT = "Development"
+   ```bash
+   export ASPNETCORE_ENVIRONMENT="Development"
    ```
 
 3. **Swagger is at root URL:**
@@ -174,7 +153,7 @@ dotnet run
 **Cause:** Database container stopped or connection string issue.
 
 **Solution:**
-```powershell
+```bash
 # Check container status
 docker ps
 
@@ -186,7 +165,7 @@ docker-compose restart postgres-vehicle
 
 # If corrupted, reset completely
 docker-compose down -v
-.\setup-and-run.ps1
+./setup-and-run.sh
 ```
 
 ---
@@ -195,7 +174,7 @@ docker-compose down -v
 
 ### Option 1: Command Line (psql)
 
-```powershell
+```bash
 # Connect to PostgreSQL
 docker exec -it postgres-vehicle psql -U postgres -d vehicle_db
 ```
@@ -229,7 +208,7 @@ TRUNCATE TABLE "Vehicles", "MaintenanceRecords", "VehicleStatusHistory" CASCADE;
 
 ### Option 2: pgAdmin (Web GUI)
 
-```powershell
+```bash
 # Start pgAdmin container
 docker-compose --profile admin up -d
 
@@ -274,8 +253,8 @@ ConnectionStrings__DefaultConnection: "Host=postgres-vehicle;Port=5432;Database=
 ### CORS Configuration
 
 Edit `Program.cs` or set environment variable:
-```powershell
-$env:CORS_ORIGINS = "http://localhost:3000,http://localhost:5173"
+```bash
+export CORS_ORIGINS="http://localhost:3000,http://localhost:5173"
 ```
 
 ### Logging Level
@@ -300,15 +279,15 @@ Edit `appsettings.Development.json`:
 If you prefer manual control or the script isn't working:
 
 ### Terminal 1: Database
-```powershell
-cd \path\to\vehicleService
+```bash
+cd /path/to/vehicleService
 docker-compose up postgres-vehicle
 # Keep running
 ```
 
 ### Terminal 2: .NET App
-```powershell
-cd \path\to\vehicleService\VehicleService\VehicleService.Api
+```bash
+cd /path/to/vehicleService/VehicleService/VehicleService.Api
 dotnet restore
 dotnet run
 # Keep running
@@ -336,7 +315,7 @@ Visit http://localhost:7001
 - Automatically generated from your code
 
 ### 3. View Logs in Real-Time
-```powershell
+```bash
 # .NET app logs show in the terminal
 # Shows requests, EF Core queries, errors
 
@@ -346,7 +325,7 @@ docker logs -f postgres-vehicle
 
 ### 4. Entity Framework Commands
 
-```powershell
+```bash
 cd VehicleService/VehicleService.Api
 
 # Add new migration
@@ -366,16 +345,16 @@ dotnet ef migrations script --project ../VehicleService.Infrastructure
 ```
 
 ### 5. Quick Database Reset
-```powershell
+```bash
 # Stop everything
 docker-compose down -v
 
 # Restart (recreates database with migrations and sample data)
-.\setup-and-run.ps1
+./setup-and-run.sh
 ```
 
 ### 6. Test API Endpoints
-```powershell
+```bash
 # Health check
 curl http://localhost:7001/health
 
@@ -394,7 +373,7 @@ curl http://localhost:7001/api/vehicles/1
 ## 📊 Useful Commands
 
 ### Docker Commands
-```powershell
+```bash
 # Check running containers
 docker ps
 
@@ -412,7 +391,7 @@ docker-compose restart postgres-vehicle
 ```
 
 ### .NET Commands
-```powershell
+```bash
 # Restore packages
 dotnet restore
 
@@ -433,7 +412,7 @@ dotnet watch run
 ```
 
 ### NuGet Commands
-```powershell
+```bash
 # List installed packages
 dotnet list package
 
@@ -493,8 +472,7 @@ var canConnect = await _context.Database.CanConnectAsync();
 
 ```
 vehicleService/
-├── setup-and-run.ps1           # Main script (Windows)
-├── setup-and-run.sh            # Main script (Linux/Mac)
+├── setup-and-run.sh            # Main script
 ├── docker-compose.yml          # Docker services
 │
 ├── VehicleService/
@@ -529,7 +507,7 @@ vehicleService/
 
 | Task | Command |
 |------|---------|
-| **Start everything** | `.\setup-and-run.ps1` |
+| **Start everything** | `./setup-and-run.sh` |
 | **Stop .NET app** | `Ctrl+C` |
 | **Stop database** | `docker-compose down` |
 | **View logs** | Check terminal output |
@@ -551,10 +529,10 @@ vehicleService/
 4. **Try running commands manually** (see Manual Development section)
 5. **Check error messages carefully** - they usually indicate the problem
 6. **Reset everything:**
-   ```powershell
+   ```bash
    docker-compose down -v
    dotnet clean
-   .\setup-and-run.ps1
+   ./setup-and-run.sh
    ```
 
 ---
@@ -570,4 +548,3 @@ vehicleService/
 ---
 
 **Happy coding!** 🎉
-
