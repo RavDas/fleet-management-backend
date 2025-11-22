@@ -8,8 +8,8 @@ Complete guide for initializing and managing databases for both microservices.
 
 | Service | Technology | Port | Database | Schema Setup | Data Seeding |
 |---------|-----------|------|----------|--------------|--------------|
-| **Maintenance Service** | Python/Flask | 5001 | maintenance_db (5440) | SQLAlchemy | Python Seeder + SQL Backup |
-| **Vehicle Service** | .NET/C# | 7001 | vehicle_db (5433) | EF Migrations | C# DatabaseSeeder |
+| **Maintenance Service** | Python/Flask | 5001 | maintenance_db (5433) | SQLAlchemy | Python Seeder + SQL Backup |
+| **Vehicle Service** | .NET/C# | 7001 | vehicle_db (7433) | EF Migrations | C# DatabaseSeeder |
 
 Both services use **PostgreSQL 16** with automatic initialization and seeding.
 
@@ -217,14 +217,14 @@ docker-compose --profile admin up -d
 
 ### Maintenance Service
 - **Host:** localhost
-- **Port:** 5440
+- **Port:** 5433
 - **Database:** maintenance_db
 - **Username:** postgres
 - **Password:** postgres
 
 ### Vehicle Service
 - **Host:** localhost
-- **Port:** 5433
+- **Port:** 7433
 - **Database:** vehicle_db
 - **Username:** postgres
 - **Password:** postgres
@@ -272,12 +272,11 @@ docker logs vehicle-service
 docker-compose down -v && docker-compose up -d
 ```
 
-### Port Conflicts (5433/5440 in use)
+### Port Conflicts (7433 in use)
 
 ```bash
 # Check what's using the ports
-netstat -ano | findstr :5433
-netstat -ano | findstr :5440
+netstat -ano | findstr :7433
 
 # Stop conflicting PostgreSQL services
 # Windows:

@@ -216,7 +216,7 @@ FLASK_APP=run.py
 SECRET_KEY=your-secret-key-here
 
 # Database Configuration
-DATABASE_URL=postgresql://postgres:postgres@localhost:5440/maintenance_db
+DATABASE_URL=postgresql://postgres:postgres@localhost:5433/maintenance_db
 
 # Server Configuration
 PORT=5001
@@ -457,7 +457,7 @@ maintenanceService/
 ## 🆘 Still Having Issues?
 
 1. **Check if Docker Desktop is running**
-2. **Make sure no other service is using port 5001 or 5440**
+2. **Make sure no other service is using port 5001 or 5433**
 3. **Try running commands manually** (see Manual Development section)
 4. **Check error messages carefully** - they usually indicate the problem
 5. **Reset everything:**

@@ -289,9 +289,9 @@ docker logs vehicle-service | grep "Seeding"
 ### Port Conflicts
 
 ```bash
-# Check what's using port 7001 or 5433
+# Check what's using port 7001 or 7433
 netstat -ano | findstr :7001
-netstat -ano | findstr :5433
+netstat -ano | findstr :7433
 
 # Change ports in ../docker-compose.yml if needed
 ```

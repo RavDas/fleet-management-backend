@@ -11,7 +11,7 @@ version: "3.9"
 #
 # Ports:
 # - Vehicle Service: localhost:7001
-# - PostgreSQL: localhost:5433 (to avoid conflicts with other PostgreSQL instances)
+# - PostgreSQL: localhost:7433 (to avoid conflicts with other PostgreSQL instances)
 # - pgAdmin (optional): localhost:5050 (start with --profile admin)
 #
 # 📚 Documentation:
@@ -48,7 +48,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: vehicle_db
     ports:
-      - "5433:5432"          # host:container (use 5433 on Windows to avoid local 5432 clashes)
+      - "7433:5432"          # host:container (use 7433 on Windows to avoid local 5432 clashes)
     volumes:
       - vehicle_pg_data:/var/lib/postgresql/data
     healthcheck:

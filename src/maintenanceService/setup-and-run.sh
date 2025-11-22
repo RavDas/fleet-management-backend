@@ -56,7 +56,7 @@ FLASK_APP=run.py
 SECRET_KEY=dev-secret-key-change-in-production-f89a7d6c8b4e3a2d
 
 # Database Configuration (PostgreSQL)
-DATABASE_URL=postgresql://postgres:postgres@localhost:5440/maintenance_db
+DATABASE_URL=postgresql://postgres:postgres@localhost:5433/maintenance_db
 
 # Server Configuration
 PORT=5001
@@ -145,8 +145,8 @@ echo -e "${BLUE}🗄️  Step 4: Checking PostgreSQL database...${NC}"
 containerStatus=$(docker ps --filter "name=postgres-maintenance" --format "{{.Status}}")
 portMapping=$(docker port postgres-maintenance 5432/tcp 2>/dev/null || echo "")
 
-if [[ $containerStatus == Up* ]] && [[ $portMapping == *"5440"* ]]; then
-    echo -e "${GREEN}✅ PostgreSQL is already running on port 5440${NC}"
+if [[ $containerStatus == Up* ]] && [[ $portMapping == *"5433"* ]]; then
+    echo -e "${GREEN}✅ PostgreSQL is already running on port 5433${NC}"
 else
     if [ -n "$containerStatus" ]; then
         echo -e "${YELLOW}⚠️  PostgreSQL container state needs update (wrong port or stopped). Recreating...${NC}"

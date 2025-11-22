@@ -12,7 +12,7 @@ docker-compose --profile admin up -d
 ```
 
 This will start:
-- `postgres-maintenance` - PostgreSQL database (port 5440 on host)
+- `postgres-maintenance` - PostgreSQL database (port 5433 on host)
 - `maintenance-service` - Maintenance API service (port 5001 on host)
 - `pgadmin-maintenance` - pgAdmin web interface (port 5051 on host)
 
@@ -152,7 +152,7 @@ docker ps | grep pgadmin-maintenance
 ### Issue: "Unable to connect to server" error
 **Possible causes**:
 1. **Wrong hostname**: Must use `postgres-maintenance`, not `localhost` or `127.0.0.1`
-2. **Wrong port**: Use `5432` (internal), not `5440` (external)
+2. **Wrong port**: Use `5432` (internal), not `5433` (external)
 3. **Wrong database name**: Must be `maintenance_db`, not `postgres`
 4. **PostgreSQL not ready**: Wait for the database container to be healthy
 
@@ -173,7 +173,7 @@ If you prefer command-line access instead of pgAdmin:
 
 ### From Host Machine (Windows)
 ```bash
-# Connect using host port 5440
+# Connect using host port 5433
 docker exec -it postgres-maintenance psql -U postgres -d maintenance_db
 ```
 
@@ -229,7 +229,7 @@ docker-compose down -v
 | Service | Container Port | Host Port | URL |
 |---------|---------------|-----------|-----|
 | Maintenance API | 5001 | 5001 | http://localhost:5001 |
-| PostgreSQL | 5432 | 5440 | localhost:5440 |
+| PostgreSQL | 5432 | 5433 | localhost:5433 |
 | pgAdmin | 80 | 5051 | http://localhost:5051 |
 
 ## API Endpoints

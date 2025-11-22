@@ -37,7 +37,7 @@ curl http://localhost:7001/health
 ```
 
 **Service URL:** http://localhost:8479 (Local) or http://localhost:7001 (Docker)
-**Database:** PostgreSQL on port 5433
+**Database:** PostgreSQL on port 7433
 **Swagger UI:** http://localhost:8479 or http://localhost:7001 (root URL)
 
 ---
@@ -132,7 +132,7 @@ dotnet watch #for hot reload
 ## Database
 
 ### Connection Info
-- **Host:** localhost:5433
+- **Host:** localhost:7433
 - **Database:** vehicle_db
 - **User:** postgres
 - **Password:** postgres
@@ -180,7 +180,7 @@ Located in `VehicleService.Api/appsettings.json`:
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Host=localhost;Port=5433;Database=vehicle_db;Username=postgres;Password=postgres"
+    "DefaultConnection": "Host=localhost;Port=7433;Database=vehicle_db;Username=postgres;Password=postgres"
   },
   "Logging": {
     "LogLevel": {
@@ -198,7 +198,7 @@ Located in `VehicleService.Api/appsettings.json`:
 | Service | Container | Port | Description |
 |---------|-----------|------|-------------|
 | vehicle-service | vehicle-service | 7001 | .NET 8 API |
-| postgres-vehicle | postgres-vehicle | 5433 | PostgreSQL 16 |
+| postgres-vehicle | postgres-vehicle | 7433 | PostgreSQL 16 |
 | pgadmin-vehicle | pgadmin-vehicle | 5050 | DB Admin (optional) |
 
 ### Start with pgAdmin
@@ -312,8 +312,8 @@ curl http://localhost:8479/
 ## Integration
 
 This service works alongside the Maintenance Service:
-- **Vehicle Service:** Port 7001, PostgreSQL 5433
-- **Maintenance Service:** Port 5001, PostgreSQL 5440
+- **Vehicle Service:** Port 7001, PostgreSQL 7433
+- **Maintenance Service:** Port 5001, PostgreSQL 5433
 
 Both services can run simultaneously without conflicts.
 

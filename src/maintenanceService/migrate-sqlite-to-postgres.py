@@ -15,7 +15,7 @@ load_dotenv()
 
 def get_db_params():
     """Extract database parameters from DATABASE_URL"""
-    db_url = os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5440/maintenance_db')
+    db_url = os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5433/maintenance_db')
     
     # Simple parsing
     db_url = db_url.replace('postgresql://', '')

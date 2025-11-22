@@ -9,8 +9,8 @@ version: "3.9"
 # - Data: Managed by the application
 #
 # Ports:
-# - Driver Service: localhost:8001
-# - PostgreSQL: localhost:5434 (to avoid conflicts with other PostgreSQL instances)
+# - Driver Service: localhost:6001
+# - PostgreSQL: localhost:6433 (to avoid conflicts with other PostgreSQL instances)
 # - pgAdmin (optional): localhost:5052 (start with --profile admin)
 #
 # 📚 Documentation:
@@ -23,7 +23,7 @@ services:
       dockerfile: Dockerfile
     container_name: driver-service
     ports:
-      - "8001:8080"
+      - "6001:8080"
     depends_on:
       postgres-driver:
         condition: service_healthy
@@ -35,8 +35,6 @@ services:
       DB_USERNAME: postgres
       DB_PASSWORD: postgres
       SERVER_PORT: 8080
-    volumes:
-      - ./:/app
     restart: always
     networks:
       - driver-network
@@ -49,7 +47,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: driver_db
     ports:
-      - "5434:5432"          # host:container (use 5434 on host to avoid conflicts)
+      - "6433:5432"          # host:container (use 6433 on host to avoid conflicts)
     volumes:
       - driver_pg_data:/var/lib/postgresql/data
     healthcheck:

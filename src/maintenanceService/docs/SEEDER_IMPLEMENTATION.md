@@ -308,9 +308,9 @@ docker logs maintenance-service | grep "Seeding"
 ### Port Conflicts
 
 ```bash
-# Check what's using port 5001 or 5440
+# Check what's using port 5001 or 5433
 netstat -ano | findstr :5001
-netstat -ano | findstr :5440
+netstat -ano | findstr :5433
 
 # Stop conflicting services
 # Windows:

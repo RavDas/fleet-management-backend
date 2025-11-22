@@ -240,7 +240,7 @@ See `docs/PGADMIN_GUIDE.md` for detailed instructions.
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Host=localhost;Port=5433;Database=vehicle_db;Username=postgres;Password=postgres"
+    "DefaultConnection": "Host=localhost;Port=7433;Database=vehicle_db;Username=postgres;Password=postgres"
   }
 }
 ```
@@ -525,7 +525,7 @@ vehicleService/
 
 1. **Check if Docker Desktop is running**
 2. **Make sure .NET 9 SDK is installed** (`dotnet --version`)
-3. **Make sure no other service is using port 8479 or 5433**
+3. **Make sure no other service is using port 8479 or 7433**
 4. **Try running commands manually** (see Manual Development section)
 5. **Check error messages carefully** - they usually indicate the problem
 6. **Reset everything:**

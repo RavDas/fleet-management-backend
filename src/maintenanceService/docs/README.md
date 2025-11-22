@@ -34,7 +34,7 @@ curl http://localhost:5001/health
 
 **Service URL:** http://localhost:5001  
 **Swagger UI (API Docs):** http://localhost:5001/docs  
-**Database:** PostgreSQL on port 5440
+**Database:** PostgreSQL on port 5433
 
 ---
 
@@ -128,7 +128,7 @@ Explore and test all API endpoints interactively with the built-in Swagger UI!
 ## Database
 
 ### Connection Info
-- **Host:** localhost:5440
+- **Host:** localhost:5433
 - **Database:** maintenance_db
 - **User:** postgres
 - **Password:** postgres
@@ -163,7 +163,7 @@ The database is automatically seeded with 5 maintenance items on first startup:
 
 ### Environment Variables (`.env`)
 ```env
-DATABASE_URL=postgresql://postgres:postgres@localhost:5440/maintenance_db
+DATABASE_URL=postgresql://postgres:postgres@localhost:5433/maintenance_db
 FLASK_ENV=development
 PORT=5001
 HOST=0.0.0.0
@@ -177,7 +177,7 @@ CORS_ORIGINS=*
 | Service | Container | Port | Description |
 |---------|-----------|------|-------------|
 | maintenance-service | maintenance-service | 5001 | Flask API |
-| postgres-maintenance | postgres-maintenance | 5440 | PostgreSQL 16 |
+| postgres-maintenance | postgres-maintenance | 5433 | PostgreSQL 16 |
 | pgadmin-maintenance | pgadmin-maintenance | 5051 | DB Admin (optional) |
 
 ### Start with pgAdmin
@@ -278,8 +278,8 @@ docker-compose up -d
 ## Integration
 
 This service works alongside the Vehicle Service:
-- **Vehicle Service:** Port 7001, PostgreSQL 5433
-- **Maintenance Service:** Port 5001, PostgreSQL 5440
+- **Vehicle Service:** Port 7001, PostgreSQL 7433
+- **Maintenance Service:** Port 5001, PostgreSQL 5433
 
 Both services can run simultaneously without conflicts.
 

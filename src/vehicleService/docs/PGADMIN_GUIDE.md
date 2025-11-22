@@ -12,7 +12,7 @@ docker-compose --profile admin up -d
 ```
 
 This will start:
-- `postgres-vehicle` - PostgreSQL database (port 5433 on host)
+- `postgres-vehicle` - PostgreSQL database (port 7433 on host)
 - `vehicle-service` - Vehicle API service (port 7001 on host)
 - `pgadmin-vehicle` - pgAdmin web interface (port 5050 on host)
 
@@ -127,7 +127,7 @@ docker ps | grep pgadmin-vehicle
 ### Issue: "Unable to connect to server" error
 **Possible causes**:
 1. **Wrong hostname**: Must use `postgres-vehicle`, not `localhost` or `127.0.0.1`
-2. **Wrong port**: Use `5432` (internal), not `5433` (external)
+2. **Wrong port**: Use `5432` (internal), not `7433` (external)
 3. **Wrong database name**: Must be `vehicle_db`, not `postgres`
 4. **PostgreSQL not ready**: Wait for the database container to be healthy
 
@@ -148,7 +148,7 @@ If you prefer command-line access instead of pgAdmin:
 
 ### From Host Machine (Windows)
 ```bash
-# Connect using host port 5433
+# Connect using host port 7433
 docker exec -it postgres-vehicle psql -U postgres -d vehicle_db
 ```
 
@@ -200,7 +200,7 @@ docker-compose down -v
 | Service | Container Port | Host Port | URL |
 |---------|---------------|-----------|-----|
 | Vehicle API | 8080 | 7001 | http://localhost:7001 |
-| PostgreSQL | 5432 | 5433 | localhost:5433 |
+| PostgreSQL | 5432 | 7433 | localhost:7433 |
 | pgAdmin | 80 | 5050 | http://localhost:5050 |
 
 ## Related Documentation
