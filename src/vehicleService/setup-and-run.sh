@@ -147,5 +147,5 @@ echo ""
 
 # Navigate to API project and run
 cd VehicleService/VehicleService.Api
-dotnet run
+dotnet watch
 

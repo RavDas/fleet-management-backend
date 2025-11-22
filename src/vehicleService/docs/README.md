@@ -91,6 +91,9 @@ dotnet ef database update --project ../VehicleService.Infrastructure
 
 # Run the service
 dotnet run
+or
+dotnet watch #for hot reload
+
 ```
 
 ---

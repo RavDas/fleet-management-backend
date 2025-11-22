@@ -1,0 +1,87 @@
+version: "3.9"
+
+# ===============================
+# Driver Service Docker Compose
+# ===============================
+# 
+# Database Initialization:
+# - Schema: Created automatically via Hibernate (ddl-auto: update)
+# - Data: Managed by the application
+#
+# Ports:
+# - Driver Service: localhost:8001
+# - PostgreSQL: localhost:5434 (to avoid conflicts with other PostgreSQL instances)
+# - pgAdmin (optional): localhost:5052 (start with --profile admin)
+#
+# 📚 Documentation:
+# - API Documentation: See README.md for service endpoints and usage
+
+services:
+  driver-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: driver-service
+    ports:
+      - "8001:8080"
+    depends_on:
+      postgres-driver:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_HOST: postgres-driver
+      DB_PORT: 5432
+      DB_NAME: driver_db
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      SERVER_PORT: 8080
+    volumes:
+      - ./:/app
+    restart: always
+    networks:
+      - driver-network
+
+  postgres-driver:
+    image: postgres:16
+    container_name: postgres-driver
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: driver_db
+    ports:
+      - "5434:5432"          # host:container (use 5434 on host to avoid conflicts)
+    volumes:
+      - driver_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d driver_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - driver-network
+
+  # Optional: pgAdmin for database management
+  # To start: docker-compose --profile admin up -d
+  pgadmin-driver:
+    image: dpage/pgadmin4:8
+    container_name: pgadmin-driver
+    environment:
+      # Login credentials for pgAdmin web interface (http://localhost:5052)
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "5052:80"          # Access at http://localhost:5052
+    depends_on:
+      - postgres-driver
+    networks:
+      - driver-network
+    profiles:
+      - admin              # Only starts with --profile admin flag
+
+volumes:
+  driver_pg_data:
+
+networks:
+  driver-network:
+    driver: bridge
+

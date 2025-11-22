@@ -5,7 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.fleetops</groupId>
-    <artifactId>FleetOps</artifactId>
+    <artifactId>driver-service</artifactId>
+    <name>driver-service</name>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -37,8 +38,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
 
