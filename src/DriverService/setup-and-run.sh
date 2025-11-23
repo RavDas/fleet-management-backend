@@ -186,20 +186,7 @@ while [ "$appReady" = false ] && [ $appRetry -lt $maxAppRetries ]; do
 done
 
 if [ "$appReady" = true ]; then
-    echo -e "${GREEN}✅ Application is up! Running seeder...${NC}"
-    
-    # Run the python seeder script
-    if [ -f "seed_db.py" ]; then
-        if command -v python3 &>/dev/null; then
-            python3 seed_db.py
-        elif command -v python &>/dev/null; then
-            python seed_db.py
-        else
-            echo -e "${YELLOW}⚠️  Python not found. Skipping auto-seeding.${NC}"
-        fi
-    else
-        echo -e "${YELLOW}⚠️  seed_db.py not found. Skipping auto-seeding.${NC}"
-    fi
+    echo -e "${GREEN}✅ Application is up! Seeding handled by Spring Boot CommandLineRunner.${NC}"
 else
     echo -e "${RED}❌ Application failed to start within 30 seconds.${NC}"
     # Kill the background process if it's still hanging

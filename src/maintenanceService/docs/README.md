@@ -78,11 +78,14 @@ docker-compose down
 ```bash
 # Create virtual environment
 python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# .\venv\Scripts\activate  # Windows
+# Activate virtual environment
+source ./venv/Scripts/Activate
 
 # Install dependencies
 pip install -r requirements.txt
+
+# Apply database migrations (Run this after starting the PostgreSQL container)
+flask db upgrade
 
 # Run the service
 python run.py
