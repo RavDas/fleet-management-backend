@@ -130,8 +130,17 @@ Explore and test all API endpoints interactively with the built-in Swagger UI!
 
 ## Database
 
+### Communication Details
+*   **Database Engine:** PostgreSQL 16
+*   **Communication Method:** **SQLAlchemy (ORM)**
+    *   Uses Python's SQLAlchemy ORM to map Python classes to database tables.
+    *   **Library:** `Flask-SQLAlchemy` wrapper around `SQLAlchemy` and `psycopg2-binary` adapter.
+*   **Migration Tool:** **Flask-Migrate (Alembic)**
+    *   Handles database schema updates and migrations.
+
 ### Connection Info
-- **Host:** localhost:5433
+- **Host (External):** localhost:5433
+- **Host (Internal):** postgres-maintenance
 - **Database:** maintenance_db
 - **User:** postgres
 - **Password:** postgres

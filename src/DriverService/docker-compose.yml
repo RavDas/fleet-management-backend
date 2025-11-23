@@ -11,7 +11,7 @@ version: "3.9"
 # Ports:
 # - Driver Service: localhost:6001
 # - PostgreSQL: localhost:6433 (to avoid conflicts with other PostgreSQL instances)
-# - pgAdmin (optional): localhost:5052 (start with --profile admin)
+# - pgAdmin (optional): localhost:5055 (start with --profile admin)
 #
 # 📚 Documentation:
 # - API Documentation: See README.md for service endpoints and usage
@@ -64,11 +64,11 @@ services:
     image: dpage/pgadmin4:8
     container_name: pgadmin-driver
     environment:
-      # Login credentials for pgAdmin web interface (http://localhost:5052)
+      # Login credentials for pgAdmin web interface (http://localhost:5055)
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin123
     ports:
-      - "5052:80"          # Access at http://localhost:5052
+      - "5055:80"          # Access at http://localhost:5055
     depends_on:
       - postgres-driver
     networks:

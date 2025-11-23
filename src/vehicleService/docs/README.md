@@ -131,8 +131,17 @@ dotnet watch #for hot reload
 
 ## Database
 
+### Communication Details
+*   **Database Engine:** PostgreSQL 16
+*   **Communication Method:** **Entity Framework Core (ORM)**
+    *   Uses Microsoft's standard ORM for .NET to manage data access.
+    *   **Library:** `Npgsql.EntityFrameworkCore.PostgreSQL` provider for EF Core.
+*   **Migration Tool:** **EF Core Migrations**
+    *   Manages schema changes through code-first migrations.
+
 ### Connection Info
-- **Host:** localhost:7433
+- **Host (External):** localhost:7433
+- **Host (Internal):** postgres-vehicle
 - **Database:** vehicle_db
 - **User:** postgres
 - **Password:** postgres

@@ -132,6 +132,10 @@ def initialize_database():
     try:
         logger.info("🔄 Initializing database...")
         
+        # Create tables if they don't exist
+        db.create_all()
+        logger.info("✅ Database tables created/verified")
+        
         # Seed data if needed
         seed_database()
         
