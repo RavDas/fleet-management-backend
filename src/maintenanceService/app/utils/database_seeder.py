@@ -132,10 +132,6 @@ def initialize_database():
     try:
         logger.info("🔄 Initializing database...")
         
-        # Create all tables (idempotent - won't recreate existing tables)
-        db.create_all()
-        logger.info("✅ Database tables ready")
-        
         # Seed data if needed
         seed_database()
         

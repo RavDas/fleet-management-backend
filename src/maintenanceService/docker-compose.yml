@@ -54,7 +54,6 @@ services:
       - "5433:5432"          # host:container (use 5433 on host to avoid conflicts)
     volumes:
       - maintenance_pg_data:/var/lib/postgresql/data
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d maintenance_db"]
       interval: 5s

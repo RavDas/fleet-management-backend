@@ -35,14 +35,14 @@ docker-compose down
 
 ## 🔍 Troubleshooting
 
-### ❌ "Port 8479 is already in use"
+### ❌ "Port 7001 is already in use"
 
-**Cause:** Another process is using port 8479.
+**Cause:** Another process is using port 7001.
 
 **Solution - Find and kill the process:**
 ```bash
-# Find process using port 8479
-lsof -i :8479
+# Find process using port 7001
+lsof -i :7001
 
 # Kill the process
 kill -9 <PID_NUMBER>
@@ -126,7 +126,7 @@ dotnet run
 
 ---
 
-### ❌ Swagger UI not loading at http://localhost:8479
+### ❌ Swagger UI not loading at http://localhost:7001
 
 **Cause:** Application not running or wrong URL.
 
@@ -134,7 +134,7 @@ dotnet run
 
 1. **Make sure app is running:**
    ```bash
-   curl http://localhost:8479/health
+   curl http://localhost:7001/health
    ```
 
 2. **Check if running in Development mode:**
@@ -144,7 +144,7 @@ dotnet run
    ```
 
 3. **Swagger is at root URL:**
-   Visit http://localhost:8479 (not /swagger)
+   Visit http://localhost:7001 (not /swagger)
 
 ---
 
@@ -309,7 +309,7 @@ Hot reload of changes succeeded.
 ```
 
 ### 2. Use Swagger UI for API Testing
-Visit http://localhost:8479
+Visit http://localhost:7001
 - Test all endpoints interactively
 - See request/response schemas
 - Automatically generated from your code
@@ -356,16 +356,16 @@ docker-compose down -v
 ### 6. Test API Endpoints
 ```bash
 # Health check
-curl http://localhost:8479/health
+curl http://localhost:7001/health
 
 # Get all vehicles
-curl http://localhost:8479/api/vehicles
+curl http://localhost:7001/api/vehicles
 
 # Get specific vehicle
-curl http://localhost:8479/api/vehicles/1
+curl http://localhost:7001/api/vehicles/1
 
 # Use Swagger UI for easier testing!
-# http://localhost:8479
+# http://localhost:7001
 ```
 
 ---
@@ -512,8 +512,8 @@ vehicleService/
 | **Stop database** | `docker-compose down` |
 | **View logs** | Check terminal output |
 | **Database CLI** | `docker exec -it postgres-vehicle psql -U postgres -d vehicle_db` |
-| **Swagger docs** | http://localhost:8479 |
-| **Health check** | http://localhost:8479/health |
+| **Swagger docs** | http://localhost:7001 |
+| **Health check** | http://localhost:7001/health |
 | **Add migration** | `dotnet ef migrations add Name --project ../VehicleService.Infrastructure` |
 | **Update database** | `dotnet ef database update --project ../VehicleService.Infrastructure` |
 | **Reset database** | `docker-compose down -v` then restart script |
@@ -525,7 +525,7 @@ vehicleService/
 
 1. **Check if Docker Desktop is running**
 2. **Make sure .NET 9 SDK is installed** (`dotnet --version`)
-3. **Make sure no other service is using port 8479 or 7433**
+3. **Make sure no other service is using port 7001 or 7433**
 4. **Try running commands manually** (see Manual Development section)
 5. **Check error messages carefully** - they usually indicate the problem
 6. **Reset everything:**

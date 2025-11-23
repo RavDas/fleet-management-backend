@@ -59,8 +59,6 @@ src/maintenanceService/
 │
 ├── setup-and-run.sh               # Setup script
 ├── setup-and-run.sh               # Linux/Mac setup script
-├── migrate-sqlite-to-postgres.py  # Migration utility
-├── test-db-connection.py          # Database test utility
 │
 ├── docker-compose.yml             # Docker services configuration
 ├── Dockerfile                     # Docker image definition

@@ -210,14 +210,11 @@ maintenanceService/
 ├── docs/
 │   ├── README.md                # This file
 │   ├── LOCAL_DEVELOPMENT_GUIDE.md
-│   ├── PGADMIN_GUIDE.md
-│   └── SEEDER_IMPLEMENTATION.md
+│   └── PGADMIN_GUIDE.md
 ├── setup-and-run.sh             # Setup script
-├── migrate-sqlite-to-postgres.py
-├── test-db-connection.py
 ├── docker-compose.yml           # Docker services
 ├── Dockerfile                   # Docker image
-├── init-db.sql             # Database initialization (backup)
+├── migrations/                  # Alembic migrations
 └── .env                     # Environment variables
 ```
 
@@ -291,7 +288,6 @@ Both services can run simultaneously without conflicts.
 - **OpenAPI Spec:** http://localhost:5001/swagger.json
 - **pgAdmin Setup & Connection Guide:** [PGADMIN_GUIDE.md](./PGADMIN_GUIDE.md)
 - **Database Setup:** See `../../DATABASE_SETUP.md`
-- **Seeder Implementation:** See `SEEDER_IMPLEMENTATION.md`
 
 ### Using Swagger UI
 

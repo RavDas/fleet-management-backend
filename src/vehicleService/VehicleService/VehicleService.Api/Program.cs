@@ -3,6 +3,7 @@ using Microsoft.OpenApi.Models;
 using VehicleService.Infrastructure;
 using VehicleService.Infrastructure.Data;
 using static VehicleService.Infrastructure.Data.DatabaseSeeder;
+using VehicleService.Api.BackgroundServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add controllers
 builder.Services.AddControllers();
+
+// Add Heartbeat Service
+builder.Services.AddHostedService<HeartbeatService>();
 
 // Add CORS
 builder.Services.AddCors(options =>

@@ -3,6 +3,8 @@ from app.models.maintainance import MaintenanceItem
 from app.utils.database_seeder import initialize_database
 import os
 import logging
+import threading
+import time
 
 # Configure logging
 logging.basicConfig(
@@ -125,6 +127,15 @@ if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5001))
     host = os.environ.get('HOST', '0.0.0.0')
     
+    def heartbeat():
+        """Log a heartbeat message every 10 seconds"""
+        while True:
+            logger.info("💓 Maintenance Service is alive and running...")
+            time.sleep(10)
+
+    # Start heartbeat in a background thread
+    threading.Thread(target=heartbeat, daemon=True).start()
+
     logger.info(f"🌐 Starting server on {host}:{port}")
     app.run(
         host=host,

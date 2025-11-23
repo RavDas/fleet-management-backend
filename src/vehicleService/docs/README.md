@@ -36,9 +36,9 @@ docker-compose up -d
 curl http://localhost:7001/health
 ```
 
-**Service URL:** http://localhost:8479 (Local) or http://localhost:7001 (Docker)
+**Service URL:** http://localhost:7001 (Local) or http://localhost:7001 (Docker)
 **Database:** PostgreSQL on port 7433
-**Swagger UI:** http://localhost:8479 or http://localhost:7001 (root URL)
+**Swagger UI:** http://localhost:7001 or http://localhost:7001 (root URL)
 
 ---
 
@@ -124,8 +124,8 @@ dotnet watch #for hot reload
 | DELETE | `/api/services/{id}` | Delete service record |
 
 ### Documentation
-- **Swagger UI:** http://localhost:8479 (Local) / http://localhost:7001 (Docker)
-- **OpenAPI JSON:** http://localhost:8479/swagger/v1/swagger.json
+- **Swagger UI:** http://localhost:7001 (Local) / http://localhost:7001 (Docker)
+- **OpenAPI JSON:** http://localhost:7001/swagger/v1/swagger.json
 
 ---
 
@@ -300,11 +300,11 @@ docker-compose up -d
 ```
 
 ### Cannot Access Swagger
-**Note:** Swagger UI is at the root URL: **http://localhost:8479** (Local) or **http://localhost:7001** (Docker)
+**Note:** Swagger UI is at the root URL: **http://localhost:7001** (Local) or **http://localhost:7001** (Docker)
 
 Ensure the service is running:
 ```bash
-curl http://localhost:8479/
+curl http://localhost:7001/
 ```
 
 ---
@@ -322,7 +322,7 @@ Both services can run simultaneously without conflicts.
 ## Documentation
 
 - **pgAdmin Setup & Connection Guide:** [PGADMIN_GUIDE.md](./PGADMIN_GUIDE.md)
-- **API Documentation (Swagger):** Available at **http://localhost:8479** (Local) or **http://localhost:7001** (Docker)
+- **API Documentation (Swagger):** Available at **http://localhost:7001** (Local) or **http://localhost:7001** (Docker)
 - **Database Seeder:** See `VehicleService/VehicleService.Infrastructure/Data/DatabaseSeeder.cs`
 
 ---

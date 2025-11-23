@@ -171,8 +171,6 @@ Desktop.ini
 # ===================================
 # Database
 # ===================================
-# Note: Using PostgreSQL now. SQLite files below are legacy from migration.
-# Keeping instance/ and SQLite files for reference (migrate-sqlite-to-postgres.py)
 # instance/
 # *.db
 # *.sqlite

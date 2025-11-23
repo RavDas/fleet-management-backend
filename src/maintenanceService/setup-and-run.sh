@@ -190,6 +190,13 @@ echo ""
 # ===============================
 # Step 6: Run Flask Application
 # ===============================
+echo -e "${BLUE}🔄 Step 6: Applying Database Migrations...${NC}"
+# This applies the database schema changes using Alembic
+# In production, you should run this as part of your deployment pipeline or Docker entrypoint ( run in docker compose )
+flask db upgrade
+echo -e "${GREEN}✅ Database migrations applied${NC}"
+echo ""
+
 echo -e "${GREEN}============================================================${NC}"
 echo -e "${GREEN}✅ All Setup Complete! Starting Flask Application...${NC}"
 echo -e "${GREEN}============================================================${NC}"

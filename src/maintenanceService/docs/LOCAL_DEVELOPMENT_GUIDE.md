@@ -407,11 +407,8 @@ maintenanceService/
 ├── docs/                      # Documentation
 │   ├── README.md
 │   ├── LOCAL_DEVELOPMENT_GUIDE.md
-│   ├── PGADMIN_GUIDE.md
-│   └── SEEDER_IMPLEMENTATION.md
+│   └── PGADMIN_GUIDE.md
 ├── setup-and-run.sh           # Main script (Windows/Linux/Mac)
-├── test-db-connection.py      # Utility script
-├── migrate-sqlite-to-postgres.py
 ├── docker-compose.yml         # Docker services
 ├── Dockerfile                 # Docker image
 ├── run.py                     # Flask entry point
@@ -434,7 +431,7 @@ maintenanceService/
 │       └── database_seeder.py
 │
 └── instance/                 # Instance-specific files
-    └── maintenance.db        # SQLite (if used locally)
+    └── (empty)
 ```
 
 ---
