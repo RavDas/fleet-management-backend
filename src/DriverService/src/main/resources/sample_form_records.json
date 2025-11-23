@@ -1,6 +1,8 @@
 [
   {
     "driverId": 1,
+    "driverName": "John Smith",
+    "vehicleNumber": "V-001",
     "score": 85.5,
     "fuelEfficiency": 92.3,
     "onTimeRate": 88.7,
@@ -8,6 +10,8 @@
   },
   {
     "driverId": 1,
+    "driverName": "John Smith",
+    "vehicleNumber": "V-002",
     "score": 90.2,
     "fuelEfficiency": 95.1,
     "onTimeRate": 91.5,
@@ -15,6 +19,8 @@
   },
   {
     "driverId": 2,
+    "driverName": "Sarah Johnson",
+    "vehicleNumber": "V-001",
     "score": 78.9,
     "fuelEfficiency": 85.6,
     "onTimeRate": 82.3,
@@ -22,6 +28,8 @@
   },
   {
     "driverId": 2,
+    "driverName": "Sarah Johnson",
+    "vehicleNumber": "V-003",
     "score": 88.4,
     "fuelEfficiency": 90.2,
     "onTimeRate": 86.9,
@@ -29,6 +37,8 @@
   },
   {
     "driverId": 3,
+    "driverName": "Michael Brown",
+    "vehicleNumber": "V-002",
     "score": 92.1,
     "fuelEfficiency": 94.8,
     "onTimeRate": 93.2,
@@ -36,6 +46,8 @@
   },
   {
     "driverId": 4,
+    "driverName": "Emily Davis",
+    "vehicleNumber": "V-001",
     "score": 75.6,
     "fuelEfficiency": 80.4,
     "onTimeRate": 77.8,
@@ -43,6 +55,8 @@
   },
   {
     "driverId": 5,
+    "driverName": "David Wilson",
+    "vehicleNumber": "V-003",
     "score": 87.3,
     "fuelEfficiency": 89.7,
     "onTimeRate": 85.4,
@@ -50,6 +64,8 @@
   },
   {
     "driverId": 6,
+    "driverName": "Jessica Martinez",
+    "vehicleNumber": "V-002",
     "score": 91.8,
     "fuelEfficiency": 93.5,
     "onTimeRate": 90.1,
@@ -57,6 +73,8 @@
   },
   {
     "driverId": 7,
+    "driverName": "Robert Taylor",
+    "vehicleNumber": "V-001",
     "score": 82.5,
     "fuelEfficiency": 87.2,
     "onTimeRate": 84.6,
@@ -64,6 +82,8 @@
   },
   {
     "driverId": 8,
+    "driverName": "Amanda Anderson",
+    "vehicleNumber": "V-003",
     "score": 89.7,
     "fuelEfficiency": 91.9,
     "onTimeRate": 88.3,
@@ -71,6 +91,8 @@
   },
   {
     "driverId": 9,
+    "driverName": "Christopher Thomas",
+    "vehicleNumber": "V-002",
     "score": 86.2,
     "fuelEfficiency": 88.5,
     "onTimeRate": 87.1,
@@ -78,6 +100,8 @@
   },
   {
     "driverId": 10,
+    "driverName": "Lisa Jackson",
+    "vehicleNumber": "V-001",
     "score": 94.3,
     "fuelEfficiency": 96.7,
     "onTimeRate": 95.2,
@@ -85,6 +109,8 @@
   },
   {
     "driverId": 3,
+    "driverName": "Michael Brown",
+    "vehicleNumber": "V-004",
     "score": 79.4,
     "fuelEfficiency": 83.1,
     "onTimeRate": 81.7,
@@ -92,6 +118,8 @@
   },
   {
     "driverId": 5,
+    "driverName": "David Wilson",
+    "vehicleNumber": "V-005",
     "score": 88.9,
     "fuelEfficiency": 92.4,
     "onTimeRate": 89.6,
@@ -99,10 +127,11 @@
   },
   {
     "driverId": 7,
+    "driverName": "Robert Taylor",
+    "vehicleNumber": "V-002",
     "score": 83.7,
     "fuelEfficiency": 86.8,
     "onTimeRate": 85.3,
     "vehicleId": 2
   }
 ]
-
