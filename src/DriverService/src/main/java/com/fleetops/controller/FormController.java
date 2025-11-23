@@ -2,7 +2,6 @@ package com.fleetops.controller;
 
 import com.fleetops.dto.Form;
 import com.fleetops.service.FormService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +13,11 @@ import java.util.List;
 @CrossOrigin
 public class FormController {
 
-    @Autowired
-    private FormService formService;
+    private final FormService formService;
+
+    public FormController(FormService formService) {
+        this.formService = formService;
+    }
 
     @PostMapping
     public ResponseEntity<?> addForm(@RequestBody Form form) {

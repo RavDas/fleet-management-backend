@@ -44,8 +44,10 @@ public class DataSeeder implements CommandLineRunner {
                 InputStream inputStream = new ClassPathResource("sample_driver_records.json").getInputStream();
                 List<DriverEntity> drivers = objectMapper.readValue(inputStream, new TypeReference<List<DriverEntity>>() {});
                 
-                driverRepository.saveAll(drivers);
-                logger.info("✅ Seeded {} drivers.", drivers.size());
+                if (drivers != null && !drivers.isEmpty()) {
+                    driverRepository.saveAll(drivers);
+                    logger.info("✅ Seeded {} drivers.", drivers.size());
+                }
             } catch (IOException e) {
                 logger.error("❌ Failed to seed drivers: {}", e.getMessage());
             }
@@ -61,8 +63,10 @@ public class DataSeeder implements CommandLineRunner {
                 InputStream inputStream = new ClassPathResource("sample_form_records.json").getInputStream();
                 List<FormEntity> forms = objectMapper.readValue(inputStream, new TypeReference<List<FormEntity>>() {});
                 
-                formRepository.saveAll(forms);
-                logger.info("✅ Seeded {} forms.", forms.size());
+                if (forms != null && !forms.isEmpty()) {
+                    formRepository.saveAll(forms);
+                    logger.info("✅ Seeded {} forms.", forms.size());
+                }
             } catch (IOException e) {
                 logger.error("❌ Failed to seed forms: {}", e.getMessage());
             }

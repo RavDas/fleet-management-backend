@@ -3,7 +3,6 @@ package com.fleetops.service;
 import com.fleetops.dto.Form;
 import com.fleetops.entity.FormEntity;
 import com.fleetops.repository.FormRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,22 +14,32 @@ import java.util.stream.Collectors;
 @Transactional
 public class FormServiceImpl implements FormService {
 
-    @Autowired
-    private FormRepository formRepository;
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(FormServiceImpl.class);
+
+    private final FormRepository formRepository;
+
+    public FormServiceImpl(FormRepository formRepository) {
+        this.formRepository = formRepository;
+    }
 
     @Override
     public boolean addForm(Form form) {
         try {
             FormEntity formEntity = convertToEntity(form);
-            formRepository.save(formEntity);
-            return true;
+            if (formEntity != null) {
+                formRepository.save(formEntity);
+                return true;
+            }
+            return false;
         } catch (Exception e) {
+            logger.error("Error adding form: ", e);
             return false;
         }
     }
 
     @Override
     public Form getForm(Long id) {
+        if (id == null) return null;
         Optional<FormEntity> formEntity = formRepository.findById(id);
         return formEntity.map(this::convertToDto).orElse(null);
     }
@@ -45,16 +54,20 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public Form updateForm(Form form) {
-        if (form.getFormId() == null) {
+        Long formId = form.getFormId();
+        if (formId == null) {
             return null; // Cannot update without ID
         }
         
-        Optional<FormEntity> existingFormEntity = formRepository.findById(form.getFormId());
+        Optional<FormEntity> existingFormEntity = formRepository.findById(formId);
         if (existingFormEntity.isEmpty()) {
             return null; // Form not found
         }
         
         FormEntity formEntityToUpdate = existingFormEntity.get();
+        if (formEntityToUpdate == null) {
+            return null;
+        }
         
         // Update all fields from the request
         if (form.getDriverId() != null) {
@@ -85,6 +98,7 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public boolean deleteForm(Long id) {
+        if (id == null) return false;
         if (formRepository.existsById(id)) {
             formRepository.deleteById(id);
             return true;
@@ -94,6 +108,7 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public List<Form> getFormsByDriverId(Long driverId) {
+        if (driverId == null) return java.util.Collections.emptyList();
         List<FormEntity> entities = formRepository.findByDriverId(driverId);
         return entities.stream()
                 .map(this::convertToDto)

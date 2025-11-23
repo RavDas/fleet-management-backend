@@ -3,7 +3,6 @@ package com.fleetops.service;
 import com.fleetops.dto.Driver;
 import com.fleetops.entity.DriverEntity;
 import com.fleetops.repository.DriverRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,8 +14,13 @@ import java.util.stream.Collectors;
 @Transactional
 public class DriverServiceImpl implements DriverService {
 
-    @Autowired
-    private DriverRepository driverRepository;
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DriverServiceImpl.class);
+
+    private final DriverRepository driverRepository;
+
+    public DriverServiceImpl(DriverRepository driverRepository) {
+        this.driverRepository = driverRepository;
+    }
 
     @Override
     public boolean addDriver(Driver driver) {
@@ -25,15 +29,20 @@ public class DriverServiceImpl implements DriverService {
                 return false; // Driver with this license number already exists
             }
             DriverEntity driverEntity = convertToEntity(driver);
-            driverRepository.save(driverEntity);
-            return true;
+            if (driverEntity != null) {
+                driverRepository.save(driverEntity);
+                return true;
+            }
+            return false;
         } catch (Exception e) {
+            logger.error("Error adding driver: ", e);
             return false;
         }
     }
 
     @Override
     public Driver getDriver(Long id) {
+        if (id == null) return null;
         Optional<DriverEntity> driverEntity = driverRepository.findById(id);
         return driverEntity.map(this::convertToDto).orElse(null);
     }
@@ -48,16 +57,20 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public Driver updateDriver(Driver driver) {
-        if (driver.getDriverId() == null) {
+        Long driverId = driver.getDriverId();
+        if (driverId == null) {
             return null; // Cannot update without ID
         }
         
-        Optional<DriverEntity> existingDriverEntity = driverRepository.findById(driver.getDriverId());
+        Optional<DriverEntity> existingDriverEntity = driverRepository.findById(driverId);
         if (existingDriverEntity.isEmpty()) {
             return null; // Driver not found
         }
         
         DriverEntity driverEntityToUpdate = existingDriverEntity.get();
+        if (driverEntityToUpdate == null) {
+            return null;
+        }
         
         // Update fields if provided
         if (driver.getFullName() != null) {
@@ -86,6 +99,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public boolean deleteDriver(Long id) {
+        if (id == null) return false;
         if (driverRepository.existsById(id)) {
             driverRepository.deleteById(id);
             return true;

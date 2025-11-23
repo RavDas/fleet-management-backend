@@ -2,7 +2,6 @@ package com.fleetops.controller;
 
 import com.fleetops.dto.Driver;
 import com.fleetops.service.DriverService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +13,10 @@ import java.util.List;
 @CrossOrigin
 public class DriverController {
 
-    @Autowired
-    private DriverService driverService;
+    private final DriverService driverService;
 
-    @GetMapping
-    public String test(){
-        return "test complete";
+    public DriverController(DriverService driverService) {
+        this.driverService = driverService;
     }
 
     @PostMapping
