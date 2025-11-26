@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fleetops.dto.Vehicle;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "schedules")
@@ -33,6 +34,12 @@ public class ScheduleEntity {
     
     @Column(name = "status", nullable = false)
     private String status;
+    
+    @Column(name = "start_time")
+    private LocalDateTime startTime;
+    
+    @Column(name = "end_time")
+    private LocalDateTime endTime;
     
     // Helper method to get Vehicle object (transient - not persisted)
     @jakarta.persistence.Transient

@@ -14,5 +14,7 @@ namespace VehicleService.Application.Interfaces
         Task UpdateAsync(Vehicle vehicle);
         Task DeleteAsync(Vehicle vehicle);
         Task SaveChangesAsync();
+        Task LogStatusChangeAsync(Guid vehicleId, int oldStatus, int newStatus, string description, string changedBy);
+        Task<IEnumerable<VehicleStatusHistory>> GetStatusHistoryAsync(Guid vehicleId);
     }
 }

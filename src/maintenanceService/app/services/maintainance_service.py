@@ -1,28 +1,28 @@
 from app import db
-from app.models.maintainance import MaintenanceItem, MaintenanceStatus, MaintenancePriority
+from app.models.maintainance import MaintenanceItem, MaintenanceStatus, MaintenancePriority, Technician, TechnicianStatus, Part, RecurringSchedule, FrequencyType
 from datetime import datetime, date, timedelta
 from sqlalchemy import or_, and_
 
 class MaintenanceService:
     
     @staticmethod
-    def generate_maintenance_id():
-        """Generate unique maintenance ID"""
-        last_item = MaintenanceItem.query.order_by(MaintenanceItem.id.desc()).first()
-        if last_item:
-            # Try to extract number from ID (M001, M002, etc.)
+    def generate_id(prefix, model):
+        """Generate unique ID with prefix"""
+        last_item = model.query.order_by(model.id.desc()).first()
+        new_num = 1
+        
+        if last_item and last_item.id.startswith(prefix):
             try:
-                if last_item.id.startswith('M'):
-                    last_num = int(last_item.id[1:])
-                    new_num = last_num + 1
-                else:
-                    new_num = 1
-            except (ValueError, IndexError):
-                new_num = 1
-        else:
-            new_num = 1
-        return f'M{new_num:03d}'
+                new_num = int(last_item.id[len(prefix):]) + 1
+            except ValueError:
+                pass
+                
+        return f'{prefix}{new_num:03d}'
     
+    @staticmethod
+    def generate_maintenance_id():
+        return MaintenanceService.generate_id('M', MaintenanceItem)
+
     @staticmethod
     def create_maintenance_item(data):
         """Create a new maintenance item"""
@@ -131,56 +131,33 @@ class MaintenanceService:
         if not item:
             return None
         
-        # Update fields with snake_case
-        if 'status' in data and data['status']:
+        # Handle special fields
+        if data.get('status'):
             item.status = MaintenanceStatus(data['status'])
             if data['status'] == 'completed' and not item.completed_date:
                 item.completed_date = datetime.utcnow()
         
-        if 'priority' in data and data['priority']:
+        if data.get('priority'):
             item.priority = MaintenancePriority(data['priority'])
         
-        if 'type' in data:
-            item.type = data['type']
+        # Fields that can be updated dynamically
+        # (field_name, require_not_none)
+        updatable_fields = {
+            'type': False, 'description': False, 'due_date': False, 
+            'scheduled_date': False, 'completed_date': False, 
+            'assigned_to': False, 'assigned_technician': False, 
+            'notes': False, 'parts_needed': False, 'attachments': False,
+            # Numeric fields originally checked for is not None
+            'current_mileage': True, 'due_mileage': True, 
+            'estimated_cost': True, 'actual_cost': True
+        }
         
-        if 'description' in data:
-            item.description = data['description']
-        
-        if 'due_date' in data:
-            item.due_date = data['due_date']
-        
-        if 'scheduled_date' in data:
-            item.scheduled_date = data['scheduled_date']
-        
-        if 'completed_date' in data:
-            item.completed_date = data['completed_date']
-        
-        if 'current_mileage' in data and data['current_mileage'] is not None:
-            item.current_mileage = data['current_mileage']
-        
-        if 'due_mileage' in data and data['due_mileage'] is not None:
-            item.due_mileage = data['due_mileage']
-        
-        if 'estimated_cost' in data and data['estimated_cost'] is not None:
-            item.estimated_cost = data['estimated_cost']
-        
-        if 'actual_cost' in data and data['actual_cost'] is not None:
-            item.actual_cost = data['actual_cost']
-        
-        if 'assigned_to' in data:
-            item.assigned_to = data['assigned_to']
-        
-        if 'assigned_technician' in data:
-            item.assigned_technician = data['assigned_technician']
-        
-        if 'notes' in data:
-            item.notes = data['notes']
-        
-        if 'parts_needed' in data:
-            item.parts_needed = data['parts_needed']
-        
-        if 'attachments' in data:
-            item.attachments = data['attachments']
+        for field, require_not_none in updatable_fields.items():
+            if field in data:
+                value = data[field]
+                if require_not_none and value is None:
+                    continue
+                setattr(item, field, value)
         
         item.updated_at = datetime.utcnow()
         db.session.commit()
@@ -281,4 +258,387 @@ class MaintenanceService:
         
         db.session.commit()
         return updated_count
-        return updated_count
+    
+    @staticmethod
+    def get_cost_analytics():
+        """Get detailed cost analytics"""
+        # Total costs
+        total_estimated = db.session.query(
+            db.func.sum(MaintenanceItem.estimated_cost)
+        ).scalar() or 0.0
+        
+        total_actual = db.session.query(
+            db.func.sum(MaintenanceItem.actual_cost)
+        ).filter(
+            MaintenanceItem.actual_cost.isnot(None)
+        ).scalar() or 0.0
+        
+        # Cost by vehicle
+        by_vehicle = {}
+        vehicles = db.session.query(MaintenanceItem.vehicle_id).distinct().all()
+        
+        for (vehicle_id,) in vehicles:
+            vehicle_estimated = db.session.query(
+                db.func.sum(MaintenanceItem.estimated_cost)
+            ).filter(MaintenanceItem.vehicle_id == vehicle_id).scalar() or 0.0
+            
+            vehicle_actual = db.session.query(
+                db.func.sum(MaintenanceItem.actual_cost)
+            ).filter(
+                MaintenanceItem.vehicle_id == vehicle_id,
+                MaintenanceItem.actual_cost.isnot(None)
+            ).scalar() or 0.0
+            
+            by_vehicle[vehicle_id] = {
+                'estimated': float(vehicle_estimated),
+                'actual': float(vehicle_actual),
+                'variance': float(vehicle_actual - vehicle_estimated)
+            }
+        
+        # Cost by maintenance type
+        by_type = {}
+        types = db.session.query(MaintenanceItem.type).distinct().all()
+        
+        for (maint_type,) in types:
+            type_estimated = db.session.query(
+                db.func.sum(MaintenanceItem.estimated_cost)
+            ).filter(MaintenanceItem.type == maint_type).scalar() or 0.0
+            
+            type_actual = db.session.query(
+                db.func.sum(MaintenanceItem.actual_cost)
+            ).filter(
+                MaintenanceItem.type == maint_type,
+                MaintenanceItem.actual_cost.isnot(None)
+            ).scalar() or 0.0
+            
+            by_type[maint_type] = {
+                'estimated': float(type_estimated),
+                'actual': float(type_actual),
+                'count': MaintenanceItem.query.filter(MaintenanceItem.type == maint_type).count()
+            }
+        
+        variance = total_actual - total_estimated
+        variance_percent = (variance / total_estimated * 100) if total_estimated > 0 else 0
+        
+        return {
+            'total_estimated': float(total_estimated),
+            'total_actual': float(total_actual),
+            'variance': float(variance),
+            'variance_percent': float(variance_percent),
+            'by_vehicle': by_vehicle,
+            'by_type': by_type,
+            'completed_count': MaintenanceItem.query.filter(
+                MaintenanceItem.status == MaintenanceStatus.COMPLETED
+            ).count(),
+            'pending_count': MaintenanceItem.query.filter(
+                MaintenanceItem.status.in_([
+                    MaintenanceStatus.SCHEDULED,
+                    MaintenanceStatus.DUE_SOON,
+                    MaintenanceStatus.OVERDUE,
+                    MaintenanceStatus.IN_PROGRESS
+                ])
+            ).count()
+        }
+    
+    @staticmethod
+    def get_maintenance_trends(period='month', limit=12):
+        """Get maintenance trends over time"""
+        all_items = MaintenanceItem.query.all()
+        
+        trends = {
+            'periods': [],
+            'total_items': [],
+            'completed': [],
+            'estimated_cost': [],
+            'actual_cost': [],
+        }
+        
+        # Generate period labels
+        today = date.today()
+        for i in range(limit - 1, -1, -1):
+            if period == 'week':
+                period_start = today - timedelta(weeks=i)
+                period_label = period_start.strftime('%Y-W%W')
+            elif period == 'quarter':
+                months_back = i * 3
+                period_start = today - timedelta(days=months_back * 30)
+                period_label = f'{period_start.year}-Q{(period_start.month - 1) // 3 + 1}'
+            elif period == 'year':
+                period_start = date(today.year - i, 1, 1)
+                period_label = str(period_start.year)
+            else:  # month (default)
+                months_back = i
+                year = today.year - (today.month - 1 - months_back) // 12
+                month = ((today.month - 1 - months_back) % 12) + 1
+                period_start = date(year, month, 1)
+                period_label = period_start.strftime('%Y-%m')
+            
+            trends['periods'].append(period_label)
+            
+            # Count items for this period
+            # Note: This is a simplified filtering, in production use DB queries
+            period_items = [item for item in all_items if item.created_at and 
+                          item.created_at.strftime('%Y-%m') == period_start.strftime('%Y-%m')] # Rough approx
+            
+            trends['total_items'].append(len(period_items))
+            trends['completed'].append(
+                len([i for i in period_items if i.status == MaintenanceStatus.COMPLETED])
+            )
+            
+            est_cost = sum(i.estimated_cost or 0 for i in period_items)
+            act_cost = sum(i.actual_cost or 0 for i in period_items if i.actual_cost)
+            
+            trends['estimated_cost'].append(float(est_cost))
+            trends['actual_cost'].append(float(act_cost))
+        
+        return trends
+    
+    @staticmethod
+    def get_overdue_items():
+        """Get all overdue maintenance items"""
+        items = MaintenanceItem.query.filter(
+            MaintenanceItem.status == MaintenanceStatus.OVERDUE
+        ).order_by(MaintenanceItem.due_date.asc()).all()
+        
+        return [item.to_dict() for item in items]
+    
+    @staticmethod
+    def get_upcoming_items(days=30):
+        """Get upcoming maintenance items"""
+        future_date = date.today() + timedelta(days=days)
+        
+        items = MaintenanceItem.query.filter(
+            MaintenanceItem.status.in_([
+                MaintenanceStatus.SCHEDULED,
+                MaintenanceStatus.DUE_SOON
+            ]),
+            MaintenanceItem.due_date <= future_date
+        ).order_by(MaintenanceItem.due_date.asc()).all()
+        
+        return [item.to_dict() for item in items]
+    
+    @staticmethod
+    def search_maintenance(query, page=1, per_page=10):
+        """Search maintenance items by query string"""
+        search_query = MaintenanceItem.query.filter(
+            or_(
+                MaintenanceItem.type.ilike(f'%{query}%'),
+                MaintenanceItem.description.ilike(f'%{query}%'),
+                MaintenanceItem.vehicle_id.ilike(f'%{query}%'),
+                MaintenanceItem.id.ilike(f'%{query}%'),
+                MaintenanceItem.assigned_to.ilike(f'%{query}%'),
+                MaintenanceItem.assigned_technician.ilike(f'%{query}%')
+            )
+        ).order_by(MaintenanceItem.due_date.desc())
+        
+        pagination = search_query.paginate(page=page, per_page=per_page, error_out=False)
+        
+        return {
+            'items': [item.to_dict() for item in pagination.items],
+            'total': pagination.total,
+            'pages': pagination.pages,
+            'page': page,
+            'per_page': per_page
+        }
+
+    # ==================== Technician Methods ====================
+    @staticmethod
+    def get_all_technicians():
+        """Get all technicians"""
+        technicians = Technician.query.all()
+        return [t.to_dict() for t in technicians]
+
+    @staticmethod
+    def create_technician(data):
+        """Create a new technician"""
+        technician = Technician(
+            id=MaintenanceService.generate_id('T', Technician),
+            name=data['name'],
+            email=data['email'],
+            phone=data['phone'],
+            specialization=data.get('specialization', []),
+            status=TechnicianStatus(data.get('status', 'available')),
+            certifications=data.get('certifications', []),
+            hourly_rate=data.get('hourly_rate', 0.0),
+            join_date=data.get('join_date', date.today())
+        )
+        db.session.add(technician)
+        db.session.commit()
+        return technician
+
+    @staticmethod
+    def update_technician(tech_id, data):
+        """Update a technician"""
+        tech = Technician.query.get(tech_id)
+        if not tech:
+            return None
+        
+        for key, value in data.items():
+            if hasattr(tech, key):
+                if key == 'status':
+                    setattr(tech, key, TechnicianStatus(value))
+                else:
+                    setattr(tech, key, value)
+        
+        tech.updated_at = datetime.utcnow()
+        db.session.commit()
+        return tech
+
+    @staticmethod
+    def delete_technician(tech_id):
+        """Delete a technician"""
+        tech = Technician.query.get(tech_id)
+        if not tech:
+            return False
+        db.session.delete(tech)
+        db.session.commit()
+        return True
+
+    # ==================== Part Methods ====================
+    @staticmethod
+    def get_all_parts(search_query=None):
+        """Get all parts, optionally filtered by search query"""
+        query = Part.query
+        if search_query:
+            query = query.filter(
+                or_(
+                    Part.name.ilike(f'%{search_query}%'),
+                    Part.part_number.ilike(f'%{search_query}%'),
+                    Part.category.ilike(f'%{search_query}%')
+                )
+            )
+        parts = query.all()
+        return [p.to_dict() for p in parts]
+
+    @staticmethod
+    def create_part(data):
+        """Create a new part"""
+        part = Part(
+            id=MaintenanceService.generate_id('P', Part),
+            name=data['name'],
+            part_number=data['part_number'],
+            category=data['category'],
+            quantity=data['quantity'],
+            min_quantity=data['min_quantity'],
+            unit_cost=data['unit_cost'],
+            supplier=data.get('supplier'),
+            location=data.get('location'),
+            used_in=data.get('used_in', []),
+            last_restocked=date.today() if data.get('quantity', 0) > 0 else None
+        )
+        db.session.add(part)
+        db.session.commit()
+        return part
+
+    @staticmethod
+    def update_part(part_id, data):
+        """Update a part"""
+        part = Part.query.get(part_id)
+        if not part:
+            return None
+        
+        # Check if restocking happened
+        if 'quantity' in data and data['quantity'] > part.quantity:
+            part.last_restocked = date.today()
+
+        for key, value in data.items():
+            if hasattr(part, key):
+                setattr(part, key, value)
+        
+        part.updated_at = datetime.utcnow()
+        db.session.commit()
+        return part
+
+    @staticmethod
+    def delete_part(part_id):
+        """Delete a part"""
+        part = Part.query.get(part_id)
+        if not part:
+            return False
+        db.session.delete(part)
+        db.session.commit()
+        return True
+
+    # ==================== Recurring Schedule Methods ====================
+    @staticmethod
+    def get_all_recurring_schedules():
+        """Get all recurring schedules"""
+        schedules = RecurringSchedule.query.all()
+        return [s.to_dict() for s in schedules]
+
+    @staticmethod
+    def create_recurring_schedule(data):
+        """Create a new recurring schedule"""
+        # Calculate next scheduled date
+        now = datetime.utcnow()
+        freq_type = data['frequency']
+        freq_val = data['frequency_value']
+        next_date = now
+        
+        if freq_type == 'daily':
+            next_date = now + timedelta(days=freq_val)
+        elif freq_type == 'weekly':
+            next_date = now + timedelta(weeks=freq_val)
+        elif freq_type == 'monthly':
+            # Simplified monthly addition
+            next_month = now.month + freq_val
+            year_add = (next_month - 1) // 12
+            new_month = ((next_month - 1) % 12) + 1
+            next_date = now.replace(year=now.year + year_add, month=new_month)
+        elif freq_type == 'quarterly':
+             # Simplified quarterly addition
+            next_month = now.month + (freq_val * 3)
+            year_add = (next_month - 1) // 12
+            new_month = ((next_month - 1) % 12) + 1
+            next_date = now.replace(year=now.year + year_add, month=new_month)
+        elif freq_type == 'yearly':
+            next_date = now.replace(year=now.year + freq_val)
+        elif freq_type == 'mileage-based':
+            # Default to 30 days for mileage based initial schedule estimate
+            next_date = now + timedelta(days=30)
+
+        schedule = RecurringSchedule(
+            id=MaintenanceService.generate_id('RS', RecurringSchedule),
+            name=data['name'],
+            vehicle_id=data['vehicle_id'],
+            maintenance_type=data['maintenance_type'],
+            description=data.get('description'),
+            frequency=FrequencyType(data['frequency']),
+            frequency_value=data['frequency_value'],
+            estimated_cost=data.get('estimated_cost', 0.0),
+            estimated_duration=data.get('estimated_duration', 0.0),
+            assigned_to=data.get('assigned_to'),
+            is_active=data.get('is_active', True),
+            next_scheduled=next_date
+        )
+        db.session.add(schedule)
+        db.session.commit()
+        return schedule
+
+    @staticmethod
+    def update_recurring_schedule(schedule_id, data):
+        """Update a recurring schedule"""
+        schedule = RecurringSchedule.query.get(schedule_id)
+        if not schedule:
+            return None
+        
+        for key, value in data.items():
+            if hasattr(schedule, key):
+                if key == 'frequency':
+                    setattr(schedule, key, FrequencyType(value))
+                else:
+                    setattr(schedule, key, value)
+        
+        schedule.updated_at = datetime.utcnow()
+        db.session.commit()
+        return schedule
+
+    @staticmethod
+    def delete_recurring_schedule(schedule_id):
+        """Delete a recurring schedule"""
+        schedule = RecurringSchedule.query.get(schedule_id)
+        if not schedule:
+            return False
+        db.session.delete(schedule)
+        db.session.commit()
+        return True

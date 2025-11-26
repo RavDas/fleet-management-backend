@@ -16,8 +16,9 @@ namespace VehicleService.Infrastructure
             services.AddDbContext<VehicleDbContext>(options =>
                 options.UseNpgsql(connectionString));
 
-
+            // Register repositories
             services.AddScoped<IVehicleRepository, VehicleRepository>();
+            services.AddScoped<IMaintenanceRecordRepository, MaintenanceRecordRepository>();
 
             return services;
         }

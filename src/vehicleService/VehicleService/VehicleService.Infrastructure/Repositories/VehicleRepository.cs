@@ -42,5 +42,40 @@ namespace VehicleService.Infrastructure.Repositories
 
         public async Task SaveChangesAsync()
             => await _context.SaveChangesAsync();
+
+        public async Task LogStatusChangeAsync(Guid vehicleId, int oldStatus, int newStatus, string description, string changedBy)
+        {
+            var statusHistory = new VehicleStatusHistory
+            {
+                Id = Guid.NewGuid(),
+                VehicleId = vehicleId,
+                Status = (VehicleStatus)newStatus,
+                ChangedBy = changedBy,
+                Description = $"Status changed from {GetStatusString(oldStatus)} to {GetStatusString(newStatus)}. {description}",
+                ChangedAt = DateTime.UtcNow
+            };
+
+            await _context.VehicleStatusHistories.AddAsync(statusHistory);
+        }
+
+        public async Task<IEnumerable<VehicleStatusHistory>> GetStatusHistoryAsync(Guid vehicleId)
+        {
+            return await _context.VehicleStatusHistories
+                .Where(h => h.VehicleId == vehicleId)
+                .OrderByDescending(h => h.ChangedAt)
+                .ToListAsync();
+        }
+
+        private string GetStatusString(int status)
+        {
+            return status switch
+            {
+                0 => "idle",
+                1 => "active",
+                2 => "maintenance",
+                3 => "offline",
+                _ => "unknown"
+            };
+        }
     }
 }

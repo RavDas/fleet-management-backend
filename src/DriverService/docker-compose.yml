@@ -23,7 +23,7 @@ services:
       dockerfile: Dockerfile
     container_name: driver-service
     ports:
-      - "6001:8080"
+      - "6001:6001"
     depends_on:
       postgres-driver:
         condition: service_healthy
@@ -34,7 +34,7 @@ services:
       DB_NAME: driver_db
       DB_USERNAME: postgres
       DB_PASSWORD: postgres
-      SERVER_PORT: 8080
+      SERVER_PORT: 6001
     restart: always
     networks:
       - driver-network

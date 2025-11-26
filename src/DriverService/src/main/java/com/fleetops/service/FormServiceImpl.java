@@ -6,8 +6,7 @@ import com.fleetops.repository.FormRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,47 +52,32 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
+    @SuppressWarnings("null")
     public Form updateForm(Form form) {
         Long formId = form.getFormId();
         if (formId == null) {
-            return null; // Cannot update without ID
-        }
-        
-        Optional<FormEntity> existingFormEntity = formRepository.findById(formId);
-        if (existingFormEntity.isEmpty()) {
-            return null; // Form not found
-        }
-        
-        FormEntity formEntityToUpdate = existingFormEntity.get();
-        if (formEntityToUpdate == null) {
             return null;
         }
-        
-        // Update all fields from the request
-        if (form.getDriverId() != null) {
-            formEntityToUpdate.setDriverId(form.getDriverId());
+
+        Optional<FormEntity> existingForm = formRepository.findById(formId);
+        if (existingForm.isPresent()) {
+            FormEntity entity = existingForm.orElseThrow();
+            updateEntityFromDto(entity, form);
+            FormEntity updatedEntity = formRepository.save(entity);
+            return convertToDto(updatedEntity);
         }
-        if (form.getDriverName() != null) {
-            formEntityToUpdate.setDriverName(form.getDriverName());
-        }
-        if (form.getVehicleNumber() != null) {
-            formEntityToUpdate.setVehicleNumber(form.getVehicleNumber());
-        }
-        if (form.getScore() != null) {
-            formEntityToUpdate.setScore(form.getScore());
-        }
-        if (form.getFuelEfficiency() != null) {
-            formEntityToUpdate.setFuelEfficiency(form.getFuelEfficiency());
-        }
-        if (form.getOnTimeRate() != null) {
-            formEntityToUpdate.setOnTimeRate(form.getOnTimeRate());
-        }
-        if (form.getVehicleId() != null) {
-            formEntityToUpdate.setVehicleId(form.getVehicleId());
-        }
-        
-        FormEntity updatedEntity = formRepository.save(formEntityToUpdate);
-        return convertToDto(updatedEntity);
+
+        return null;
+    }
+
+    private void updateEntityFromDto(FormEntity entity, Form form) {
+        if (form.getDriverId() != null) entity.setDriverId(form.getDriverId());
+        if (form.getDriverName() != null) entity.setDriverName(form.getDriverName());
+        if (form.getVehicleNumber() != null) entity.setVehicleNumber(form.getVehicleNumber());
+        if (form.getScore() != null) entity.setScore(form.getScore());
+        if (form.getFuelEfficiency() != null) entity.setFuelEfficiency(form.getFuelEfficiency());
+        if (form.getOnTimeRate() != null) entity.setOnTimeRate(form.getOnTimeRate());
+        if (form.getVehicleId() != null) entity.setVehicleId(form.getVehicleId());
     }
 
     @Override
@@ -113,6 +97,56 @@ public class FormServiceImpl implements FormService {
         return entities.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Map<String, Object> getPerformanceTrends(Long driverId, Integer limit) {
+        if (driverId == null) {
+            return Collections.emptyMap();
+        }
+        
+        List<FormEntity> entities = formRepository.findByDriverId(driverId);
+        
+        // Sort by formId (assuming newer forms have higher IDs)
+        entities.sort(Comparator.comparing(FormEntity::getFormId));
+        
+        // Apply limit if specified
+        if (limit != null && limit > 0 && entities.size() > limit) {
+            entities = entities.subList(Math.max(0, entities.size() - limit), entities.size());
+        }
+        
+        // Extract trends data
+        List<Long> formIds = new ArrayList<>();
+        List<Double> scores = new ArrayList<>();
+        List<Double> fuelEfficiencies = new ArrayList<>();
+        List<Double> onTimeRates = new ArrayList<>();
+        
+        for (FormEntity entity : entities) {
+            formIds.add(entity.getFormId());
+            scores.add(entity.getScore() != null ? entity.getScore() : 0.0);
+            fuelEfficiencies.add(entity.getFuelEfficiency() != null ? entity.getFuelEfficiency() : 0.0);
+            onTimeRates.add(entity.getOnTimeRate() != null ? entity.getOnTimeRate() : 0.0);
+        }
+        
+        // Calculate averages
+        double avgScore = scores.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+        double avgFuelEfficiency = fuelEfficiencies.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+        double avgOnTimeRate = onTimeRates.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+        
+        // Build response
+        Map<String, Object> trends = new HashMap<>();
+        trends.put("formIds", formIds);
+        trends.put("scores", scores);
+        trends.put("fuelEfficiencies", fuelEfficiencies);
+        trends.put("onTimeRates", onTimeRates);
+        trends.put("averages", Map.of(
+            "score", Math.round(avgScore * 100.0) / 100.0,
+            "fuelEfficiency", Math.round(avgFuelEfficiency * 100.0) / 100.0,
+            "onTimeRate", Math.round(avgOnTimeRate * 100.0) / 100.0
+        ));
+        trends.put("totalForms", entities.size());
+        
+        return trends;
     }
 
     // Helper methods to convert between DTO and Entity using Builder pattern

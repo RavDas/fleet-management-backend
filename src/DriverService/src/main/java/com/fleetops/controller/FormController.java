@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/forms")
@@ -70,6 +71,17 @@ public class FormController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Form not found");
         }
+    }
+
+    @GetMapping("/trends/{driverId}")
+    public ResponseEntity<Map<String, Object>> getPerformanceTrends(
+            @PathVariable Long driverId,
+            @RequestParam(required = false, defaultValue = "10") Integer limit) {
+        Map<String, Object> trends = formService.getPerformanceTrends(driverId, limit);
+        if (trends.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(trends);
     }
 }
 

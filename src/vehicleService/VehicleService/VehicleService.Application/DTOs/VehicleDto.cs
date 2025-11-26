@@ -35,6 +35,10 @@
         public int? Status { get; set; }
         public DateTime? LastMaintenanceDate { get; set; }
         public DateTime? NextMaintenanceDate { get; set; }
+        
+        // Status change tracking
+        public string? StatusChangeReason { get; set; }
+        public string? ChangedBy { get; set; }
     }
 
     public class VehicleStatistics
@@ -60,5 +64,15 @@
         public string FuelType { get; set; } = string.Empty;
         public string? CurrentDriver { get; set; }
         public string Status { get; set; } = string.Empty;
+    }
+
+    public class VehicleStatusHistoryDto
+    {
+        public Guid Id { get; set; }
+        public Guid VehicleId { get; set; }
+        public string Status { get; set; } = string.Empty;
+        public string ChangedBy { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public DateTime ChangedAt { get; set; }
     }
 }

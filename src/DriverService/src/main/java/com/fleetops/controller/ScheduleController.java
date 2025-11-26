@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -75,6 +76,22 @@ public class ScheduleController {
             return ResponseEntity.ok("Schedule deleted successfully");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Schedule not found");
+        }
+    }
+
+    @GetMapping("/conflicts")
+    public ResponseEntity<List<Schedule>> checkConflicts(
+            @RequestParam String driverId,
+            @RequestParam String startTime,
+            @RequestParam String endTime,
+            @RequestParam(required = false) Long excludeScheduleId) {
+        try {
+            LocalDateTime start = LocalDateTime.parse(startTime);
+            LocalDateTime end = LocalDateTime.parse(endTime);
+            List<Schedule> conflicts = scheduleService.checkScheduleConflicts(driverId, start, end, excludeScheduleId);
+            return ResponseEntity.ok(conflicts);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 }

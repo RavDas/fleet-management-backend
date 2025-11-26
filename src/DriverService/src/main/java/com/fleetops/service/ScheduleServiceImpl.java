@@ -82,6 +82,12 @@ public class ScheduleServiceImpl implements ScheduleService {
         if (schedule.getStatus() != null) {
             scheduleEntityToUpdate.setStatus(schedule.getStatus());
         }
+        if (schedule.getStartTime() != null) {
+            scheduleEntityToUpdate.setStartTime(schedule.getStartTime());
+        }
+        if (schedule.getEndTime() != null) {
+            scheduleEntityToUpdate.setEndTime(schedule.getEndTime());
+        }
         
         ScheduleEntity updatedEntity = scheduleRepository.save(scheduleEntityToUpdate);
         return convertToDto(updatedEntity);
@@ -115,6 +121,40 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<Schedule> checkScheduleConflicts(String driverId, java.time.LocalDateTime startTime, 
+                                                   java.time.LocalDateTime endTime, Long excludeScheduleId) {
+        if (driverId == null || startTime == null || endTime == null) {
+            return java.util.Collections.emptyList();
+        }
+        
+        // Get all schedules for the driver
+        List<ScheduleEntity> driverSchedules = scheduleRepository.findByDriverId(driverId);
+        
+        // Filter for conflicts
+        return driverSchedules.stream()
+                .filter(schedule -> {
+                    // Exclude the schedule being updated
+                    if (excludeScheduleId != null && schedule.getScheduleId().equals(excludeScheduleId)) {
+                        return false;
+                    }
+                    
+                    // Skip if times are not set
+                    if (schedule.getStartTime() == null || schedule.getEndTime() == null) {
+                        return false;
+                    }
+                    
+                    // Check for time overlap
+                    // Conflict exists if: (startA < endB) AND (endA > startB)
+                    boolean hasOverlap = startTime.isBefore(schedule.getEndTime()) && 
+                                        endTime.isAfter(schedule.getStartTime());
+                    
+                    return hasOverlap;
+                })
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
     // Helper methods to convert between DTO and Entity using Builder pattern
     private ScheduleEntity convertToEntity(Schedule schedule) {
         ScheduleEntity entity = ScheduleEntity.builder()
@@ -122,6 +162,8 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .driverId(schedule.getDriverId())
                 .route(schedule.getRoute())
                 .status(schedule.getStatus())
+                .startTime(schedule.getStartTime())
+                .endTime(schedule.getEndTime())
                 .build();
         entity.setVehicle(schedule.getVehicle());
         return entity;
@@ -134,6 +176,8 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .route(entity.getRoute())
                 .vehicle(entity.getVehicle())
                 .status(entity.getStatus())
+                .startTime(entity.getStartTime())
+                .endTime(entity.getEndTime())
                 .build();
     }
 }

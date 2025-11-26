@@ -1,5 +1,4 @@
-from marshmallow import Schema, fields, validate, validates, ValidationError
-from datetime import date
+from marshmallow import Schema, fields, validate
 
 class MaintenanceItemSchema(Schema):
     id = fields.Str(required=True)
@@ -69,3 +68,119 @@ class MaintenanceItemUpdateSchema(Schema):
     notes = fields.Str()
     parts_needed = fields.List(fields.Dict())
     attachments = fields.List(fields.Dict())
+
+# Technician Schemas
+class TechnicianSchema(Schema):
+    id = fields.Str(dump_only=True)
+    name = fields.Str(required=True)
+    email = fields.Email(required=True)
+    phone = fields.Str()
+    specialization = fields.List(fields.Str())
+    status = fields.Str(validate=validate.OneOf(['available', 'busy', 'off-duty']))
+    rating = fields.Float()
+    completed_jobs = fields.Int()
+    active_jobs = fields.Int()
+    certifications = fields.List(fields.Str())
+    hourly_rate = fields.Float()
+    join_date = fields.Date()
+
+class TechnicianCreateSchema(Schema):
+    name = fields.Str(required=True)
+    email = fields.Email(required=True)
+    phone = fields.Str(required=True)
+    specialization = fields.List(fields.Str())
+    status = fields.Str(validate=validate.OneOf(['available', 'busy', 'off-duty']))
+    certifications = fields.List(fields.Str())
+    hourly_rate = fields.Float(required=True)
+    join_date = fields.Date()
+
+class TechnicianUpdateSchema(Schema):
+    name = fields.Str()
+    email = fields.Email()
+    phone = fields.Str()
+    specialization = fields.List(fields.Str())
+    status = fields.Str(validate=validate.OneOf(['available', 'busy', 'off-duty']))
+    rating = fields.Float()
+    completed_jobs = fields.Int()
+    active_jobs = fields.Int()
+    certifications = fields.List(fields.Str())
+    hourly_rate = fields.Float()
+
+# Part Schemas
+class PartSchema(Schema):
+    id = fields.Str(dump_only=True)
+    name = fields.Str(required=True)
+    part_number = fields.Str(required=True)
+    category = fields.Str(required=True)
+    quantity = fields.Int(required=True)
+    min_quantity = fields.Int(required=True)
+    unit_cost = fields.Float(required=True)
+    supplier = fields.Str()
+    location = fields.Str()
+    last_restocked = fields.Date()
+    used_in = fields.List(fields.Str())
+
+class PartCreateSchema(Schema):
+    name = fields.Str(required=True)
+    part_number = fields.Str(required=True)
+    category = fields.Str(required=True)
+    quantity = fields.Int(required=True, validate=validate.Range(min=0))
+    min_quantity = fields.Int(required=True, validate=validate.Range(min=0))
+    unit_cost = fields.Float(required=True, validate=validate.Range(min=0))
+    supplier = fields.Str()
+    location = fields.Str()
+    used_in = fields.List(fields.Str())
+
+class PartUpdateSchema(Schema):
+    name = fields.Str()
+    part_number = fields.Str()
+    category = fields.Str()
+    quantity = fields.Int(validate=validate.Range(min=0))
+    min_quantity = fields.Int(validate=validate.Range(min=0))
+    unit_cost = fields.Float(validate=validate.Range(min=0))
+    supplier = fields.Str()
+    location = fields.Str()
+    last_restocked = fields.Date()
+    used_in = fields.List(fields.Str())
+
+# Recurring Schedule Schemas
+class RecurringScheduleSchema(Schema):
+    id = fields.Str(dump_only=True)
+    name = fields.Str(required=True)
+    vehicle_id = fields.Str(required=True)
+    maintenance_type = fields.Str(required=True)
+    description = fields.Str()
+    frequency = fields.Str(required=True, validate=validate.OneOf(['daily', 'weekly', 'monthly', 'quarterly', 'yearly', 'mileage-based']))
+    frequency_value = fields.Int(required=True)
+    estimated_cost = fields.Float()
+    estimated_duration = fields.Float()
+    assigned_to = fields.Str()
+    is_active = fields.Bool()
+    last_executed = fields.DateTime()
+    next_scheduled = fields.DateTime()
+    total_executions = fields.Int()
+    created_date = fields.Date()
+
+class RecurringScheduleCreateSchema(Schema):
+    name = fields.Str(required=True)
+    vehicle_id = fields.Str(required=True)
+    maintenance_type = fields.Str(required=True)
+    description = fields.Str()
+    frequency = fields.Str(required=True, validate=validate.OneOf(['daily', 'weekly', 'monthly', 'quarterly', 'yearly', 'mileage-based']))
+    frequency_value = fields.Int(required=True, validate=validate.Range(min=1))
+    estimated_cost = fields.Float(validate=validate.Range(min=0))
+    estimated_duration = fields.Float(validate=validate.Range(min=0))
+    assigned_to = fields.Str()
+    is_active = fields.Bool()
+
+class RecurringScheduleUpdateSchema(Schema):
+    name = fields.Str()
+    description = fields.Str()
+    frequency = fields.Str(validate=validate.OneOf(['daily', 'weekly', 'monthly', 'quarterly', 'yearly', 'mileage-based']))
+    frequency_value = fields.Int(validate=validate.Range(min=1))
+    estimated_cost = fields.Float(validate=validate.Range(min=0))
+    estimated_duration = fields.Float(validate=validate.Range(min=0))
+    assigned_to = fields.Str()
+    is_active = fields.Bool()
+    last_executed = fields.DateTime()
+    next_scheduled = fields.DateTime()

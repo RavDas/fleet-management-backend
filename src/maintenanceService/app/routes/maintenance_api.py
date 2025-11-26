@@ -8,7 +8,16 @@ from flask_restx import Namespace, Resource, fields
 from app.services.maintainance_service import MaintenanceService
 from app.schemas.maintainance_schema import (
     MaintenanceItemCreateSchema,
-    MaintenanceItemUpdateSchema
+    MaintenanceItemUpdateSchema,
+    TechnicianSchema,
+    TechnicianCreateSchema,
+    TechnicianUpdateSchema,
+    PartSchema,
+    PartCreateSchema,
+    PartUpdateSchema,
+    RecurringScheduleSchema,
+    RecurringScheduleCreateSchema,
+    RecurringScheduleUpdateSchema
 )
 from marshmallow import ValidationError
 
@@ -106,6 +115,130 @@ summary_model = api.model('MaintenanceSummary', {
 error_model = api.model('Error', {
     'error': fields.String(description='Error message'),
     'errors': fields.Raw(description='Validation errors'),
+})
+
+# Technician Model
+technician_model = api.model('Technician', {
+    'id': fields.String(description='Technician ID'),
+    'name': fields.String(description='Technician Name'),
+    'email': fields.String(description='Email Address'),
+    'phone': fields.String(description='Phone Number'),
+    'specialization': fields.List(fields.String, description='List of specializations'),
+    'status': fields.String(description='Status'),
+    'rating': fields.Float(description='Rating'),
+    'completed_jobs': fields.Integer(description='Completed Jobs Count'),
+    'active_jobs': fields.Integer(description='Active Jobs Count'),
+    'certifications': fields.List(fields.String, description='Certifications'),
+    'hourly_rate': fields.Float(description='Hourly Rate'),
+    'join_date': fields.String(description='Join Date'),
+    'created_at': fields.String(description='Created At'),
+    'updated_at': fields.String(description='Updated At'),
+})
+
+technician_create_model = api.model('TechnicianCreate', {
+    'name': fields.String(required=True),
+    'email': fields.String(required=True),
+    'phone': fields.String(required=True),
+    'specialization': fields.List(fields.String),
+    'status': fields.String(),
+    'certifications': fields.List(fields.String),
+    'hourly_rate': fields.Float(required=True),
+    'join_date': fields.Date(),
+})
+
+technician_update_model = api.model('TechnicianUpdate', {
+    'name': fields.String(),
+    'email': fields.String(),
+    'phone': fields.String(),
+    'specialization': fields.List(fields.String),
+    'status': fields.String(),
+    'rating': fields.Float(),
+    'completed_jobs': fields.Integer(),
+    'active_jobs': fields.Integer(),
+    'certifications': fields.List(fields.String),
+    'hourly_rate': fields.Float(),
+})
+
+# Part Model
+part_model = api.model('Part', {
+    'id': fields.String(description='Part ID'),
+    'name': fields.String(description='Part Name'),
+    'part_number': fields.String(description='Part Number'),
+    'category': fields.String(description='Category'),
+    'quantity': fields.Integer(description='Quantity in stock'),
+    'min_quantity': fields.Integer(description='Minimum quantity'),
+    'unit_cost': fields.Float(description='Unit cost'),
+    'supplier': fields.String(description='Supplier'),
+    'location': fields.String(description='Location'),
+    'last_restocked': fields.String(description='Last restocked date'),
+    'used_in': fields.List(fields.String, description='Used in maintenance types'),
+})
+
+part_create_model = api.model('PartCreate', {
+    'name': fields.String(required=True),
+    'part_number': fields.String(required=True),
+    'category': fields.String(required=True),
+    'quantity': fields.Integer(required=True),
+    'min_quantity': fields.Integer(required=True),
+    'unit_cost': fields.Float(required=True),
+    'supplier': fields.String(),
+    'location': fields.String(),
+    'used_in': fields.List(fields.String),
+})
+
+part_update_model = api.model('PartUpdate', {
+    'name': fields.String(),
+    'part_number': fields.String(),
+    'category': fields.String(),
+    'quantity': fields.Integer(),
+    'min_quantity': fields.Integer(),
+    'unit_cost': fields.Float(),
+    'supplier': fields.String(),
+    'location': fields.String(),
+    'used_in': fields.List(fields.String),
+})
+
+# Recurring Schedule Model
+recurring_schedule_model = api.model('RecurringSchedule', {
+    'id': fields.String(description='Schedule ID'),
+    'name': fields.String(description='Schedule Name'),
+    'vehicle_id': fields.String(description='Vehicle ID'),
+    'maintenance_type': fields.String(description='Maintenance Type'),
+    'description': fields.String(description='Description'),
+    'frequency': fields.String(description='Frequency'),
+    'frequency_value': fields.Integer(description='Frequency Value'),
+    'estimated_cost': fields.Float(description='Estimated Cost'),
+    'estimated_duration': fields.Float(description='Estimated Duration'),
+    'assigned_to': fields.String(description='Assigned To'),
+    'is_active': fields.Boolean(description='Is Active'),
+    'last_executed': fields.String(description='Last Executed'),
+    'next_scheduled': fields.String(description='Next Scheduled'),
+    'total_executions': fields.Integer(description='Total Executions'),
+    'created_date': fields.String(description='Created Date'),
+})
+
+recurring_schedule_create_model = api.model('RecurringScheduleCreate', {
+    'name': fields.String(required=True),
+    'vehicle_id': fields.String(required=True),
+    'maintenance_type': fields.String(required=True),
+    'description': fields.String(),
+    'frequency': fields.String(required=True),
+    'frequency_value': fields.Integer(required=True),
+    'estimated_cost': fields.Float(),
+    'estimated_duration': fields.Float(),
+    'assigned_to': fields.String(),
+    'is_active': fields.Boolean(),
+})
+
+recurring_schedule_update_model = api.model('RecurringScheduleUpdate', {
+    'name': fields.String(),
+    'description': fields.String(),
+    'frequency': fields.String(),
+    'frequency_value': fields.Integer(),
+    'estimated_cost': fields.Float(),
+    'estimated_duration': fields.Float(),
+    'assigned_to': fields.String(),
+    'is_active': fields.Boolean(),
 })
 
 # ==================== API Resources ====================
@@ -296,3 +429,302 @@ class BulkStatusUpdate(Resource):
         except Exception as e:
             api.abort(500, f'Internal server error: {str(e)}')
 
+
+@api.route('/analytics/costs')
+class MaintenanceCostAnalytics(Resource):
+    @api.doc('get_cost_analytics')
+    @api.response(200, 'Success')
+    @api.response(500, 'Internal Server Error', error_model)
+    def get(self):
+        """Get detailed cost analytics for maintenance"""
+        try:
+            analytics = MaintenanceService.get_cost_analytics()
+            return analytics, 200
+        
+        except Exception as e:
+            api.abort(500, f'Internal server error: {str(e)}')
+
+
+@api.route('/analytics/trends')
+class MaintenanceTrends(Resource):
+    @api.doc('get_maintenance_trends',
+             params={
+                 'period': 'Time period: week, month, quarter, year (default: month)',
+                 'limit': 'Number of periods to return (default: 12)'
+             })
+    @api.response(200, 'Success')
+    @api.response(500, 'Internal Server Error', error_model)
+    def get(self):
+        """Get maintenance trends over time"""
+        try:
+            period = request.args.get('period', 'month')
+            limit = request.args.get('limit', 12, type=int)
+            
+            trends = MaintenanceService.get_maintenance_trends(period, limit)
+            return trends, 200
+        
+        except Exception as e:
+            api.abort(500, f'Internal server error: {str(e)}')
+
+
+@api.route('/overdue')
+class OverdueMaintenanceList(Resource):
+    @api.doc('list_overdue_maintenance')
+    @api.marshal_list_with(maintenance_item_model, code=200, description='Success')
+    @api.response(500, 'Internal Server Error', error_model)
+    def get(self):
+        """Get all overdue maintenance items"""
+        try:
+            items = MaintenanceService.get_overdue_items()
+            return items, 200
+        
+        except Exception as e:
+            api.abort(500, f'Internal server error: {str(e)}')
+
+
+@api.route('/upcoming')
+class UpcomingMaintenanceList(Resource):
+    @api.doc('list_upcoming_maintenance',
+             params={
+                 'days': 'Number of days to look ahead (default: 30)'
+             })
+    @api.marshal_list_with(maintenance_item_model, code=200, description='Success')
+    @api.response(500, 'Internal Server Error', error_model)
+    def get(self):
+        """Get upcoming maintenance items"""
+        try:
+            days = request.args.get('days', 30, type=int)
+            items = MaintenanceService.get_upcoming_items(days)
+            return items, 200
+        
+        except Exception as e:
+            api.abort(500, f'Internal server error: {str(e)}')
+
+
+@api.route('/search')
+class MaintenanceSearch(Resource):
+    @api.doc('search_maintenance',
+             params={
+                 'q': 'Search query (searches type, description, vehicle_id)',
+                 'page': 'Page number (default: 1)',
+                 'per_page': 'Items per page (default: 10)'
+             })
+    @api.marshal_with(pagination_model, code=200, description='Success')
+    @api.response(500, 'Internal Server Error', error_model)
+    def get(self):
+        """Search maintenance items by query"""
+        try:
+            query = request.args.get('q', '')
+            page = request.args.get('page', 1, type=int)
+            per_page = request.args.get('per_page', 10, type=int)
+            
+            result = MaintenanceService.search_maintenance(query, page, per_page)
+            return result, 200
+        
+        except Exception as e:
+            api.abort(500, f'Internal server error: {str(e)}')
+
+# ==================== Technician Resources ====================
+@api.route('/technicians')
+class TechnicianList(Resource):
+    @api.doc('list_technicians')
+    @api.marshal_list_with(technician_model, code=200)
+    @api.response(500, 'Internal Server Error', error_model)
+    def get(self):
+        """Get all technicians"""
+        try:
+            technicians = MaintenanceService.get_all_technicians()
+            return technicians, 200
+        except Exception as e:
+            api.abort(500, f'Internal server error: {str(e)}')
+
+    @api.doc('create_technician')
+    @api.expect(technician_create_model, validate=True)
+    @api.marshal_with(technician_model, code=201)
+    @api.response(400, 'Validation Error', error_model)
+    @api.response(500, 'Internal Server Error', error_model)
+    def post(self):
+        """Create a new technician"""
+        try:
+            schema = TechnicianCreateSchema()
+            data = schema.load(request.json)
+            technician = MaintenanceService.create_technician(data)
+            return technician.to_dict(), 201
+        except ValidationError as e:
+            api.abort(400, f'Validation error', errors=e.messages)
+        except Exception as e:
+            api.abort(500, f'Internal server error: {str(e)}')
+
+@api.route('/technicians/<string:tech_id>')
+@api.param('tech_id', 'The technician ID')
+class TechnicianItem(Resource):
+    @api.doc('update_technician')
+    @api.expect(technician_update_model, validate=True)
+    @api.marshal_with(technician_model, code=200)
+    @api.response(400, 'Validation Error', error_model)
+    @api.response(404, 'Technician not found', error_model)
+    @api.response(500, 'Internal Server Error', error_model)
+    def put(self, tech_id):
+        """Update a technician"""
+        try:
+            schema = TechnicianUpdateSchema()
+            data = schema.load(request.json)
+            technician = MaintenanceService.update_technician(tech_id, data)
+            if not technician:
+                api.abort(404, f'Technician {tech_id} not found')
+            return technician.to_dict(), 200
+        except ValidationError as e:
+            api.abort(400, f'Validation error', errors=e.messages)
+        except Exception as e:
+            api.abort(500, f'Internal server error: {str(e)}')
+
+    @api.doc('delete_technician')
+    @api.response(200, 'Success')
+    @api.response(404, 'Technician not found', error_model)
+    @api.response(500, 'Internal Server Error', error_model)
+    def delete(self, tech_id):
+        """Delete a technician"""
+        try:
+            success = MaintenanceService.delete_technician(tech_id)
+            if not success:
+                api.abort(404, f'Technician {tech_id} not found')
+            return {'message': 'Technician deleted successfully'}, 200
+        except Exception as e:
+            api.abort(500, f'Internal server error: {str(e)}')
+
+# ==================== Part Resources ====================
+@api.route('/parts')
+class PartList(Resource):
+    @api.doc('list_parts', params={'q': 'Search query'})
+    @api.marshal_list_with(part_model, code=200)
+    @api.response(500, 'Internal Server Error', error_model)
+    def get(self):
+        """Get all parts"""
+        try:
+            query = request.args.get('q')
+            parts = MaintenanceService.get_all_parts(query)
+            return parts, 200
+        except Exception as e:
+            api.abort(500, f'Internal server error: {str(e)}')
+
+    @api.doc('create_part')
+    @api.expect(part_create_model, validate=True)
+    @api.marshal_with(part_model, code=201)
+    @api.response(400, 'Validation Error', error_model)
+    @api.response(500, 'Internal Server Error', error_model)
+    def post(self):
+        """Create a new part"""
+        try:
+            schema = PartCreateSchema()
+            data = schema.load(request.json)
+            part = MaintenanceService.create_part(data)
+            return part.to_dict(), 201
+        except ValidationError as e:
+            api.abort(400, f'Validation error', errors=e.messages)
+        except Exception as e:
+            api.abort(500, f'Internal server error: {str(e)}')
+
+@api.route('/parts/<string:part_id>')
+@api.param('part_id', 'The part ID')
+class PartItem(Resource):
+    @api.doc('update_part')
+    @api.expect(part_update_model, validate=True)
+    @api.marshal_with(part_model, code=200)
+    @api.response(400, 'Validation Error', error_model)
+    @api.response(404, 'Part not found', error_model)
+    @api.response(500, 'Internal Server Error', error_model)
+    def put(self, part_id):
+        """Update a part"""
+        try:
+            schema = PartUpdateSchema()
+            data = schema.load(request.json)
+            part = MaintenanceService.update_part(part_id, data)
+            if not part:
+                api.abort(404, f'Part {part_id} not found')
+            return part.to_dict(), 200
+        except ValidationError as e:
+            api.abort(400, f'Validation error', errors=e.messages)
+        except Exception as e:
+            api.abort(500, f'Internal server error: {str(e)}')
+
+    @api.doc('delete_part')
+    @api.response(200, 'Success')
+    @api.response(404, 'Part not found', error_model)
+    @api.response(500, 'Internal Server Error', error_model)
+    def delete(self, part_id):
+        """Delete a part"""
+        try:
+            success = MaintenanceService.delete_part(part_id)
+            if not success:
+                api.abort(404, f'Part {part_id} not found')
+            return {'message': 'Part deleted successfully'}, 200
+        except Exception as e:
+            api.abort(500, f'Internal server error: {str(e)}')
+
+# ==================== Recurring Schedule Resources ====================
+@api.route('/recurring-schedules')
+class RecurringScheduleList(Resource):
+    @api.doc('list_recurring_schedules')
+    @api.marshal_list_with(recurring_schedule_model, code=200)
+    @api.response(500, 'Internal Server Error', error_model)
+    def get(self):
+        """Get all recurring schedules"""
+        try:
+            schedules = MaintenanceService.get_all_recurring_schedules()
+            return schedules, 200
+        except Exception as e:
+            api.abort(500, f'Internal server error: {str(e)}')
+
+    @api.doc('create_recurring_schedule')
+    @api.expect(recurring_schedule_create_model, validate=True)
+    @api.marshal_with(recurring_schedule_model, code=201)
+    @api.response(400, 'Validation Error', error_model)
+    @api.response(500, 'Internal Server Error', error_model)
+    def post(self):
+        """Create a new recurring schedule"""
+        try:
+            schema = RecurringScheduleCreateSchema()
+            data = schema.load(request.json)
+            schedule = MaintenanceService.create_recurring_schedule(data)
+            return schedule.to_dict(), 201
+        except ValidationError as e:
+            api.abort(400, f'Validation error', errors=e.messages)
+        except Exception as e:
+            api.abort(500, f'Internal server error: {str(e)}')
+
+@api.route('/recurring-schedules/<string:schedule_id>')
+@api.param('schedule_id', 'The schedule ID')
+class RecurringScheduleItem(Resource):
+    @api.doc('update_recurring_schedule')
+    @api.expect(recurring_schedule_update_model, validate=True)
+    @api.marshal_with(recurring_schedule_model, code=200)
+    @api.response(400, 'Validation Error', error_model)
+    @api.response(404, 'Schedule not found', error_model)
+    @api.response(500, 'Internal Server Error', error_model)
+    def put(self, schedule_id):
+        """Update a recurring schedule"""
+        try:
+            schema = RecurringScheduleUpdateSchema()
+            data = schema.load(request.json)
+            schedule = MaintenanceService.update_recurring_schedule(schedule_id, data)
+            if not schedule:
+                api.abort(404, f'Schedule {schedule_id} not found')
+            return schedule.to_dict(), 200
+        except ValidationError as e:
+            api.abort(400, f'Validation error', errors=e.messages)
+        except Exception as e:
+            api.abort(500, f'Internal server error: {str(e)}')
+
+    @api.doc('delete_recurring_schedule')
+    @api.response(200, 'Success')
+    @api.response(404, 'Schedule not found', error_model)
+    @api.response(500, 'Internal Server Error', error_model)
+    def delete(self, schedule_id):
+        """Delete a recurring schedule"""
+        try:
+            success = MaintenanceService.delete_recurring_schedule(schedule_id)
+            if not success:
+                api.abort(404, f'Schedule {schedule_id} not found')
+            return {'message': 'Schedule deleted successfully'}, 200
+        except Exception as e:
+            api.abort(500, f'Internal server error: {str(e)}')

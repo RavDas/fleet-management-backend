@@ -83,6 +83,10 @@ namespace VehicleService.Api.Controllers
             if (vehicle == null)
                 return NotFound(new { message = $"Vehicle with ID {id} not found" });
 
+            // Track status changes for history
+            bool statusChanged = request.Status.HasValue && request.Status.Value != vehicle.Status;
+            int? oldStatus = statusChanged ? vehicle.Status : null;
+
             // Update only provided fields
             if (!string.IsNullOrEmpty(request.Make)) vehicle.Make = request.Make;
             if (!string.IsNullOrEmpty(request.Model)) vehicle.Model = request.Model;
@@ -102,6 +106,13 @@ namespace VehicleService.Api.Controllers
 
             await _repo.UpdateAsync(vehicle);
             await _repo.SaveChangesAsync();
+
+            // Log status change if applicable
+            if (statusChanged && oldStatus.HasValue)
+            {
+                await _repo.LogStatusChangeAsync(vehicle.Id, oldStatus.Value, request.Status!.Value, 
+                    request.StatusChangeReason ?? "Status updated", request.ChangedBy ?? "System");
+            }
 
             return Ok(MapToDto(vehicle));
         }
@@ -202,6 +213,89 @@ namespace VehicleService.Api.Controllers
             };
         }
 
+        // POST: api/vehicles/{id}/assign-driver
+        [HttpPost("{id}/assign-driver")]
+        public async Task<IActionResult> AssignDriver(Guid id, [FromBody] AssignDriverRequest request)
+        {
+            var vehicle = await _repo.GetByIdAsync(id);
+            if (vehicle == null)
+                return NotFound(new { message = $"Vehicle with ID {id} not found" });
+
+            if (string.IsNullOrEmpty(request.DriverName))
+                return BadRequest("Driver name is required");
+
+            vehicle.CurrentDriver = request.DriverName;
+            vehicle.Status = 1; // Set to active when driver is assigned
+            vehicle.UpdatedAt = DateTime.UtcNow;
+
+            await _repo.UpdateAsync(vehicle);
+            await _repo.SaveChangesAsync();
+
+            // Log status change
+            await _repo.LogStatusChangeAsync(vehicle.Id, 0, 1, 
+                $"Driver {request.DriverName} assigned to vehicle", request.AssignedBy ?? "System");
+
+            return Ok(new 
+            { 
+                message = "Driver assigned successfully",
+                vehicle = MapToDto(vehicle)
+            });
+        }
+
+        // POST: api/vehicles/{id}/unassign-driver
+        [HttpPost("{id}/unassign-driver")]
+        public async Task<IActionResult> UnassignDriver(Guid id, [FromBody] UnassignDriverRequest request)
+        {
+            var vehicle = await _repo.GetByIdAsync(id);
+            if (vehicle == null)
+                return NotFound(new { message = $"Vehicle with ID {id} not found" });
+
+            var previousDriver = vehicle.CurrentDriver;
+            vehicle.CurrentDriver = null;
+            vehicle.Status = 0; // Set to idle when driver is unassigned
+            vehicle.UpdatedAt = DateTime.UtcNow;
+
+            await _repo.UpdateAsync(vehicle);
+            await _repo.SaveChangesAsync();
+
+            // Log status change
+            await _repo.LogStatusChangeAsync(vehicle.Id, 1, 0, 
+                $"Driver {previousDriver} unassigned from vehicle", request.UnassignedBy ?? "System");
+
+            return Ok(new 
+            { 
+                message = "Driver unassigned successfully",
+                previousDriver = previousDriver,
+                vehicle = MapToDto(vehicle)
+            });
+        }
+
+        // GET: api/vehicles/available
+        [HttpGet("available")]
+        public async Task<IActionResult> GetAvailableVehicles()
+        {
+            var vehicles = await _repo.GetAllAsync();
+            var availableVehicles = vehicles.Where(v => 
+                string.IsNullOrEmpty(v.CurrentDriver) && 
+                v.Status == 0 && 
+                v.FuelLevel >= 20
+            );
+
+            var vehicleDtos = availableVehicles.Select(v => MapToDto(v));
+            return Ok(vehicleDtos);
+        }
+
+        // GET: api/vehicles/assigned
+        [HttpGet("assigned")]
+        public async Task<IActionResult> GetAssignedVehicles()
+        {
+            var vehicles = await _repo.GetAllAsync();
+            var assignedVehicles = vehicles.Where(v => !string.IsNullOrEmpty(v.CurrentDriver));
+
+            var vehicleDtos = assignedVehicles.Select(v => MapToDto(v));
+            return Ok(vehicleDtos);
+        }
+
         // Helper method to convert status int to string
         private string GetStatusString(int status)
         {
@@ -214,5 +308,17 @@ namespace VehicleService.Api.Controllers
                 _ => "unknown"
             };
         }
+    }
+
+    // Assignment request DTOs
+    public class AssignDriverRequest
+    {
+        public string DriverName { get; set; } = string.Empty;
+        public string? AssignedBy { get; set; }
+    }
+
+    public class UnassignDriverRequest
+    {
+        public string? UnassignedBy { get; set; }
     }
 }
