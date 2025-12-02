@@ -27,6 +27,7 @@ CREATE TABLE schedules (
     driver_id VARCHAR(255) NOT NULL,
     route VARCHAR(255) NOT NULL,
     vehicle TEXT,
-    status VARCHAR(255) NOT NULL
+    status VARCHAR(255) NOT NULL,
+    start_time TIMESTAMP,
+    end_time TIMESTAMP
 );
-

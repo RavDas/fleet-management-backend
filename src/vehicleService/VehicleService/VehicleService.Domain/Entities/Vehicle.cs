@@ -33,7 +33,6 @@ namespace VehicleService.Domain.Entities
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         // Navigation properties
-        public ICollection<MaintenanceRecord>? MaintenanceRecords { get; set; }
         public ICollection<VehicleStatusHistory>? StatusHistory { get; set; }
     }
 }

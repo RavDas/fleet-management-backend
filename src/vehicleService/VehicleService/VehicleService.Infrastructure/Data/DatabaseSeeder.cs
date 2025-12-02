@@ -127,43 +127,10 @@ namespace VehicleService.Infrastructure.Data
 
             Console.WriteLine("✅ Added vehicle status histories");
 
-            // Create maintenance records
-            var maintenanceRecord1 = new MaintenanceRecord
-            {
-                Id = Guid.NewGuid(),
-                VehicleId = vehicle1.Id,
-                ServiceType = "Oil Change",
-                Description = "Routine oil and filter change",
-                ServiceDate = new DateTime(2024, 12, 1, 0, 0, 0, DateTimeKind.Utc),
-                Cost = 250.00,
-                ServiceCenter = "AutoFix Center",
-                PerformedBy = "Mark Taylor",
-                CreatedAt = DateTime.UtcNow
-            };
-
-            var maintenanceRecord2 = new MaintenanceRecord
-            {
-                Id = Guid.NewGuid(),
-                VehicleId = vehicle3.Id,
-                ServiceType = "Brake Pad Replacement",
-                Description = "Front brake pads replaced",
-                ServiceDate = new DateTime(2024, 11, 10, 0, 0, 0, DateTimeKind.Utc),
-                Cost = 480.00,
-                ServiceCenter = "SpeedServ Ltd",
-                PerformedBy = "Luke Johnson",
-                CreatedAt = DateTime.UtcNow
-            };
-
-            // Add maintenance records
-            await context.MaintenanceRecords.AddRangeAsync(maintenanceRecord1, maintenanceRecord2);
-            await context.SaveChangesAsync();
-
-            Console.WriteLine("✅ Added maintenance records");
             Console.WriteLine("🎉 Database seeding completed successfully!");
             Console.WriteLine("📊 Summary:");
             Console.WriteLine("   - 3 Vehicles (VH-001: Ford Transit Van, VH-002: Tesla Model S, VH-003: Toyota Hilux)");
             Console.WriteLine("   - 3 Status History Entries");
-            Console.WriteLine("   - 2 Maintenance Records");
         }
     }
 }

@@ -13,7 +13,6 @@ namespace VehicleService.Infrastructure.Data
         }
 
         public DbSet<Vehicle> Vehicles => Set<Vehicle>();
-        public DbSet<MaintenanceRecord> MaintenanceRecords => Set<MaintenanceRecord>();
         public DbSet<VehicleStatusHistory> VehicleStatusHistories => Set<VehicleStatusHistory>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -21,12 +20,6 @@ namespace VehicleService.Infrastructure.Data
             base.OnModelCreating(modelBuilder);
 
             // Example: Fluent configuration
-            modelBuilder.Entity<Vehicle>()
-                .HasMany(v => v.MaintenanceRecords)
-                .WithOne()
-                .HasForeignKey(r => r.VehicleId)
-                .OnDelete(DeleteBehavior.Cascade);
-
             modelBuilder.Entity<Vehicle>()
                 .HasMany(v => v.StatusHistory)
                 .WithOne()
