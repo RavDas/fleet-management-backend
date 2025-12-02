@@ -4,8 +4,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fleetops.entity.DriverEntity;
 import com.fleetops.entity.FormEntity;
+import com.fleetops.entity.ScheduleEntity;
 import com.fleetops.repository.DriverRepository;
 import com.fleetops.repository.FormRepository;
+import com.fleetops.repository.ScheduleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -23,11 +25,14 @@ public class DataSeeder implements CommandLineRunner {
 
     private final DriverRepository driverRepository;
     private final FormRepository formRepository;
+    private final ScheduleRepository scheduleRepository;
     private final ObjectMapper objectMapper;
 
-    public DataSeeder(DriverRepository driverRepository, FormRepository formRepository, ObjectMapper objectMapper) {
+    public DataSeeder(DriverRepository driverRepository, FormRepository formRepository, 
+                     ScheduleRepository scheduleRepository, ObjectMapper objectMapper) {
         this.driverRepository = driverRepository;
         this.formRepository = formRepository;
+        this.scheduleRepository = scheduleRepository;
         this.objectMapper = objectMapper;
     }
 
@@ -35,6 +40,7 @@ public class DataSeeder implements CommandLineRunner {
     public void run(String... args) {
         seedDrivers();
         seedForms();
+        seedSchedules();
     }
 
     private void seedDrivers() {
@@ -72,6 +78,25 @@ public class DataSeeder implements CommandLineRunner {
             }
         } else {
             logger.info("ℹ️  Forms table already populated. Skipping seed.");
+        }
+    }
+
+    private void seedSchedules() {
+        if (scheduleRepository.count() == 0) {
+            logger.info("📅 No schedules found. Seeding data...");
+            try {
+                InputStream inputStream = new ClassPathResource("sample_schedule_records.json").getInputStream();
+                List<ScheduleEntity> schedules = objectMapper.readValue(inputStream, new TypeReference<List<ScheduleEntity>>() {});
+                
+                if (schedules != null && !schedules.isEmpty()) {
+                    scheduleRepository.saveAll(schedules);
+                    logger.info("✅ Seeded {} schedules.", schedules.size());
+                }
+            } catch (IOException e) {
+                logger.error("❌ Failed to seed schedules: {}", e.getMessage());
+            }
+        } else {
+            logger.info("ℹ️  Schedules table already populated. Skipping seed.");
         }
     }
 }

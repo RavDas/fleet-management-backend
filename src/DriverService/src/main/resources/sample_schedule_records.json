@@ -1,0 +1,123 @@
+[
+  {
+    "driverId": "1",
+    "route": "Downtown - North Station - Central Hub",
+    "vehicleId": "ABC-1234",
+    "status": "completed",
+    "startTime": "2025-12-01T08:00:00",
+    "endTime": "2025-12-01T16:30:00"
+  },
+  {
+    "driverId": "2",
+    "route": "East Warehouse - South Depot - West Terminal",
+    "vehicleId": "XYZ-5678",
+    "status": "completed",
+    "startTime": "2025-12-01T07:30:00",
+    "endTime": "2025-12-01T15:45:00"
+  },
+  {
+    "driverId": "3",
+    "route": "Central Hub - Downtown Depot",
+    "vehicleId": "JKL-9101",
+    "status": "completed",
+    "startTime": "2025-12-01T09:00:00",
+    "endTime": "2025-12-01T14:00:00"
+  },
+  {
+    "driverId": "1",
+    "route": "North Station - West Terminal - East Warehouse",
+    "vehicleId": "MBZ-2468",
+    "status": "in-progress",
+    "startTime": "2025-12-02T08:00:00",
+    "endTime": null
+  },
+  {
+    "driverId": "4",
+    "route": "South Depot - Central Hub - North Station",
+    "vehicleId": "CHV-1357",
+    "status": "scheduled",
+    "startTime": "2025-12-02T10:00:00",
+    "endTime": null
+  },
+  {
+    "driverId": "5",
+    "route": "Downtown Depot - East Warehouse",
+    "vehicleId": "NSN-7890",
+    "status": "in-progress",
+    "startTime": "2025-12-02T07:00:00",
+    "endTime": null
+  },
+  {
+    "driverId": "6",
+    "route": "West Terminal - South Depot - Downtown Depot",
+    "vehicleId": "HND-5555",
+    "status": "scheduled",
+    "startTime": "2025-12-02T13:00:00",
+    "endTime": null
+  },
+  {
+    "driverId": "2",
+    "route": "Central Hub - North Station - East Warehouse",
+    "vehicleId": "ISU-9999",
+    "status": "scheduled",
+    "startTime": "2025-12-03T08:30:00",
+    "endTime": null
+  },
+  {
+    "driverId": "7",
+    "route": "Downtown Depot - West Terminal",
+    "vehicleId": "ABC-1234",
+    "status": "scheduled",
+    "startTime": "2025-12-03T09:00:00",
+    "endTime": null
+  },
+  {
+    "driverId": "8",
+    "route": "North Station - South Depot - Central Hub",
+    "vehicleId": "XYZ-5678",
+    "status": "scheduled",
+    "startTime": "2025-12-03T11:00:00",
+    "endTime": null
+  },
+  {
+    "driverId": "3",
+    "route": "East Warehouse - Downtown Depot - North Station",
+    "vehicleId": "MBZ-2468",
+    "status": "scheduled",
+    "startTime": "2025-12-03T14:00:00",
+    "endTime": null
+  },
+  {
+    "driverId": "9",
+    "route": "West Terminal - Central Hub",
+    "vehicleId": "NSN-7890",
+    "status": "scheduled",
+    "startTime": "2025-12-04T08:00:00",
+    "endTime": null
+  },
+  {
+    "driverId": "10",
+    "route": "South Depot - East Warehouse - North Station",
+    "vehicleId": "HND-5555",
+    "status": "scheduled",
+    "startTime": "2025-12-04T09:30:00",
+    "endTime": null
+  },
+  {
+    "driverId": "4",
+    "route": "Central Hub - Downtown Depot - West Terminal",
+    "vehicleId": "ISU-9999",
+    "status": "scheduled",
+    "startTime": "2025-12-04T12:00:00",
+    "endTime": null
+  },
+  {
+    "driverId": "5",
+    "route": "North Station - South Depot",
+    "vehicleId": "ABC-1234",
+    "status": "scheduled",
+    "startTime": "2025-12-04T15:00:00",
+    "endTime": null
+  }
+]
+
