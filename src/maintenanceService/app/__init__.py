@@ -15,7 +15,15 @@ def create_app(config_name='default'):
     # Initialize extensions
     db.init_app(app)
     migrate.init_app(app, db)
-    CORS(app, resources={r"/api/*": {"origins": app.config['CORS_ORIGINS']}})
+    
+    # Configure CORS for all routes (including /health and /api/*)
+    CORS(app, resources={
+        r"/*": {
+            "origins": app.config['CORS_ORIGINS'],
+            "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+            "allow_headers": ["Content-Type", "Authorization"]
+        }
+    })
     
     # Initialize Flask-RESTX API with Swagger documentation
     api = Api(

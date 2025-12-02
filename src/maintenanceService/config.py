@@ -20,6 +20,8 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_ECHO = True
+    # Allow all origins in development
+    CORS_ORIGINS = ['*']
 
 class ProductionConfig(Config):
     DEBUG = False
