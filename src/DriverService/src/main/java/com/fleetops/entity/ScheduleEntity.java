@@ -5,9 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fleetops.dto.Vehicle;
 import java.time.LocalDateTime;
 
 @Entity
@@ -28,9 +25,8 @@ public class ScheduleEntity {
     @Column(name = "route", nullable = false)
     private String route;
     
-    @Column(name = "vehicle", columnDefinition = "TEXT")
-    @JsonIgnore
-    private String vehicleJson;
+    @Column(name = "vehicle_id")
+    private String vehicleId;
     
     @Column(name = "status", nullable = false)
     private String status;
@@ -41,32 +37,8 @@ public class ScheduleEntity {
     @Column(name = "end_time")
     private LocalDateTime endTime;
     
-    // Helper method to get Vehicle object (transient - not persisted)
-    @jakarta.persistence.Transient
-    public Vehicle getVehicle() {
-        if (vehicleJson == null || vehicleJson.isEmpty()) {
-            return null;
-        }
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.readValue(vehicleJson, Vehicle.class);
-        } catch (Exception e) {
-            return null;
-        }
-    }
     
-    // Helper method to set Vehicle object
-    public void setVehicle(Vehicle vehicle) {
-        if (vehicle == null) {
-            this.vehicleJson = null;
-            return;
-        }
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            this.vehicleJson = mapper.writeValueAsString(vehicle);
-        } catch (Exception e) {
-            this.vehicleJson = null;
-        }
-    }
+    // Helper methods removed as we now store just the ID
+
 }
 

@@ -12,7 +12,7 @@
         public double CurrentMileage { get; set; }
         public double FuelLevel { get; set; }
         public string? CurrentLocation { get; set; }
-        public string? CurrentDriver { get; set; }
+        public Guid? CurrentDriverId { get; set; }
         public int Status { get; set; }
         public DateTime? LastMaintenanceDate { get; set; }
         public DateTime? NextMaintenanceDate { get; set; }
@@ -31,7 +31,7 @@
         public double? CurrentMileage { get; set; }
         public double? FuelLevel { get; set; }
         public string? CurrentLocation { get; set; }
-        public string? CurrentDriver { get; set; }
+        public Guid? CurrentDriverId { get; set; }
         public int? Status { get; set; }
         public DateTime? LastMaintenanceDate { get; set; }
         public DateTime? NextMaintenanceDate { get; set; }
@@ -62,7 +62,7 @@
         public string Model { get; set; } = string.Empty;
         public double FuelLevel { get; set; }
         public string FuelType { get; set; } = string.Empty;
-        public string? CurrentDriver { get; set; }
+        public Guid? CurrentDriverId { get; set; }
         public string Status { get; set; } = string.Empty;
     }
 

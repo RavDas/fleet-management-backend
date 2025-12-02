@@ -97,7 +97,7 @@ namespace VehicleService.Api.Controllers
             if (request.CurrentMileage.HasValue) vehicle.CurrentMileage = request.CurrentMileage.Value;
             if (request.FuelLevel.HasValue) vehicle.FuelLevel = request.FuelLevel.Value;
             if (request.CurrentLocation != null) vehicle.CurrentLocation = request.CurrentLocation;
-            if (request.CurrentDriver != null) vehicle.CurrentDriver = request.CurrentDriver;
+            if (request.CurrentDriverId != null) vehicle.CurrentDriverId = request.CurrentDriverId;
             if (request.Status.HasValue) vehicle.Status = request.Status.Value;
             if (request.LastMaintenanceDate.HasValue) vehicle.LastMaintenanceDate = request.LastMaintenanceDate;
             if (request.NextMaintenanceDate.HasValue) vehicle.NextMaintenanceDate = request.NextMaintenanceDate;
@@ -168,7 +168,7 @@ namespace VehicleService.Api.Controllers
                 Model = v.Model,
                 FuelLevel = v.FuelLevel,
                 FuelType = v.FuelType,
-                CurrentDriver = v.CurrentDriver,
+                CurrentDriverId = v.CurrentDriverId,
                 Status = GetStatusString(v.Status)
             });
 
@@ -204,7 +204,7 @@ namespace VehicleService.Api.Controllers
                 CurrentMileage = vehicle.CurrentMileage,
                 FuelLevel = vehicle.FuelLevel,
                 CurrentLocation = vehicle.CurrentLocation,
-                CurrentDriver = vehicle.CurrentDriver,
+                CurrentDriverId = vehicle.CurrentDriverId,
                 Status = vehicle.Status,
                 LastMaintenanceDate = vehicle.LastMaintenanceDate,
                 NextMaintenanceDate = vehicle.NextMaintenanceDate,
@@ -221,10 +221,10 @@ namespace VehicleService.Api.Controllers
             if (vehicle == null)
                 return NotFound(new { message = $"Vehicle with ID {id} not found" });
 
-            if (string.IsNullOrEmpty(request.DriverName))
-                return BadRequest("Driver name is required");
+            if (request.DriverId == Guid.Empty)
+                return BadRequest("Driver ID is required");
 
-            vehicle.CurrentDriver = request.DriverName;
+            vehicle.CurrentDriverId = request.DriverId;
             vehicle.Status = 1; // Set to active when driver is assigned
             vehicle.UpdatedAt = DateTime.UtcNow;
 
@@ -233,7 +233,7 @@ namespace VehicleService.Api.Controllers
 
             // Log status change
             await _repo.LogStatusChangeAsync(vehicle.Id, 0, 1, 
-                $"Driver {request.DriverName} assigned to vehicle", request.AssignedBy ?? "System");
+                $"Driver {request.DriverId} assigned to vehicle", request.AssignedBy ?? "System");
 
             return Ok(new 
             { 
@@ -250,8 +250,8 @@ namespace VehicleService.Api.Controllers
             if (vehicle == null)
                 return NotFound(new { message = $"Vehicle with ID {id} not found" });
 
-            var previousDriver = vehicle.CurrentDriver;
-            vehicle.CurrentDriver = null;
+            var previousDriverId = vehicle.CurrentDriverId;
+            vehicle.CurrentDriverId = null;
             vehicle.Status = 0; // Set to idle when driver is unassigned
             vehicle.UpdatedAt = DateTime.UtcNow;
 
@@ -260,12 +260,12 @@ namespace VehicleService.Api.Controllers
 
             // Log status change
             await _repo.LogStatusChangeAsync(vehicle.Id, 1, 0, 
-                $"Driver {previousDriver} unassigned from vehicle", request.UnassignedBy ?? "System");
+                $"Driver {previousDriverId} unassigned from vehicle", request.UnassignedBy ?? "System");
 
             return Ok(new 
             { 
                 message = "Driver unassigned successfully",
-                previousDriver = previousDriver,
+                previousDriverId = previousDriverId,
                 vehicle = MapToDto(vehicle)
             });
         }
@@ -276,7 +276,7 @@ namespace VehicleService.Api.Controllers
         {
             var vehicles = await _repo.GetAllAsync();
             var availableVehicles = vehicles.Where(v => 
-                string.IsNullOrEmpty(v.CurrentDriver) && 
+                v.CurrentDriverId == null && 
                 v.Status == 0 && 
                 v.FuelLevel >= 20
             );
@@ -290,7 +290,7 @@ namespace VehicleService.Api.Controllers
         public async Task<IActionResult> GetAssignedVehicles()
         {
             var vehicles = await _repo.GetAllAsync();
-            var assignedVehicles = vehicles.Where(v => !string.IsNullOrEmpty(v.CurrentDriver));
+            var assignedVehicles = vehicles.Where(v => v.CurrentDriverId != null);
 
             var vehicleDtos = assignedVehicles.Select(v => MapToDto(v));
             return Ok(vehicleDtos);
@@ -313,7 +313,7 @@ namespace VehicleService.Api.Controllers
     // Assignment request DTOs
     public class AssignDriverRequest
     {
-        public string DriverName { get; set; } = string.Empty;
+        public Guid DriverId { get; set; }
         public string? AssignedBy { get; set; }
     }
 

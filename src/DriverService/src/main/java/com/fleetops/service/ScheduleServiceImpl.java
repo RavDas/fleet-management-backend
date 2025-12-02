@@ -76,8 +76,8 @@ public class ScheduleServiceImpl implements ScheduleService {
         if (schedule.getRoute() != null) {
             scheduleEntityToUpdate.setRoute(schedule.getRoute());
         }
-        if (schedule.getVehicle() != null) {
-            scheduleEntityToUpdate.setVehicle(schedule.getVehicle());
+        if (schedule.getVehicleId() != null) {
+            scheduleEntityToUpdate.setVehicleId(schedule.getVehicleId());
         }
         if (schedule.getStatus() != null) {
             scheduleEntityToUpdate.setStatus(schedule.getStatus());
@@ -161,11 +161,11 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .scheduleId(schedule.getScheduleId())
                 .driverId(schedule.getDriverId())
                 .route(schedule.getRoute())
+                .vehicleId(schedule.getVehicleId())
                 .status(schedule.getStatus())
                 .startTime(schedule.getStartTime())
                 .endTime(schedule.getEndTime())
                 .build();
-        entity.setVehicle(schedule.getVehicle());
         return entity;
     }
 
@@ -174,7 +174,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .scheduleId(entity.getScheduleId())
                 .driverId(entity.getDriverId())
                 .route(entity.getRoute())
-                .vehicle(entity.getVehicle())
+                .vehicleId(entity.getVehicleId())
                 .status(entity.getStatus())
                 .startTime(entity.getStartTime())
                 .endTime(entity.getEndTime())

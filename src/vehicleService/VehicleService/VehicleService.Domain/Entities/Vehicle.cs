@@ -21,7 +21,7 @@ namespace VehicleService.Domain.Entities
 
         // Status info
         public string? CurrentLocation { get; set; }
-        public string? CurrentDriver { get; set; }
+        public Guid? CurrentDriverId { get; set; }
         public int Status { get; set; }
 
         // Maintenance dates

@@ -82,7 +82,7 @@ namespace VehicleService.Api.Controllers
                     licensePlate = v.LicensePlate,
                     fuelLevel = v.FuelLevel,
                     fuelType = v.FuelType,
-                    currentDriver = v.CurrentDriver,
+                    currentDriver = v.CurrentDriverId,
                     status = GetStatusString(v.Status)
                 })
             };
