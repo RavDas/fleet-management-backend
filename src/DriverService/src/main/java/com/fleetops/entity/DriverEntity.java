@@ -41,5 +41,14 @@ public class DriverEntity {
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+    
+    @Column(name = "star_rating")
+    private Double starRating;
+    
+    @Column(name = "trip_count")
+    private Integer tripCount;
+    
+    @Column(name = "hours_this_week")
+    private Double hoursThisWeek;
 }
 

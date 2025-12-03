@@ -118,6 +118,78 @@
     "status": "scheduled",
     "startTime": "2025-12-04T15:00:00",
     "endTime": null
+  },
+  {
+    "driverId": "11",
+    "route": "Downtown - Airport - Central Hub",
+    "vehicleId": "FLR-3456",
+    "status": "completed",
+    "startTime": "2025-11-28T09:00:00",
+    "endTime": "2025-11-28T17:30:00"
+  },
+  {
+    "driverId": "12",
+    "route": "Port Authority - West Terminal",
+    "vehicleId": "VLV-7890",
+    "status": "completed",
+    "startTime": "2025-11-29T08:00:00",
+    "endTime": "2025-11-29T16:00:00"
+  },
+  {
+    "driverId": "13",
+    "route": "North Station - Industrial Park",
+    "vehicleId": "PB-5544",
+    "status": "in-progress",
+    "startTime": "2025-12-03T07:00:00",
+    "endTime": null
+  },
+  {
+    "driverId": "14",
+    "route": "Central Hub - Distribution Center",
+    "vehicleId": "MCK-9988",
+    "status": "scheduled",
+    "startTime": "2025-12-05T08:30:00",
+    "endTime": null
+  },
+  {
+    "driverId": "15",
+    "route": "Downtown Depot - Regional Hub",
+    "vehicleId": "HNO-1010",
+    "status": "scheduled",
+    "startTime": "2025-12-05T10:00:00",
+    "endTime": null
+  },
+  {
+    "driverId": "6",
+    "route": "East Warehouse - Port Authority",
+    "vehicleId": "SCN-4488",
+    "status": "completed",
+    "startTime": "2025-11-30T11:00:00",
+    "endTime": "2025-11-30T18:00:00"
+  },
+  {
+    "driverId": "7",
+    "route": "South Depot - North Terminal",
+    "vehicleId": "DAF-7755",
+    "status": "completed",
+    "startTime": "2025-11-27T08:00:00",
+    "endTime": "2025-11-27T16:30:00"
+  },
+  {
+    "driverId": "8",
+    "route": "Central Hub - Airport Cargo",
+    "vehicleId": "HND-5555",
+    "status": "completed",
+    "startTime": "2025-11-26T09:30:00",
+    "endTime": "2025-11-26T17:00:00"
+  },
+  {
+    "driverId": "10",
+    "route": "Downtown - West Terminal - Central Hub",
+    "vehicleId": "ISU-9999",
+    "status": "completed",
+    "startTime": "2025-11-25T08:00:00",
+    "endTime": "2025-11-25T16:00:00"
   }
 ]
 

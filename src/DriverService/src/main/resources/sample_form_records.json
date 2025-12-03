@@ -187,5 +187,77 @@
     "fuelEfficiency": 89.1,
     "onTimeRate": 87.4,
     "vehicleId": 10
+  },
+  {
+    "driverId": 11,
+    "driverName": "Marcus Rodriguez",
+    "vehicleNumber": "FLR-3456",
+    "score": 86.5,
+    "fuelEfficiency": 88.9,
+    "onTimeRate": 87.2,
+    "vehicleId": 11
+  },
+  {
+    "driverId": 12,
+    "driverName": "Patricia Lee",
+    "vehicleNumber": "VLV-7890",
+    "score": 83.8,
+    "fuelEfficiency": 87.4,
+    "onTimeRate": 85.6,
+    "vehicleId": 12
+  },
+  {
+    "driverId": 13,
+    "driverName": "Kevin O'Brien",
+    "vehicleNumber": "PB-5544",
+    "score": 90.5,
+    "fuelEfficiency": 93.2,
+    "onTimeRate": 91.8,
+    "vehicleId": 14
+  },
+  {
+    "driverId": 14,
+    "driverName": "Angela Chen",
+    "vehicleNumber": "MCK-9988",
+    "score": 88.7,
+    "fuelEfficiency": 90.8,
+    "onTimeRate": 89.3,
+    "vehicleId": 15
+  },
+  {
+    "driverId": 6,
+    "driverName": "Jessica Martinez",
+    "vehicleNumber": "SCN-4488",
+    "score": 92.3,
+    "fuelEfficiency": 94.6,
+    "onTimeRate": 93.1,
+    "vehicleId": 19
+  },
+  {
+    "driverId": 7,
+    "driverName": "Robert Taylor",
+    "vehicleNumber": "DAF-7755",
+    "score": 81.9,
+    "fuelEfficiency": 85.3,
+    "onTimeRate": 83.7,
+    "vehicleId": 20
+  },
+  {
+    "driverId": 8,
+    "driverName": "Amanda Anderson",
+    "vehicleNumber": "HNO-1010",
+    "score": 87.6,
+    "fuelEfficiency": 90.1,
+    "onTimeRate": 88.4,
+    "vehicleId": 18
+  },
+  {
+    "driverId": 10,
+    "driverName": "Lisa Jackson",
+    "vehicleNumber": "ISU-9999",
+    "score": 95.1,
+    "fuelEfficiency": 97.2,
+    "onTimeRate": 96.4,
+    "vehicleId": 10
   }
 ]

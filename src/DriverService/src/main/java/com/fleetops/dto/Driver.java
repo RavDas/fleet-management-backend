@@ -18,4 +18,7 @@ public class Driver {
     private String phone;
     private String licenseNumber;
     private Date expiryDate;
+    private Double starRating;
+    private Integer tripCount;
+    private Double hoursThisWeek;
 }

@@ -4,104 +4,149 @@
     "email": "john.smith@fleetops.com",
     "phone": "+1-555-0101",
     "licenseNumber": "DL-2024-001",
-    "expiryDate": "2026-12-31"
+    "expiryDate": "2026-12-31",
+    "starRating": 4.8,
+    "tripCount": 342,
+    "hoursThisWeek": 38.5
   },
   {
     "fullName": "Sarah Johnson",
     "email": "sarah.johnson@fleetops.com",
     "phone": "+1-555-0102",
     "licenseNumber": "DL-2024-002",
-    "expiryDate": "2027-03-15"
+    "expiryDate": "2027-03-15",
+    "starRating": 4.6,
+    "tripCount": 287,
+    "hoursThisWeek": 42.0
   },
   {
     "fullName": "Michael Brown",
     "email": "michael.brown@fleetops.com",
     "phone": "+1-555-0103",
     "licenseNumber": "DL-2024-003",
-    "expiryDate": "2026-08-20"
+    "expiryDate": "2026-08-20",
+    "starRating": 4.9,
+    "tripCount": 456,
+    "hoursThisWeek": 40.0
   },
   {
     "fullName": "Emily Davis",
     "email": "emily.davis@fleetops.com",
     "phone": "+1-555-0104",
     "licenseNumber": "DL-2024-004",
-    "expiryDate": "2027-11-30"
+    "expiryDate": "2027-11-30",
+    "starRating": 4.3,
+    "tripCount": 198,
+    "hoursThisWeek": 35.0
   },
   {
     "fullName": "David Wilson",
     "email": "david.wilson@fleetops.com",
     "phone": "+1-555-0105",
     "licenseNumber": "DL-2024-005",
-    "expiryDate": "2026-05-10"
+    "expiryDate": "2026-05-10",
+    "starRating": 4.7,
+    "tripCount": 378,
+    "hoursThisWeek": 39.5
   },
   {
     "fullName": "Jessica Martinez",
     "email": "jessica.martinez@fleetops.com",
     "phone": "+1-555-0106",
     "licenseNumber": "DL-2024-006",
-    "expiryDate": "2027-09-25"
+    "expiryDate": "2027-09-25",
+    "starRating": 4.9,
+    "tripCount": 412,
+    "hoursThisWeek": 41.0
   },
   {
     "fullName": "Robert Taylor",
     "email": "robert.taylor@fleetops.com",
     "phone": "+1-555-0107",
     "licenseNumber": "DL-2024-007",
-    "expiryDate": "2026-07-18"
+    "expiryDate": "2026-07-18",
+    "starRating": 4.4,
+    "tripCount": 256,
+    "hoursThisWeek": 37.5
   },
   {
     "fullName": "Amanda Anderson",
     "email": "amanda.anderson@fleetops.com",
     "phone": "+1-555-0108",
     "licenseNumber": "DL-2024-008",
-    "expiryDate": "2027-04-12"
+    "expiryDate": "2027-04-12",
+    "starRating": 4.8,
+    "tripCount": 389,
+    "hoursThisWeek": 43.0
   },
   {
     "fullName": "Christopher Thomas",
     "email": "christopher.thomas@fleetops.com",
     "phone": "+1-555-0109",
     "licenseNumber": "DL-2024-009",
-    "expiryDate": "2026-10-05"
+    "expiryDate": "2026-10-05",
+    "starRating": 4.5,
+    "tripCount": 312,
+    "hoursThisWeek": 36.0
   },
   {
     "fullName": "Lisa Jackson",
     "email": "lisa.jackson@fleetops.com",
     "phone": "+1-555-0110",
     "licenseNumber": "DL-2024-010",
-    "expiryDate": "2027-06-22"
+    "expiryDate": "2027-06-22",
+    "starRating": 5.0,
+    "tripCount": 523,
+    "hoursThisWeek": 44.0
   },
   {
     "fullName": "Marcus Rodriguez",
     "email": "marcus.rodriguez@fleetops.com",
     "phone": "+1-555-0111",
     "licenseNumber": "DL-2024-011",
-    "expiryDate": "2028-01-15"
+    "expiryDate": "2028-01-15",
+    "starRating": 4.7,
+    "tripCount": 365,
+    "hoursThisWeek": 40.5
   },
   {
     "fullName": "Patricia Lee",
     "email": "patricia.lee@fleetops.com",
     "phone": "+1-555-0112",
     "licenseNumber": "DL-2024-012",
-    "expiryDate": "2027-08-30"
+    "expiryDate": "2027-08-30",
+    "starRating": 4.6,
+    "tripCount": 298,
+    "hoursThisWeek": 38.0
   },
   {
     "fullName": "Kevin O'Brien",
     "email": "kevin.obrien@fleetops.com",
     "phone": "+1-555-0113",
     "licenseNumber": "DL-2024-013",
-    "expiryDate": "2026-11-20"
+    "expiryDate": "2026-11-20",
+    "starRating": 4.8,
+    "tripCount": 401,
+    "hoursThisWeek": 42.5
   },
   {
     "fullName": "Angela Chen",
     "email": "angela.chen@fleetops.com",
     "phone": "+1-555-0114",
     "licenseNumber": "DL-2024-014",
-    "expiryDate": "2027-05-18"
+    "expiryDate": "2027-05-18",
+    "starRating": 4.7,
+    "tripCount": 334,
+    "hoursThisWeek": 39.0
   },
   {
     "fullName": "Thomas Murphy",
     "email": "thomas.murphy@fleetops.com",
     "phone": "+1-555-0115",
     "licenseNumber": "DL-2024-015",
-    "expiryDate": "2028-02-28"
+    "expiryDate": "2028-02-28",
+    "starRating": 4.5,
+    "tripCount": 278,
+    "hoursThisWeek": 37.0
   }
 ]
