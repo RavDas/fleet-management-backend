@@ -221,7 +221,7 @@ namespace VehicleService.Api.Controllers
             if (vehicle == null)
                 return NotFound(new { message = $"Vehicle with ID {id} not found" });
 
-            if (request.DriverId == Guid.Empty)
+            if (string.IsNullOrEmpty(request.DriverId))
                 return BadRequest(new { error = "Driver ID is required" });
 
             vehicle.CurrentDriverId = request.DriverId;
@@ -313,7 +313,7 @@ namespace VehicleService.Api.Controllers
     // Assignment request DTOs
     public class AssignDriverRequest
     {
-        public Guid DriverId { get; set; }
+        public string DriverId { get; set; } = string.Empty;
         public string? AssignedBy { get; set; }
     }
 

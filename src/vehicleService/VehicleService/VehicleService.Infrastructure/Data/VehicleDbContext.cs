@@ -14,6 +14,7 @@ namespace VehicleService.Infrastructure.Data
 
         public DbSet<Vehicle> Vehicles => Set<Vehicle>();
         public DbSet<VehicleStatusHistory> VehicleStatusHistories => Set<VehicleStatusHistory>();
+        public DbSet<GeneratedReport> GeneratedReports => Set<GeneratedReport>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
