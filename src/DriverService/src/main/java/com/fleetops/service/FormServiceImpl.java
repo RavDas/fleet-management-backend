@@ -16,9 +16,11 @@ public class FormServiceImpl implements FormService {
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(FormServiceImpl.class);
 
     private final FormRepository formRepository;
+    private final DriverService driverService;
 
-    public FormServiceImpl(FormRepository formRepository) {
+    public FormServiceImpl(FormRepository formRepository, DriverService driverService) {
         this.formRepository = formRepository;
+        this.driverService = driverService;
     }
 
     @Override
@@ -27,12 +29,36 @@ public class FormServiceImpl implements FormService {
             FormEntity formEntity = convertToEntity(form);
             if (formEntity != null) {
                 formRepository.save(formEntity);
+                updateDriverRating(form.getDriverId());
                 return true;
             }
             return false;
         } catch (Exception e) {
             logger.error("Error adding form: ", e);
             return false;
+        }
+    }
+
+    private void updateDriverRating(Long driverId) {
+        if (driverId == null) return;
+        
+        List<FormEntity> driverForms = formRepository.findByDriverId(driverId);
+        if (driverForms.isEmpty()) return;
+        
+        double avgScore = driverForms.stream()
+                .mapToDouble(f -> f.getScore() != null ? f.getScore() : 0.0)
+                .average()
+                .orElse(0.0);
+        
+        // Convert score (0-100) to star rating (0-5)
+        double starRating = (avgScore / 20.0);
+        // Round to 1 decimal place
+        starRating = Math.round(starRating * 10.0) / 10.0;
+        
+        com.fleetops.dto.Driver driver = driverService.getDriver(driverId);
+        if (driver != null) {
+            driver.setStarRating(starRating);
+            driverService.updateDriver(driver);
         }
     }
 
