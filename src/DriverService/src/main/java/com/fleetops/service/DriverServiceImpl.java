@@ -116,6 +116,9 @@ public class DriverServiceImpl implements DriverService {
                 .phone(driver.getPhone())
                 .licenseNumber(driver.getLicenseNumber())
                 .expiryDate(driver.getExpiryDate())
+                .starRating(driver.getStarRating())
+                .tripCount(driver.getTripCount())
+                .hoursThisWeek(driver.getHoursThisWeek())
                 .build();
     }
 
@@ -127,6 +130,9 @@ public class DriverServiceImpl implements DriverService {
                 .phone(entity.getPhone())
                 .licenseNumber(entity.getLicenseNumber())
                 .expiryDate(entity.getExpiryDate())
+                .starRating(entity.getStarRating())
+                .tripCount(entity.getTripCount())
+                .hoursThisWeek(entity.getHoursThisWeek())
                 .build();
     }
 }
