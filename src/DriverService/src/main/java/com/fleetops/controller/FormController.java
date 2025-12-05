@@ -24,9 +24,9 @@ public class FormController {
     public ResponseEntity<?> addForm(@RequestBody Form form) {
         boolean result = formService.addForm(form);
         if (result) {
-            return ResponseEntity.status(HttpStatus.CREATED).body("Form added successfully");
+            return ResponseEntity.status(HttpStatus.CREATED).body(java.util.Collections.singletonMap("message", "Form added successfully"));
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to add form");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(java.util.Collections.singletonMap("error", "Failed to add form"));
         }
     }
 
@@ -59,7 +59,7 @@ public class FormController {
         if (updatedForm != null) {
             return ResponseEntity.ok(updatedForm);
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to update form. Form not found.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(java.util.Collections.singletonMap("error", "Failed to update form. Form not found."));
         }
     }
 
@@ -67,9 +67,9 @@ public class FormController {
     public ResponseEntity<?> deleteForm(@PathVariable Long id) {
         boolean result = formService.deleteForm(id);
         if (result) {
-            return ResponseEntity.ok("Form deleted successfully");
+            return ResponseEntity.ok(java.util.Collections.singletonMap("message", "Form deleted successfully"));
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Form not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(java.util.Collections.singletonMap("error", "Form not found"));
         }
     }
 

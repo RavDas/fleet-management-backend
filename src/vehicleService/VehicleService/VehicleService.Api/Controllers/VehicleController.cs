@@ -51,7 +51,7 @@ namespace VehicleService.Api.Controllers
         public async Task<IActionResult> AddVehicle([FromBody] CreateVehicleRequest request)
         {
             if (request == null)
-                return BadRequest("Invalid vehicle data.");
+                return BadRequest(new { error = "Invalid vehicle data." });
 
             var vehicle = new Vehicle
             {
@@ -222,7 +222,7 @@ namespace VehicleService.Api.Controllers
                 return NotFound(new { message = $"Vehicle with ID {id} not found" });
 
             if (request.DriverId == Guid.Empty)
-                return BadRequest("Driver ID is required");
+                return BadRequest(new { error = "Driver ID is required" });
 
             vehicle.CurrentDriverId = request.DriverId;
             vehicle.Status = 1; // Set to active when driver is assigned

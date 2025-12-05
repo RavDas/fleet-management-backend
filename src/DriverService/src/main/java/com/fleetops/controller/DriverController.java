@@ -23,9 +23,9 @@ public class DriverController {
     public ResponseEntity<?> addDriver(@RequestBody Driver driver) {
         boolean result = driverService.addDriver(driver);
         if (result) {
-            return ResponseEntity.status(HttpStatus.CREATED).body("Driver added successfully");
+            return ResponseEntity.status(HttpStatus.CREATED).body(java.util.Collections.singletonMap("message", "Driver added successfully"));
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to add driver. License number may already exist.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(java.util.Collections.singletonMap("error", "Failed to add driver. License number may already exist."));
         }
     }
 
@@ -52,7 +52,7 @@ public class DriverController {
         if (updatedDriver != null) {
             return ResponseEntity.ok(updatedDriver);
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to update driver. Driver not found or license number already exists.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(java.util.Collections.singletonMap("error", "Failed to update driver. Driver not found or license number already exists."));
         }
     }
 
@@ -60,9 +60,9 @@ public class DriverController {
     public ResponseEntity<?> deleteDriver(@PathVariable Long id) {
         boolean result = driverService.deleteDriver(id);
         if (result) {
-            return ResponseEntity.ok("Driver deleted successfully");
+            return ResponseEntity.ok(java.util.Collections.singletonMap("message", "Driver deleted successfully"));
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Driver not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(java.util.Collections.singletonMap("error", "Driver not found"));
         }
     }
 }

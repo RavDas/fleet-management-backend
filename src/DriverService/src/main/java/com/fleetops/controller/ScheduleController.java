@@ -24,9 +24,9 @@ public class ScheduleController {
     public ResponseEntity<?> addSchedule(@RequestBody Schedule schedule) {
         boolean result = scheduleService.addSchedule(schedule);
         if (result) {
-            return ResponseEntity.status(HttpStatus.CREATED).body("Schedule added successfully");
+            return ResponseEntity.status(HttpStatus.CREATED).body(java.util.Collections.singletonMap("message", "Schedule added successfully"));
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to add schedule");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(java.util.Collections.singletonMap("error", "Failed to add schedule"));
         }
     }
 
@@ -65,7 +65,7 @@ public class ScheduleController {
         if (updatedSchedule != null) {
             return ResponseEntity.ok(updatedSchedule);
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to update schedule. Schedule not found.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(java.util.Collections.singletonMap("error", "Failed to update schedule. Schedule not found."));
         }
     }
 
@@ -73,9 +73,9 @@ public class ScheduleController {
     public ResponseEntity<?> deleteSchedule(@PathVariable Long scheduleId) {
         boolean result = scheduleService.deleteSchedule(scheduleId);
         if (result) {
-            return ResponseEntity.ok("Schedule deleted successfully");
+            return ResponseEntity.ok(java.util.Collections.singletonMap("message", "Schedule deleted successfully"));
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Schedule not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(java.util.Collections.singletonMap("error", "Schedule not found"));
         }
     }
 

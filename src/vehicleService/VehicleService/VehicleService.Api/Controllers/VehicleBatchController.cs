@@ -20,7 +20,7 @@ namespace VehicleService.Api.Controllers
         public async Task<IActionResult> BatchUpdateStatus([FromBody] BatchUpdateStatusRequest request)
         {
             if (request.VehicleIds == null || !request.VehicleIds.Any())
-                return BadRequest("Vehicle IDs are required");
+                return BadRequest(new { error = "Vehicle IDs are required" });
 
             var updatedVehicles = new List<VehicleDto>();
             var failedUpdates = new List<string>();
@@ -87,7 +87,7 @@ namespace VehicleService.Api.Controllers
         public async Task<IActionResult> BatchUpdateFuel([FromBody] BatchUpdateFuelRequest request)
         {
             if (request.VehicleIds == null || !request.VehicleIds.Any())
-                return BadRequest("Vehicle IDs are required");
+                return BadRequest(new { error = "Vehicle IDs are required" });
 
             var updatedVehicles = new List<VehicleDto>();
             var failedUpdates = new List<string>();
@@ -144,7 +144,7 @@ namespace VehicleService.Api.Controllers
         public async Task<IActionResult> BatchScheduleMaintenance([FromBody] BatchScheduleMaintenanceRequest request)
         {
             if (request.VehicleIds == null || !request.VehicleIds.Any())
-                return BadRequest("Vehicle IDs are required");
+                return BadRequest(new { error = "Vehicle IDs are required" });
 
             var updatedVehicles = new List<VehicleDto>();
             var failedUpdates = new List<string>();
@@ -216,7 +216,7 @@ namespace VehicleService.Api.Controllers
         public async Task<IActionResult> BatchDelete([FromBody] BatchDeleteRequest request)
         {
             if (request.VehicleIds == null || !request.VehicleIds.Any())
-                return BadRequest("Vehicle IDs are required");
+                return BadRequest(new { error = "Vehicle IDs are required" });
 
             var deletedIds = new List<Guid>();
             var failedDeletes = new List<string>();
