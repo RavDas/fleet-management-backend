@@ -10,10 +10,12 @@ bp = Blueprint('maintenance', __name__, url_prefix='/api/maintenance')
 def create_maintenance():
     data = request.get_json()
     
-    # Verify vehicle exists in vehicle service
-    vehicle_response = requests.get(f"{Config.VEHICLE_SERVICE_URL}/api/vehicles/{data['vehicle_id']}")
-    if vehicle_response.status_code != 200:
-        return jsonify({'error': 'Vehicle not found'}), 404
+    # Removing east west traffic.
+    #
+    # # Verify vehicle exists in vehicle service
+    # # vehicle_response = requests.get(f"{Config.VEHICLE_SERVICE_URL}/api/vehicles/{data['vehicle_id']}")
+    # # if vehicle_response.status_code != 200:
+    # #     return jsonify({'error': 'Vehicle not found'}), 404
 
     maintenance = Maintenance(
         vehicle_id=data['vehicle_id'],
