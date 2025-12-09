@@ -16,6 +16,10 @@ class Config:
     
     # CORS
     CORS_ORIGINS = os.environ.get('CORS_ORIGINS', '*')
+    
+    # OIDC / Keycloak
+    OIDC_ISSUER = os.environ.get('OIDC_ISSUER')  # e.g. http://keycloak:8080/realms/fleet-management
+    AUTH_DISABLED = os.environ.get('AUTH_DISABLED', 'False').lower() == 'true'
 
 class DevelopmentConfig(Config):
     DEBUG = True
