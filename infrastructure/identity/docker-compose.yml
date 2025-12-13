@@ -28,7 +28,9 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:26.0
     container_name: fleet-keycloak
-    command: start --optimized
+    #command: start --optimized
+    command: start-dev
+
     environment:
       # Administrative User
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
