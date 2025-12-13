@@ -1,0 +1,306 @@
+================================================================================
+KEYCLOAK INTEGRATION - IMPLEMENTATION SUMMARY
+Fleet Management System
+================================================================================
+
+COMPLETED: Keycloak has been fully integrated into the Fleet Management System.
+All backend services and the frontend are now configured to use Keycloak for 
+authentication and authorization.
+
+================================================================================
+CHANGES MADE
+================================================================================
+
+1. FRONTEND (Next.js Application)
+   ===============================
+
+   a) Installed Dependencies:
+      - next-auth@latest (for Keycloak integration)
+
+   b) Created New Files:
+      - src/lib/auth.ts
+        → NextAuth configuration with Keycloak provider
+        → JWT token handling and role mapping
+      
+      - src/app/api/auth/[...nextauth]/route.ts
+        → NextAuth API route handler
+      
+      - src/types/next-auth.d.ts
+        → TypeScript type definitions for NextAuth session
+      
+      - src/components/SessionProviderWrapper.tsx
+        → Client-side session provider wrapper
+      
+      - src/hooks/useAuthenticatedApi.ts
+        → Hook to automatically inject JWT tokens into API calls
+      
+      - src/services/api/authInterceptor.ts
+        → Utility for authenticated API requests
+
+   c) Modified Files:
+      - src/contexts/AuthContext.tsx
+        → Replaced mock authentication with NextAuth/Keycloak
+        → Uses useSession hook from next-auth
+        → Provides accessToken for API calls
+      
+      - src/app/layout.tsx
+        → Wrapped app with SessionProviderWrapper
+      
+      - src/app/(auth)/login/page.tsx
+        → Updated to use Keycloak authentication
+        → Removed mock login parameters
+      
+      - src/components/auth/Login.tsx
+        → Simplified to single "Sign In with Keycloak" button
+        → Removed mock credentials form
+
+      - src/app/(dashboard)/layout.tsx
+        → Added useAuthenticatedApi hook
+        → Automatically configures API clients with JWT token
+
+   d) Environment Configuration:
+      - Created: fleet-management-app/env.example.txt
+        → Template for .env.local with required variables
+        → KEYCLOAK_ID, KEYCLOAK_SECRET, KEYCLOAK_ISSUER
+        → NEXTAUTH_URL, NEXTAUTH_SECRET
+        → Backend service URLs
+
+2. BACKEND SERVICES
+   =================
+
+   a) Driver Service (Java/Spring Boot):
+      - File: src/DriverService/src/main/resources/application.yml
+      - Change: Fixed OIDC issuer configuration
+      - Removed: Empty jwk-set-uri (uses auto-discovery)
+      - Configured: http://localhost:8080/realms/fleet-management
+
+      Environment Template:
+      - Created: src/DriverService/env.example.txt
+      - Variables: OIDC_ISSUER_URI, DB_*, SERVER_PORT
+
+   b) Vehicle Service (C#/.NET):
+      - File: src/vehicleService/VehicleService/VehicleService.Api/appsettings.json
+      - Status: Already configured correctly
+      - Authority: http://localhost:8080/realms/fleet-management
+      - Audience: vehicle-service
+
+      Environment Template:
+      - Created: src/vehicleService/env.example.txt
+      - Variables: KEYCLOAK_AUTHORITY, DB_*, CORS_ORIGINS
+
+   c) Maintenance Service (Python/Flask):
+      - File: src/maintenanceService/config.py
+      - Status: Already configured correctly
+      - OIDC_ISSUER: http://localhost:8080/realms/fleet-management
+      - AUTH_DISABLED: Can be set to true for development
+
+      Environment Template:
+      - Created: src/maintenanceService/env.example.txt
+      - Variables: OIDC_ISSUER, DATABASE_URL, AUTH_DISABLED
+
+================================================================================
+AUTHENTICATION FLOW
+================================================================================
+
+1. User clicks "Sign In with Keycloak" on login page
+2. Frontend redirects to Keycloak login page
+3. User enters credentials in Keycloak
+4. Keycloak validates and creates session
+5. Keycloak redirects back to: /api/auth/callback/keycloak
+6. NextAuth processes the callback, creates JWT session
+7. User is redirected to /dashboard
+8. Frontend stores session with access token
+9. All API calls include: Authorization: Bearer {token}
+10. Backend services validate token with Keycloak
+
+================================================================================
+ROLE-BASED ACCESS CONTROL (RBAC)
+================================================================================
+
+Keycloak Roles → Application Roles:
+- fleet-admin → admin (full access)
+- fleet-employee → employee (limited access)
+
+Role Mapping Location:
+- Frontend: src/lib/auth.ts (jwt callback)
+- Backend: Validated via Keycloak realm_access.roles
+
+================================================================================
+SECURITY FEATURES
+================================================================================
+
+✓ Server-side session validation (NextAuth)
+✓ JWT token authentication
+✓ Automatic token refresh
+✓ Secure HTTP-only cookies
+✓ Token expiration handling
+✓ 401 redirect to login
+✓ CORS configuration
+✓ Role-based authorization
+
+================================================================================
+KEYCLOAK CONFIGURATION REQUIRED
+================================================================================
+
+To complete the integration, you need to configure Keycloak:
+
+1. Create Client: fleet-management-frontend
+   - Client type: OpenID Connect
+   - Client authentication: ON (Confidential)
+   - Standard flow: Enabled
+   - Redirect URI: http://localhost:3000/api/auth/callback/keycloak
+
+2. Create Realm Roles:
+   - fleet-admin
+   - fleet-employee
+
+3. Create Test Users:
+   - admin (with fleet-admin role)
+   - employee (with fleet-employee role)
+
+4. Copy Client Secret:
+   - From Keycloak → Clients → fleet-management-frontend → Credentials
+   - Add to frontend .env.local as KEYCLOAK_SECRET
+
+DETAILED INSTRUCTIONS: See KEYCLOAK_SETUP.txt
+
+================================================================================
+ENVIRONMENT VARIABLES
+================================================================================
+
+FRONTEND (.env.local):
+---------------------
+KEYCLOAK_ID=fleet-management-frontend
+KEYCLOAK_SECRET=<get-from-keycloak>
+KEYCLOAK_ISSUER=http://localhost:8080/realms/fleet-management
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=<generate-random-32-chars>
+NEXT_PUBLIC_VEHICLE_SERVICE_URL=http://localhost:5000
+NEXT_PUBLIC_DRIVER_SERVICE_URL=http://localhost:6001
+NEXT_PUBLIC_MAINTENANCE_SERVICE_URL=http://localhost:5001
+
+BACKEND SERVICES:
+-----------------
+All backend services are configured to use:
+- Realm: fleet-management
+- Issuer: http://localhost:8080/realms/fleet-management
+
+No environment changes needed for backend services!
+
+================================================================================
+TESTING THE INTEGRATION
+================================================================================
+
+1. Ensure Keycloak is running:
+   cd infrastructure/identity
+   docker-compose up -d
+
+2. Configure Keycloak (see KEYCLOAK_SETUP.txt)
+
+3. Create .env.local in frontend with proper values
+
+4. Start frontend:
+   cd fleet-management-app
+   npm run dev
+
+5. Navigate to http://localhost:3000
+
+6. Click "Sign In with Keycloak"
+
+7. Login with test credentials
+
+8. Should redirect to dashboard with user info displayed
+
+9. API calls will automatically include JWT token
+
+================================================================================
+API INTEGRATION
+================================================================================
+
+The frontend automatically injects JWT tokens into all backend API calls:
+
+- useAuthenticatedApi hook configured in dashboard layout
+- All API instances (vehicleApi, driverApi, maintenanceApi) are updated
+- Authorization header added: Bearer {accessToken}
+- Backend services validate token with Keycloak
+- 401 responses trigger redirect to login
+
+Example API Call:
+-----------------
+// No need to manually add auth header
+const response = await vehicleApi.get('/api/vehicles');
+// Token is automatically included
+
+================================================================================
+FILES REFERENCE
+================================================================================
+
+Frontend Files:
+- fleet-management-app/src/lib/auth.ts
+- fleet-management-app/src/app/api/auth/[...nextauth]/route.ts
+- fleet-management-app/src/contexts/AuthContext.tsx
+- fleet-management-app/src/components/auth/Login.tsx
+- fleet-management-app/src/hooks/useAuthenticatedApi.ts
+- fleet-management-app/src/types/next-auth.d.ts
+- fleet-management-app/KEYCLOAK_SETUP.txt (step-by-step guide)
+
+Backend Files:
+- src/DriverService/src/main/resources/application.yml
+- src/vehicleService/VehicleService/VehicleService.Api/appsettings.json
+- src/maintenanceService/config.py
+- src/maintenanceService/app/utils/auth.py
+
+Environment Templates:
+- src/DriverService/env.example.txt
+- src/vehicleService/env.example.txt
+- src/maintenanceService/env.example.txt
+- fleet-management-app/env.example.txt (blocked by gitignore)
+
+================================================================================
+NEXT STEPS
+================================================================================
+
+1. Complete Keycloak configuration using KEYCLOAK_SETUP.txt
+
+2. Create .env.local file with client secret
+
+3. Test authentication flow
+
+4. Verify API calls include JWT token
+
+5. Test role-based access control
+
+6. Review security settings before production
+
+================================================================================
+TROUBLESHOOTING
+================================================================================
+
+Issue: Frontend shows error "Client authentication failed"
+Fix: Check KEYCLOAK_SECRET in .env.local matches Keycloak
+
+Issue: Backend returns 401 Unauthorized
+Fix: Ensure Keycloak is running and realm is 'fleet-management'
+
+Issue: "Invalid redirect URI"
+Fix: Add http://localhost:3000/api/auth/callback/keycloak to Keycloak
+
+Issue: CORS error
+Fix: Add http://localhost:3000 to Web origins in Keycloak client
+
+Issue: Session not persisting
+Fix: Check NEXTAUTH_SECRET is set in .env.local
+
+For detailed troubleshooting: See KEYCLOAK_SETUP.txt
+
+================================================================================
+STATUS: ✅ IMPLEMENTATION COMPLETE
+================================================================================
+
+All code changes are complete. The system is ready to use once Keycloak is
+configured according to the setup guide.
+
+Keycloak configuration is the ONLY remaining step.
+
+================================================================================
+

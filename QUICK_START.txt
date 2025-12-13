@@ -1,0 +1,121 @@
+================================================================================
+KEYCLOAK INTEGRATION - QUICK START GUIDE
+Fleet Management System
+================================================================================
+
+STEP 1: Configure Keycloak Client
+==================================
+
+1. Open: http://localhost:8080
+   Login: admin / admin
+
+2. Select realm: fleet-management
+
+3. Go to: Clients → Create Client
+
+4. Fill in:
+   Client ID: fleet-management-frontend
+   Client authentication: ON
+   Standard flow: ✓ (checked)
+   Direct access grants: ✓ (checked)
+
+5. Add URLs:
+   Root URL: http://localhost:3000
+   Valid redirect URIs: http://localhost:3000/api/auth/callback/keycloak
+   Valid post logout redirect URIs: http://localhost:3000
+   Web origins: http://localhost:3000
+
+6. Save → Go to Credentials tab → Copy "Client Secret"
+
+STEP 2: Create Roles
+=====================
+
+1. Go to: Realm Roles → Create Role
+   - Name: fleet-admin
+   - Save
+
+2. Create Role again:
+   - Name: fleet-employee
+   - Save
+
+STEP 3: Create Test Users
+==========================
+
+1. Go to: Users → Add User
+   Username: admin
+   Email: admin@fleet.com
+   Email verified: ON
+   Save
+
+   → Credentials tab: Set password to "admin123" (Temporary: OFF)
+   → Role mapping: Assign "fleet-admin"
+
+2. Add User again:
+   Username: employee
+   Email: employee@fleet.com
+   Email verified: ON
+   Save
+
+   → Credentials tab: Set password to "employee123" (Temporary: OFF)
+   → Role mapping: Assign "fleet-employee"
+
+STEP 4: Configure Frontend
+===========================
+
+1. Navigate to: fleet-management-app/
+
+2. Create file: .env.local
+
+3. Add (replace YOUR_CLIENT_SECRET):
+
+KEYCLOAK_ID=fleet-management-frontend
+KEYCLOAK_SECRET=YOUR_CLIENT_SECRET_HERE
+KEYCLOAK_ISSUER=http://localhost:8080/realms/fleet-management
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=change-this-to-random-32-chars
+NEXT_PUBLIC_VEHICLE_SERVICE_URL=http://localhost:5000
+NEXT_PUBLIC_DRIVER_SERVICE_URL=http://localhost:6001
+NEXT_PUBLIC_MAINTENANCE_SERVICE_URL=http://localhost:5001
+
+4. Generate random secret:
+   PowerShell: -join ((65..90) + (97..122) + (48..57) | Get-Random -Count 32 | % {[char]$_})
+   Or any random 32+ character string
+
+STEP 5: Start and Test
+=======================
+
+1. Start frontend:
+   cd fleet-management-app
+   npm run dev
+
+2. Open: http://localhost:3000
+
+3. Click: "Sign In with Keycloak"
+
+4. Login with: admin / admin123
+
+5. Should redirect to dashboard ✓
+
+TROUBLESHOOTING
+===============
+
+Error: "Client authentication failed"
+→ Check KEYCLOAK_SECRET matches the one in Keycloak
+
+Error: "Invalid redirect URI"  
+→ Ensure redirect URI is: http://localhost:3000/api/auth/callback/keycloak
+
+Error: Backend returns 401
+→ Check Keycloak is running and realm is 'fleet-management'
+
+Error: CORS error
+→ Add http://localhost:3000 to Web origins in Keycloak
+
+THAT'S IT!
+==========
+
+Full documentation: KEYCLOAK_SETUP.txt
+Implementation summary: KEYCLOAK_INTEGRATION_SUMMARY.txt
+
+================================================================================
+

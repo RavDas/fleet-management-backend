@@ -1,0 +1,313 @@
+================================================================================
+KEYCLOAK INTEGRATION - FILES CHANGED/CREATED
+================================================================================
+
+This document lists all files that were created or modified during the
+Keycloak integration.
+
+================================================================================
+FRONTEND FILES
+================================================================================
+
+CREATED:
+--------
+✓ fleet-management-app/src/lib/auth.ts
+  → NextAuth configuration with Keycloak provider
+  → JWT token handling and role mapping
+
+✓ fleet-management-app/src/app/api/auth/[...nextauth]/route.ts
+  → NextAuth API route handler
+
+✓ fleet-management-app/src/types/next-auth.d.ts
+  → TypeScript type definitions for NextAuth session
+
+✓ fleet-management-app/src/components/SessionProviderWrapper.tsx
+  → Client-side session provider wrapper
+
+✓ fleet-management-app/src/hooks/useAuthenticatedApi.ts
+  → Hook to automatically inject JWT tokens into API calls
+
+✓ fleet-management-app/src/services/api/authInterceptor.ts
+  → Utility functions for authenticated API requests
+
+✓ fleet-management-app/ENV_SETUP_INSTRUCTIONS.txt
+  → Instructions for creating .env.local file
+
+✓ fleet-management-app/KEYCLOAK_SETUP.txt
+  → Step-by-step guide for Keycloak configuration
+
+
+MODIFIED:
+---------
+✓ fleet-management-app/src/contexts/AuthContext.tsx
+  BEFORE: Mock authentication with localStorage
+  AFTER: NextAuth/Keycloak integration with useSession
+
+✓ fleet-management-app/src/app/layout.tsx
+  BEFORE: Only AuthProvider wrapper
+  AFTER: Added SessionProviderWrapper for NextAuth
+
+✓ fleet-management-app/src/app/(auth)/login/page.tsx
+  BEFORE: Mock login with email/password/role
+  AFTER: Keycloak authentication (no manual credentials)
+
+✓ fleet-management-app/src/components/auth/Login.tsx
+  BEFORE: Full login form with email, password, role selection
+  AFTER: Single "Sign In with Keycloak" button
+
+✓ fleet-management-app/src/app/(dashboard)/layout.tsx
+  BEFORE: Basic auth check
+  AFTER: Added useAuthenticatedApi hook for token injection
+
+✓ fleet-management-app/package.json
+  ADDED: next-auth@latest dependency
+
+
+================================================================================
+BACKEND FILES
+================================================================================
+
+MODIFIED:
+---------
+✓ src/DriverService/src/main/resources/application.yml
+  BEFORE: Had empty jwk-set-uri configuration
+  AFTER: Removed empty config, uses auto-discovery from issuer-uri
+
+✓ src/vehicleService/VehicleService/VehicleService.Api/appsettings.json
+  STATUS: Already configured correctly, no changes needed
+
+✓ src/maintenanceService/config.py
+  STATUS: Already configured correctly, no changes needed
+
+
+CREATED (Environment Templates):
+---------------------------------
+✓ src/DriverService/env.example.txt
+  → Environment variable template for Java service
+
+✓ src/vehicleService/env.example.txt
+  → Environment variable template for C# service
+
+✓ src/maintenanceService/env.example.txt
+  → Environment variable template for Python service
+
+
+================================================================================
+DOCUMENTATION FILES
+================================================================================
+
+CREATED:
+--------
+✓ KEYCLOAK_INTEGRATION_SUMMARY.txt (root)
+  → Complete implementation summary and changes
+
+✓ QUICK_START.txt (root)
+  → Quick reference guide for setup
+
+✓ AUTH_FLOW_DIAGRAM.txt (root)
+  → Visual diagrams of authentication flow
+
+✓ FILES_CHANGED.txt (root - this file)
+  → List of all files changed/created
+
+
+================================================================================
+FILE LOCATIONS MAP
+================================================================================
+
+Frontend (Next.js):
+-------------------
+fleet-management-group8-final-assignment/fleet-management-app/
+├── src/
+│   ├── app/
+│   │   ├── api/
+│   │   │   └── auth/
+│   │   │       └── [...nextauth]/
+│   │   │           └── route.ts              [CREATED]
+│   │   ├── (auth)/
+│   │   │   └── login/
+│   │   │       └── page.tsx                  [MODIFIED]
+│   │   ├── (dashboard)/
+│   │   │   └── layout.tsx                    [MODIFIED]
+│   │   └── layout.tsx                        [MODIFIED]
+│   ├── components/
+│   │   ├── auth/
+│   │   │   └── Login.tsx                     [MODIFIED]
+│   │   └── SessionProviderWrapper.tsx        [CREATED]
+│   ├── contexts/
+│   │   └── AuthContext.tsx                   [MODIFIED]
+│   ├── hooks/
+│   │   └── useAuthenticatedApi.ts            [CREATED]
+│   ├── lib/
+│   │   └── auth.ts                           [CREATED]
+│   ├── services/
+│   │   └── api/
+│   │       └── authInterceptor.ts            [CREATED]
+│   └── types/
+│       └── next-auth.d.ts                    [CREATED]
+├── package.json                              [MODIFIED]
+├── ENV_SETUP_INSTRUCTIONS.txt                [CREATED]
+└── KEYCLOAK_SETUP.txt                        [CREATED]
+
+Backend Services:
+-----------------
+fleet-management-backend/
+├── src/
+│   ├── DriverService/
+│   │   ├── src/main/resources/
+│   │   │   └── application.yml               [MODIFIED]
+│   │   └── env.example.txt                   [CREATED]
+│   ├── vehicleService/
+│   │   └── env.example.txt                   [CREATED]
+│   └── maintenanceService/
+│       └── env.example.txt                   [CREATED]
+
+Root Documentation:
+-------------------
+fleet-management-backend/
+├── KEYCLOAK_INTEGRATION_SUMMARY.txt          [CREATED]
+├── QUICK_START.txt                           [CREATED]
+├── AUTH_FLOW_DIAGRAM.txt                     [CREATED]
+└── FILES_CHANGED.txt                         [CREATED - this file]
+
+
+================================================================================
+CONFIGURATION CHANGES SUMMARY
+================================================================================
+
+Frontend:
+---------
+Dependencies Added:
+  ✓ next-auth@latest
+
+Environment Variables Required (.env.local):
+  ✓ KEYCLOAK_ID
+  ✓ KEYCLOAK_SECRET
+  ✓ KEYCLOAK_ISSUER
+  ✓ NEXTAUTH_URL
+  ✓ NEXTAUTH_SECRET
+  ✓ NEXT_PUBLIC_VEHICLE_SERVICE_URL
+  ✓ NEXT_PUBLIC_DRIVER_SERVICE_URL
+  ✓ NEXT_PUBLIC_MAINTENANCE_SERVICE_URL
+
+Backend:
+--------
+Driver Service (Java):
+  ✓ Uses: application.yml configuration
+  ✓ Issuer: http://localhost:8080/realms/fleet-management
+  ✓ Auto-discovery: Enabled
+
+Vehicle Service (C#):
+  ✓ Uses: appsettings.json configuration
+  ✓ Authority: http://localhost:8080/realms/fleet-management
+  ✓ Audience: vehicle-service
+
+Maintenance Service (Python):
+  ✓ Uses: config.py configuration
+  ✓ OIDC_ISSUER: http://localhost:8080/realms/fleet-management
+  ✓ AUTH_DISABLED: Can be set to true for dev
+
+
+================================================================================
+NO CHANGES NEEDED
+================================================================================
+
+The following files work as-is and don't need modification:
+
+Backend Service Authentication:
+  ✓ src/vehicleService/VehicleService/VehicleService.Api/Program.cs
+  ✓ src/maintenanceService/app/utils/auth.py
+  ✓ All backend service authentication logic
+
+Infrastructure:
+  ✓ infrastructure/identity/docker-compose.yml (Keycloak)
+  ✓ infrastructure/data/docker-compose.yml (Databases)
+
+Frontend Services:
+  ✓ src/services/api/baseApi.ts (has setAuthToken method)
+  ✓ src/services/api/vehicleService.ts
+  ✓ src/services/api/driverService.ts
+  ✓ src/services/api/maintenanceService.ts
+
+
+================================================================================
+TESTING CHECKLIST
+================================================================================
+
+Before Testing:
+  ☐ Keycloak is running (docker-compose up in infrastructure/identity)
+  ☐ Created Keycloak client (fleet-management-frontend)
+  ☐ Created realm roles (fleet-admin, fleet-employee)
+  ☐ Created test users with roles
+  ☐ Copied client secret from Keycloak
+  ☐ Created .env.local with all required variables
+  ☐ Generated random NEXTAUTH_SECRET
+  ☐ Backend services are running
+
+During Testing:
+  ☐ Can access http://localhost:3000
+  ☐ Login page shows "Sign In with Keycloak" button
+  ☐ Clicking button redirects to Keycloak
+  ☐ Can login with test credentials
+  ☐ Redirects back to dashboard after login
+  ☐ User info displays correctly in dashboard
+  ☐ Can make API calls to backend services
+  ☐ Backend validates JWT token
+  ☐ Can logout successfully
+  ☐ After logout, cannot access dashboard
+
+API Integration Testing:
+  ☐ Open browser DevTools → Network tab
+  ☐ Make an API call (e.g., view vehicles)
+  ☐ Check request headers include: Authorization: Bearer {token}
+  ☐ Backend returns 200 OK (not 401)
+  ☐ Data displays correctly in UI
+
+
+================================================================================
+ROLLBACK INSTRUCTIONS (if needed)
+================================================================================
+
+If you need to revert to mock authentication:
+
+1. Uninstall next-auth:
+   npm uninstall next-auth
+
+2. Restore original files from git:
+   git checkout src/contexts/AuthContext.tsx
+   git checkout src/components/auth/Login.tsx
+   git checkout src/app/(auth)/login/page.tsx
+   git checkout src/app/layout.tsx
+   git checkout src/app/(dashboard)/layout.tsx
+
+3. Delete new files:
+   - src/lib/auth.ts
+   - src/app/api/auth/[...nextauth]/route.ts
+   - src/types/next-auth.d.ts
+   - src/components/SessionProviderWrapper.tsx
+   - src/hooks/useAuthenticatedApi.ts
+
+4. Remove .env.local file
+
+5. Restart dev server
+
+
+================================================================================
+SUPPORT & DOCUMENTATION
+================================================================================
+
+Quick Start:           QUICK_START.txt
+Full Setup Guide:      fleet-management-app/KEYCLOAK_SETUP.txt
+Environment Setup:     fleet-management-app/ENV_SETUP_INSTRUCTIONS.txt
+Implementation Details: KEYCLOAK_INTEGRATION_SUMMARY.txt
+Flow Diagrams:         AUTH_FLOW_DIAGRAM.txt
+
+For Issues:
+- Check troubleshooting sections in documentation files
+- Verify all environment variables are set correctly
+- Ensure Keycloak is running and configured properly
+- Check browser console for error messages
+- Check backend service logs for authentication errors
+
+================================================================================
+
