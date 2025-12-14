@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: vehicle-virtualservice
+  namespace: default
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - fleet-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /vehicle
+    route:
+    - destination:
+        host: vehicle-service
+        port:
+          number: 80

@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: maintenance-virtualservice
+  namespace: default
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - fleet-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /maintenance
+    route:
+    - destination:
+        host: maintenance-service
+        port:
+          number: 80

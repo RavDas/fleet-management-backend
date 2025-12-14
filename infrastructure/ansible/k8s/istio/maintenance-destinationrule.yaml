@@ -1,0 +1,10 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: maintenance-destinationrule
+  namespace: default
+spec:
+  host: maintenance-service
+  trafficPolicy:
+    tls:
+      mode: DISABLE
