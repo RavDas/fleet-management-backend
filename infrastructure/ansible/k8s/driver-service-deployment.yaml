@@ -21,11 +21,11 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 6001
-      envFrom:
-        - configMapRef:
-            name: driver-service-config
-        - secretRef:
-            name: driver-service-secrets
-      env:
-        - name: OIDC_ISSUER_URI
-          value: "http://keycloak:8080/realms/fleet-management"
+          envFrom:
+            - configMapRef:
+                name: driver-service-config
+            - secretRef:
+                name: driver-service-secrets
+          env:
+            - name: OIDC_ISSUER_URI
+              value: "http://keycloak:8080/realms/fleet-management"

@@ -21,13 +21,13 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
-      envFrom:
-        - configMapRef:
-            name: vehicle-service-config
-        - secretRef:
-            name: vehicle-service-secrets
-      env:
-        - name: ConnectionStrings__DefaultConnection
-          value: "Host=postgres;Port=5432;Database=vehicle_db;Username=postgres;Password=postgres"
-        - name: Authentication__JwtBearer__Authority
-          value: "http://keycloak:8080/realms/fleet-management"
+          envFrom:
+            - configMapRef:
+                name: vehicle-service-config
+            - secretRef:
+                name: vehicle-service-secrets
+          env:
+            - name: ConnectionStrings__DefaultConnection
+              value: "Host=postgres;Port=5432;Database=vehicle_db;Username=postgres;Password=postgres"
+            - name: Authentication__JwtBearer__Authority
+              value: "http://keycloak:8080/realms/fleet-management"
