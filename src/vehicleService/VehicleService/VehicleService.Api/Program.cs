@@ -4,6 +4,7 @@ using VehicleService.Infrastructure;
 using VehicleService.Infrastructure.Data;
 using static VehicleService.Infrastructure.Data.DatabaseSeeder;
 using VehicleService.Api.BackgroundServices;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -103,11 +104,9 @@ builder.Services.AddAuthentication("Bearer")
                 return Task.CompletedTask;
             }
         };
-    });
+        });
 
-using Microsoft.AspNetCore.Authorization; // Add this
-
-// Add Authorization with Fallback Policy
+    // Add Authorization with Fallback Policy
 builder.Services.AddAuthorization(options =>
 {
     options.FallbackPolicy = new AuthorizationPolicyBuilder()

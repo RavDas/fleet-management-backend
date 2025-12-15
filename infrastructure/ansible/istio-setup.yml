@@ -1,0 +1,25 @@
+---
+ - name: Istio Setup Play
+   hosts: control
+   gather_facts: false
+   become: yes
+   
+   tasks:
+     - name: Download Istio
+       shell: curl -L https://istio.io/downloadIstio | sh -
+       args:
+         chdir: /home/ubuntu
+         creates: /home/ubuntu/istio-*/bin/istioctl
+       become: no
+
+     - name: Copy istioctl to /usr/local/bin
+       copy:
+         src: /home/ubuntu/istio-1.28.0/bin/istioctl
+         dest: /usr/local/bin/istioctl
+         mode: '0755'
+         remote_src: yes
+
+     - name: Install Istio with default profile
+       shell: /usr/local/bin/istioctl install --set profile=default -y
+       become: no
+

@@ -19,20 +19,13 @@ spec:
         - name: maintenance-service
           image: maintenance-service:latest
           imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 5001
-          env:
-            - name: POSTGRES_HOST
-              value: "postgres"
-            - name: POSTGRES_DB
-              value: "maintenance_db"
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: db-secrets
-                  key: username
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db-secrets
-                  key: password
+      ports:
+        - containerPort: 5001
+      envFrom:
+        - configMapRef:
+            name: maintenance-service-config
+        - secretRef:
+            name: maintenance-service-secrets
+      env:
+        - name: DATABASE_URL
+          value: "postgresql://postgres:postgres@postgres:5432/maintenance_db"

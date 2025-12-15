@@ -69,6 +69,63 @@ resource "aws_vpc_security_group_ingress_rule" "http" {
   )
 }
 
+# Ingress Rule - Kubernetes API Server (Port 6443)
+resource "aws_vpc_security_group_ingress_rule" "k8s_api" {
+  count             = var.enable_k8s_api ? 1 : 0
+  security_group_id = aws_security_group.main.id
+
+  description = "Allow Kubernetes API Server access"
+  from_port   = 6443
+  to_port     = 6443
+  ip_protocol = "tcp"
+  cidr_ipv4   = var.k8s_api_cidr_blocks[0]
+
+  tags = merge(
+    var.tags,
+    {
+      Name = "k8s-api-ingress"
+    }
+  )
+}
+
+# Ingress Rule - Kubernetes NodePort Services (Port 6000-10250)
+resource "aws_vpc_security_group_ingress_rule" "k8s_nodeport" {
+  count             = var.enable_k8s_nodeport ? 1 : 0
+  security_group_id = aws_security_group.main.id
+
+  description = "Allow Kubernetes NodePort and kubelet API access"
+  from_port   = 6000
+  to_port     = 10250
+  ip_protocol = "tcp"
+  cidr_ipv4   = var.k8s_nodeport_cidr_blocks[0]
+
+  tags = merge(
+    var.tags,
+    {
+      Name = "k8s-nodeport-ingress"
+    }
+  )
+}
+
+# Ingress Rule - VXLAN for CNI (Port 8472 UDP)
+resource "aws_vpc_security_group_ingress_rule" "vxlan" {
+  count             = var.enable_vxlan ? 1 : 0
+  security_group_id = aws_security_group.main.id
+
+  description = "Allow VXLAN overlay network for CNI (Flannel/Calico)"
+  from_port   = 8472
+  to_port     = 8472
+  ip_protocol = "udp"
+  cidr_ipv4   = var.vxlan_cidr_blocks[0]
+
+  tags = merge(
+    var.tags,
+    {
+      Name = "vxlan-ingress"
+    }
+  )
+}
+
 # Ingress Rule - Allow all traffic from VPC (for K8s cluster communication)
 resource "aws_vpc_security_group_ingress_rule" "internal" {
   security_group_id = aws_security_group.main.id
