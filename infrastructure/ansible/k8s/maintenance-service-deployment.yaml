@@ -21,6 +21,13 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5001
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
           envFrom:
             - configMapRef:
                 name: maintenance-service-config
@@ -28,4 +35,20 @@ spec:
                 name: maintenance-service-secrets
           env:
             - name: DATABASE_URL
-              value: "postgresql://postgres:postgres@postgres:5432/maintenance_db"
+              value: "postgresql://$(DB_USERNAME):$(DB_PASSWORD)@postgres:5432/maintenance_db"
+            - name: DB_HOST
+              value: "postgres"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: "maintenance_db"
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: password
