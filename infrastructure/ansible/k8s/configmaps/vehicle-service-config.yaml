@@ -8,3 +8,6 @@ data:
   ASPNETCORE_URLS: "http://+:8080"
   CORS_ORIGINS: "*"
   Authentication__JwtBearer__RequireHttpsMetadata: "false"
+  # OIDC / JWT Bearer Configuration
+  Authentication__JwtBearer__Audience: "vehicle-service"
+  Authentication__JwtBearer__Realm: "fleet-management"

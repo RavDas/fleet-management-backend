@@ -7,3 +7,6 @@ data:
   SPRING_PROFILES_ACTIVE: "production"
   SERVER_PORT: "6001"
   JPA_SHOW_SQL: "false"
+  # OIDC / OAuth2 Configuration
+  OIDC_REALM: "fleet-management-frontend"
+  OIDC_VALIDATE_ISSUER: "true"

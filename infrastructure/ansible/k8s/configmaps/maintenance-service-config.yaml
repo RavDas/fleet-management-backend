@@ -12,3 +12,6 @@ data:
   ITEMS_PER_PAGE: "10"
   LOG_LEVEL: "INFO"
   AUTH_DISABLED: "false"
+  # OIDC / OpenID Connect Configuration
+  OIDC_REALM: "fleet-management-frontend"
+  OIDC_VALIDATE_ISSUER: "true"
